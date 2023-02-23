@@ -1,44 +1,27 @@
+import "./App.css";
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import { LandingPage, SomeOtherPage } from "./pages";
-
-import LayoutA from "./layouts/LayoutA";
-import LayoutB from "./layouts/LayoutB";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LayoutA />,
-    children: [
-      {
-        path: "",
-        element: (
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <LandingPage />
-          </React.Suspense>
-        ),
-      },
-    ],
-  },
-  {
-    path: "/someotherpage",
-    element: <LayoutB />,
-    children: [
-      {
-        path: "",
-        element: (
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <SomeOtherPage />
-          </React.Suspense>
-        ),
-      },
-    ],
-  },
-]);
-
+import { ChakraProvider } from "@chakra-ui/react";
+import Landing from "./pages/Landing";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
+import MapView from "./pages/MapView";
+import HomeSearchItems from "./pages/HomeItems";
+import SignupPage from "./pages/SignupPages";
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ChakraProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<SignupPage />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/mapview" element={<MapView />} />
+          <Route path="/homeitems" element={<HomeSearchItems />} />
+        </Routes>
+      </BrowserRouter>
+    </ChakraProvider>
+  );
 }
 
 export default App;
