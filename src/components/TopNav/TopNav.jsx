@@ -1,4 +1,3 @@
-// using chakra ui create a top nav bar which include search and image make it sticky
 import React from "react";
 import {
   Input,
@@ -7,7 +6,7 @@ import {
   Image,
   Stack,
 } from "@chakra-ui/react";
-import yasai from "../../assets/logo.svg";
+import yasai from "../../assets/yasai.png";
 
 export default function TopNav() {
   return (
@@ -38,3 +37,4 @@ export default function TopNav() {
     </Stack>
   );
 }
+

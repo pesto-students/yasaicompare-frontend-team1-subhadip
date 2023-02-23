@@ -1,79 +1,114 @@
-import React from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
+  Box,
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Button,
   Text,
   Link,
+  Image,
 } from "@chakra-ui/react";
-import Yasai from "../../assets/yasai.png";
-import Proptype from "prop-types";
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import yasai from "../../assets/yasai.png";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
-export default function Login({ isOpen, onClose, initialRef, finalRef }) {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
+const API_URL = "http://13.233.42.74:8080/auth/login";
+
+export default function SignupCard() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const nav = useNavigate();
+  const toast = useToast();
+
+
+  const handleSubmit = () => {
+    axios
+      .post(API_URL, {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        console.log(response);
+        toast({
+          title: "Logged in successfully.",
+          description: "Redirecting to next page...",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        nav("/home");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          title: "Account has errors.",
+          description: "Check your credentials.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
   return (
-    <div>
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        size="full"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <img src={Yasai} alt="logo" width="400px" />
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>email</FormLabel>
-              <Input ref={initialRef} placeholder="email" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>password</FormLabel>
-              <Input placeholder="password" />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              width="500px"
-              mr={1}
-              onClick={handleSubmit}
-            >
-              LOGIN
-            </Button>
-          </ModalFooter>
-          <Text fontSize="sm" textAlign="center" mt={2} margin="20px">
-            Don't have an account?{" "}
-            <Link color="blue.500" href="/signup">
-              Sign Up
+    <Box transform="translate(0%, 0%)" w={[300, 400, 500, 800]}>
+      <Image src={yasai} alt="yasai" />
+      <Stack spacing={4}>
+        <FormControl id="email" isRequired>
+          <FormLabel>Email address</FormLabel>
+          <Input
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            type="email"
+          />
+        </FormControl>
+        <FormControl id="password" isRequired>
+          <FormLabel>Password</FormLabel>
+          <InputGroup>
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type={showPassword ? "text" : "password"}
+            />
+            <InputRightElement h={"full"}>
+              <Button
+                variant={"ghost"}
+                onClick={() => setShowPassword((showPassword) => !showPassword)}
+              >
+                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        <Stack spacing={10} pt={2}>
+          <Button
+            onClick={handleSubmit}
+            loadingText="Submitting"
+            size="lg"
+            bg={"green.400"}
+            color={"white"}
+            _hover={{
+              bg: "blue.500",
+            }}
+          >
+            Sign up
+          </Button>
+        </Stack>
+        <Stack pt={6}>
+          <Text align={"center"}>
+            Not logged in?{" "}
+            <Link color={"blue.400"} href="/register">
+              Signup
             </Link>
           </Text>
-        </ModalContent>
-      </Modal>
-    </div>
+        </Stack>
+      </Stack>
+    </Box>
   );
 }
-
-Login.propTypes = {
-  isOpen: Proptype.bool,
-  onClose: Proptype.func,
-  initialRef: Proptype.object,
-  finalRef: Proptype.object,
-};

@@ -7,13 +7,14 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import MapView from "./pages/MapView";
 import HomeSearchItems from "./pages/HomeItems";
+import SignupPage from "./pages/SignupPages";
 function App() {
   return (
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<SignupPage />} />
           <Route path="/home" element={<Home />} />
           <Route path="/mapview" element={<MapView />} />
           <Route path="/homeitems" element={<HomeSearchItems />} />
