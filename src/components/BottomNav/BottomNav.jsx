@@ -37,9 +37,9 @@ export default function BottomNav() {
   return (
     <Flex {...FlexStyles}>
       <Box {...BoxStyles}>
-        <Link to="/">
+        <Link to="/home">
           <Button {...ButtonStyles}>
-            <img src={Delivery} alt="delivery" />
+            <img src={Delivery} alt="home" />
           </Button>
         </Link>
       </Box>

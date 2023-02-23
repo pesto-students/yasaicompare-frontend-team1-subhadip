@@ -1,4 +1,4 @@
-import { DemoComponent } from "./DemoComponent/DemoComponent";
-import { SecondDemoComponent } from "./SecondDemoComponent/SecondDemoComponent";
+import TopNav from "./TopNav/TopNav";
+import BottomNav from "./BottomNav/BottomNav";
 
-export { DemoComponent, SecondDemoComponent };
+export { TopNav, BottomNav };
