@@ -2,12 +2,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import Delivery from "../../assets/MdDeliveryDining.svg";
-import Cart from "../../assets/MdOutlineShoppingCart.svg";
-import Profile from "../../assets/MdOutlinePerson.svg";
-import Bookmark from "../../assets/MdOutlineBookmark.svg";
 import { CartIcon, HomeIcon, ShopIcon, UserIcon } from "../Icons";
 
 const FlexStyles = {
