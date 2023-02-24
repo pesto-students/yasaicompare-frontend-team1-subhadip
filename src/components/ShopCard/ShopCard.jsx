@@ -7,11 +7,12 @@ import {
   Heading,
   Text,
   Button,
-  Box,
 } from "@chakra-ui/react";
-
 import Proptypes from "prop-types";
-export default function GroceryCard(props) {
+import { LocationIcon } from "../Icons";
+import Rating from "../Rating/Rating";
+
+export default function ShopCard(props) {
   return (
     <Card maxW="200px" maxH="300px" boxShadow="xl" size={"sm"}>
       <CardBody>
@@ -26,10 +27,27 @@ export default function GroceryCard(props) {
           <Heading fontSize="12px" size="md">
             ARYAN GROCERY
           </Heading>
-          <Text fontSize="10px">DISTANCE : 2.5 km from home</Text>
-          <Box>
-            <Text fontSize="10px">Rating : 4.5</Text>
-          </Box>
+          <Stack spacing={"1"}>
+            <Stack direction={"row"}>
+              <LocationIcon color="green.500" />
+              <Text fontSize="xs">2.5 km</Text>
+              <Text fontSize="xs" color="gray.500">
+                From Home
+              </Text>
+            </Stack>
+            <Stack direction={"row"}>
+              <Stack direction={"row"}>
+                <Rating rating={1} total={1} />
+                <Text fontSize="xs">4.5</Text>
+              </Stack>
+              <Stack direction={"row"}>
+                <Text fontSize="xs" color="gray.500">
+                  100 Reviews
+                </Text>
+              </Stack>
+            </Stack>
+          </Stack>
+
           <Button size="xs" variant="outline" borderRadius="8px" width="full">
             VISIT SHOP
           </Button>
@@ -39,7 +57,7 @@ export default function GroceryCard(props) {
   );
 }
 
-GroceryCard.propTypes = {
+ShopCard.propTypes = {
   shop_name: Proptypes.string,
   distance: Proptypes.string,
   rating: Proptypes.string,

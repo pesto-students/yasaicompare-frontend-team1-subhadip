@@ -62,6 +62,13 @@ export default function BottomNav() {
         icon={<ShopIcon fontSize="20px" />}
       />
 
+      {/* <NavItem
+        title="Yasai"
+        link="/items"
+        isActive={location.pathname === "/items"}
+        icon={<ShopIcon fontSize="20px" />}
+      /> */}
+
       <NavItem
         title="Cart"
         link="/cart"

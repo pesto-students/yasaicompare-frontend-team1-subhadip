@@ -1,4 +1,4 @@
-import GroceryCard from "../../components/GroceryCard/GroceryCard";
+import GroceryCard from "../../components/ShopCard/ShopCard";
 import { SimpleGrid } from "@chakra-ui/react";
 
 const ShopView = () => {
