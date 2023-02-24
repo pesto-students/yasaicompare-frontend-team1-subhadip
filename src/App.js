@@ -28,7 +28,7 @@ import SignupPage from "./pages/SignupPages";
 //   );
 // }
 
-import { HomePage } from "./pages";
+import { ShopPage } from "./pages";
 
 import AppLayout from "./layouts/AppLayout";
 import LayoutB from "./layouts/LayoutB";
@@ -47,10 +47,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "home",
+        path: "shop",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <HomePage />
+            <ShopPage />
           </React.Suspense>
         ),
       },

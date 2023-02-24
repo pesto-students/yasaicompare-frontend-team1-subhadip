@@ -1,69 +1,84 @@
 /// Create a bottom nav bar using chakra ui
 
 import React from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
 import Delivery from "../../assets/MdDeliveryDining.svg";
 import Cart from "../../assets/MdOutlineShoppingCart.svg";
 import Profile from "../../assets/MdOutlinePerson.svg";
 import Bookmark from "../../assets/MdOutlineBookmark.svg";
+import { CartIcon, HomeIcon, ShopIcon, UserIcon } from "../Icons";
+
 const FlexStyles = {
-  w: "100%",
-  h: "60px",
-  bg: "white",
-  boxShadow: "xl",
   position: "fixed",
   bottom: "0",
-  zIndex: "1",
+  left: 0,
+  right: 0,
+  zIndex: "999",
   bgColor: "green.500",
-  justifyContent: "space-between",
-};
-
-const BoxStyles = {
-  w: "25%",
-  h: "100%",
-  display: "flex",
-  justifyContent: "center",
   alignItems: "center",
 };
 
-const ButtonStyles = {
-  variant: "ghost",
-  colorScheme: "green",
-  size: "lg",
+const NavItem = (props) => {
+  return (
+    <Flex
+      bg={props.isActive ? "green.600" : "green.500"}
+      borderTop={"2px"}
+      borderTopColor={props.isActive ? "#A5D6A7" : "green.500"}
+      p="2"
+      flex="1"
+      justifyContent={"center"}
+    >
+      <Link to={props.link}>
+        <Stack justifyContent={"center"} alignItems={"center"} color="white">
+          {props.icon}
+          <Text fontSize={"xs"} fontWeight="bold">
+            {props.title}
+          </Text>
+        </Stack>
+      </Link>
+    </Flex>
+  );
+};
+
+NavItem.propTypes = {
+  link: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.element,
+  isActive: PropTypes.bool.isRequired,
 };
 
 export default function BottomNav() {
+  const location = useLocation();
   return (
     <Flex {...FlexStyles}>
-      <Box {...BoxStyles}>
-        <Link to="/home">
-          <Button {...ButtonStyles}>
-            <img src={Delivery} alt="home" />
-          </Button>
-        </Link>
-      </Box>
-      <Box {...BoxStyles}>
-        <Link to="/cart">
-          <Button {...ButtonStyles}>
-            <img src={Cart} alt="cart" />
-          </Button>
-        </Link>
-      </Box>
-      <Box {...BoxStyles}>
-        <Link to="/profile">
-          <Button {...ButtonStyles}>
-            <img src={Bookmark} alt="bookmark" />
-          </Button>
-        </Link>
-      </Box>
-      <Box {...BoxStyles}>
-        <Link to="/profile">
-          <Button {...ButtonStyles}>
-            <img src={Profile} alt="profile" />
-          </Button>
-        </Link>
-      </Box>
+      <NavItem
+        title="Home"
+        link="/"
+        isActive={location.pathname === "/"}
+        icon={<HomeIcon fontSize="20px" />}
+      />
+      <NavItem
+        title="Shops"
+        link="/shop"
+        isActive={location.pathname === "/shop"}
+        icon={<ShopIcon fontSize="20px" />}
+      />
+
+      <NavItem
+        title="Cart"
+        link="/cart"
+        isActive={location.pathname === "/cart"}
+        icon={<CartIcon fontSize="20px" />}
+      />
+
+      <NavItem
+        title="Profile"
+        link="/profile"
+        isActive={location.pathname === "/profile"}
+        icon={<UserIcon fontSize="20px" />}
+      />
     </Flex>
   );
 }

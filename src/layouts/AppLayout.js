@@ -4,9 +4,11 @@ import { BottomNav, TopNav } from "../components";
 
 export default function AppLayout() {
   return (
-    <Box as="main" height="calc(100vh)">
+    <Box as="main" height="calc(100vh)" minH={"calc(100vh)"}>
       <TopNav />
-      <Outlet />
+      <div style={{ height: "calc(100vh - 60px)" }}>
+        <Outlet />
+      </div>
       <BottomNav />
     </Box>
   );

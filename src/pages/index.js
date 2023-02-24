@@ -1,6 +1,6 @@
 import React from "react";
 
-export const HomePage = React.lazy(() => import("./HomePage/Home"));
+export const ShopPage = React.lazy(() => import("./ShopPage/ShopPage"));
 
 // export const SomeOtherPage = React.lazy(() =>
 //   import("./SomeOtherPage/SomeOtherPage")
