@@ -13,7 +13,13 @@ export default function Home() {
   return (
     <Stack pb="70px">
       <Tabs>
-        <TabList justifyContent={"space-between"}>
+        <TabList
+          justifyContent={"space-between"}
+          position={"sticky"}
+          top="60px"
+          zIndex={999}
+          bg="white"
+        >
           <Tab>Shop View</Tab>
           <Tab>Map View</Tab>
           <Tab>Compare View</Tab>
