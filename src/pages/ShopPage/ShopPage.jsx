@@ -8,7 +8,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import ShopView from "./ShopView";
-import CompareView from "../ComparePage/CompareView";
+import CompareView from "../CompareView/CompareView";
 
 export default function Home() {
   return (

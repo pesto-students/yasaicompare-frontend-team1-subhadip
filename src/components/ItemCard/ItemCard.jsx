@@ -18,12 +18,12 @@ import Rating from "../Rating/Rating";
 import Proptypes from "prop-types";
 export default function ItemCards(props) {
   return (
-    <Card maxW="300px" maxH="400px" boxShadow="2xl">
-      <CardBody>
+    <Card maxW="300px" maxH="400px" boxShadow="2xl" size={"sm"} padding='5px'>
+      <CardBody h="400px">
         <Image
           src={paprika}
           alt="peprica"
-          width={600}
+          width={200}
           height={100}
           borderRadius="lg"
         />
