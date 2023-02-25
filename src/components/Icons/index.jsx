@@ -1,6 +1,11 @@
 import { Icon } from "@chakra-ui/react";
 import { GiShop } from "react-icons/gi";
-import { BsFillCartFill, BsSearch, BsFillStarFill } from "react-icons/bs";
+import {
+  BsFillCartFill,
+  BsSearch,
+  BsFillStarFill,
+  BsFilterRight,
+} from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { MdLocationPin } from "react-icons/md";
@@ -18,3 +23,5 @@ export const SearchIcon = (props) => <Icon as={BsSearch} {...props} />;
 export const LocationIcon = (props) => <Icon as={MdLocationPin} {...props} />;
 
 export const StarIcon = (props) => <Icon as={BsFillStarFill} {...props} />;
+
+export const FilterIcon = (props) => <Icon as={BsFilterRight} {...props} />;

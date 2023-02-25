@@ -20,13 +20,13 @@ export default function Home() {
           zIndex={999}
           bg="white"
         >
-          <Tab fontSize={"sm"} fontWeight={"bold"} flex="1">
+          <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
             Shop View
           </Tab>
-          <Tab fontSize={"sm"} fontWeight={"bold"} lex="1">
+          <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
             Map View
           </Tab>
-          <Tab fontSize={"sm"} fontWeight={"bold"} flex="1">
+          <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
             Compare View
           </Tab>
         </TabList>
