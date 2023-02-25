@@ -8,6 +8,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import ShopView from "./ShopView";
+import CompareView from "../ComparePage/CompareView";
 
 export default function Home() {
   return (
@@ -39,7 +40,7 @@ export default function Home() {
             <p>two!</p>
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <CompareView />
           </TabPanel>
         </TabPanels>
       </Tabs>

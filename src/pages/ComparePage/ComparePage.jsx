@@ -8,7 +8,6 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import CompareView from "./CompareView";
-
 export default function Home() {
   return (
     <Stack pb="70px">

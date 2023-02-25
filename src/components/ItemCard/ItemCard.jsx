@@ -12,16 +12,18 @@ import {
   Box,
 } from "@chakra-ui/react";
 import paprika from "../../assets/paprika.jpg";
+import { LocationIcon } from "../Icons";
+import Rating from "../Rating/Rating";
 
 import Proptypes from "prop-types";
 export default function ItemCards(props) {
   return (
-    <Card maxW="200px" maxH="300px" boxShadow="2xl">
+    <Card maxW="300px" maxH="400px" boxShadow="2xl">
       <CardBody>
         <Image
           src={paprika}
           alt="peprica"
-          width={250}
+          width={600}
           height={100}
           borderRadius="lg"
         />
@@ -45,18 +47,35 @@ export default function ItemCards(props) {
           </Box>
         </Stack>
       </CardBody>
-      <Box justifyContent="center" w="full" p="10px">
-        <Stack spacing="1">
-          <Heading fontSize="12px" size="md" textAlign="center">
-            ARPIT GROCERY SHOP
-          </Heading>
-          <Text fontSize="10px">DISTANCE : 2km from home station</Text>
-          <Text fontSize="10px">RATING : 4.5</Text>
+      <Stack mt="1" spacing="3" p="1">
+        <Heading fontSize="12px" size="md">
+          ARYAN GROCERY
+        </Heading>
+        <Stack spacing={"1"}>
+          <Stack direction={"row"}>
+            <LocationIcon color="green.500" />
+            <Text fontSize="xs">2.5 km</Text>
+            <Text fontSize="xs" color="gray.500">
+              From Home
+            </Text>
+          </Stack>
+          <Stack direction={"row"}>
+            <Stack direction={"row"}>
+              <Rating rating={1} total={1} />
+              <Text fontSize="xs">4.5</Text>
+            </Stack>
+            <Stack direction={"row"}>
+              <Text fontSize="xs" color="gray.500">
+                100 Reviews
+              </Text>
+            </Stack>
+          </Stack>
         </Stack>
-        <Button mt='3'size="xs" variant="outline" borderRadius="8px" width="full">
+
+        <Button size="xs" variant="outline" borderRadius="8px" width="full">
           Add 2 Cart
         </Button>
-      </Box>
+      </Stack>
     </Card>
   );
 }

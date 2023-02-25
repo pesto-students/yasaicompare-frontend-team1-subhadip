@@ -16,3 +16,4 @@ const CompareView = () => {
   );
 };
 
+export default CompareView;
