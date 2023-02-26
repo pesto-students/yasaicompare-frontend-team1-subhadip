@@ -5,13 +5,10 @@ import {
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
-import Landing from "./pages/Landing";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter} from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
-import MapView from "./pages/MapView";
-import HomeSearchItems from "./pages/HomeItems";
-import SignupPage from "./pages/SignupPages";
+import SignupPage from "./pages/Register";
 // function App() {
 //   return (
 //     <ChakraProvider>
@@ -29,7 +26,6 @@ import SignupPage from "./pages/SignupPages";
 // }
 
 import { ShopPage } from "./pages";
-
 import AppLayout from "./layouts/AppLayout";
 import LayoutB from "./layouts/LayoutB";
 
@@ -59,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <SignupPage />,
   },
   {
     path: "/someotherpage",
