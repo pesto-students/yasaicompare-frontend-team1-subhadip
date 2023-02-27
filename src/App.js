@@ -6,44 +6,27 @@ import {
   withDefaultColorScheme,
 } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 
+import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
-// function App() {
-//   return (
-//     <ChakraProvider>
-//       <BrowserRouter>
-//         <Routes>
-//           <Route path="/" element={<LoginPage />} />
-//           <Route path="/register" element={<SignupPage />} />
-//           <Route path="/home" element={<Home />} />
-//           <Route path="/mapview" element={<MapView />} />
-//           <Route path="/homeitems" element={<HomeSearchItems />} />
-//         </Routes>
-//       </BrowserRouter>
-//     </ChakraProvider>
-//   );
-// }
 
 import { ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LayoutB from "./layouts/LayoutB";
-import RequireAuth from "./features/auth/RequireAuth";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <RequireAuth>
-        <AppLayout />
-      </RequireAuth>
-    ),
+    element: <AppLayout />,
     children: [
       {
         path: "",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <div>Landing Page</div>
+            <LandingPage />
           </React.Suspense>
         ),
       },
@@ -117,7 +100,9 @@ const customTheme = extendTheme(
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ChakraProvider>
   );
 }

@@ -11,64 +11,31 @@ import {
   Link,
   Image,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import yasai from "../assets/yasai.png";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../features/auth/authSlice";
-import { useLoginMutation } from "../features/auth/authApiSlice";
-
-const API_URL = "http://localhost:8080/auth/login";
+import { login } from "../redux/features/auth/authSlice";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const toast = useToast();
 
-  // const handleSubmit = () => {
-  //   axios
-  //     .post(API_URL, {
-  //       email: email,
-  //       password: password,
-  //     })
-  //     .then((response) => {
-  //       console.log(response);
-  //       toast({
-  //         title: "Logged in successfully.",
-  //         description: "Redirecting to next page...",
-  //         status: "success",
-  //         duration: 9000,
-  //         position: "top",
-  //         isClosable: true,
-  //       });
-  //       nav("/");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast({
-  //         title: "Account has errors.",
-  //         description: "Check your credentials.",
-  //         status: "error",
-  //         duration: 9000,
-  //         position: "top",
-  //         isClosable: true,
-  //       });
-  //     });
-  // };
-
   const dispatch = useDispatch();
-
-  const [login, { isLoading }] = useLoginMutation();
+  const handleLogin = useCallback(
+    async (args) => dispatch(login(args)).unwrap(),
+    []
+  );
 
   const handleSubmit = async () => {
     try {
-      const result = await login({ email, password });
-      dispatch(setCredentials({ ...result.data, email }));
+      const result = await handleLogin({ email, password });
+      localStorage.setItem("accessToken", result.accessToken);
       toast({
         title: "Logged in successfully.",
         description: "Redirecting to next page...",
@@ -77,7 +44,7 @@ const LoginPage = () => {
         position: "top",
         isClosable: true,
       });
-      nav("/");
+      navigate("/");
     } catch (err) {
       console.error(err);
       toast({
@@ -126,17 +93,8 @@ const LoginPage = () => {
               </InputGroup>
             </FormControl>
             <Stack spacing={10} pt={2}>
-              <Button
-                onClick={handleSubmit}
-                loadingText="Submitting"
-                size="lg"
-                bg={"green.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Sign up
+              <Button onClick={handleSubmit} loadingText="Submitting" size="lg">
+                Sign In
               </Button>
             </Stack>
             <Stack pt={6}>
