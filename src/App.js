@@ -5,7 +5,7 @@ import {
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
-import { RouterProvider, createBrowserRouter} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
@@ -28,11 +28,16 @@ import SignupPage from "./pages/Register";
 import { ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LayoutB from "./layouts/LayoutB";
+import RequireAuth from "./features/auth/RequireAuth";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <RequireAuth>
+        <AppLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         path: "",

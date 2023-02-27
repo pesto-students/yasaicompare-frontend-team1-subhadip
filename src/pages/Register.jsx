@@ -33,7 +33,7 @@ const Register = () => {
         name: name,
         email: email,
         password: password,
-        phone: phone,
+        contact: phone,
       })
       .then((response) => {
         console.log(response);
@@ -60,35 +60,25 @@ const Register = () => {
       });
   };
 
-  function vendorHandler(){
+  function vendorHandler() {
     if (showvendor) {
-      
       setShowVendor(false);
     } else {
       setShowVendor(true);
     }
   }
 
-
   function VendorBox() {
     return (
       <Box w={[300, 400, 500, 800]}>
         <FormControl mt={4}>
           <FormLabel>Aadhar Number</FormLabel>
-          <Input
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <Input placeholder="Enter your password" />
         </FormControl>
 
         <FormControl mt={4}>
           <FormLabel>GSTIN</FormLabel>
-          <Input
-            placeholder="Enter your GSTIN Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+          <Input placeholder="Enter your GSTIN Number" />
         </FormControl>
       </Box>
     );
@@ -147,7 +137,7 @@ const Register = () => {
                   </Checkbox>
                 </CheckboxGroup>
               </Box>
-              {showvendor ? null : <VendorBox /> }
+              {showvendor ? null : <VendorBox />}
               <Button
                 onClick={handleSubmit}
                 loadingText="Submitting"

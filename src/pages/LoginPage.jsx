@@ -17,6 +17,9 @@ import yasai from "../assets/yasai.png";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/auth/authSlice";
+import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const API_URL = "http://localhost:8080/auth/login";
 
@@ -27,35 +30,65 @@ const LoginPage = () => {
   const nav = useNavigate();
   const toast = useToast();
 
-  const handleSubmit = () => {
-    axios
-      .post(API_URL, {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log(response);
-        toast({
-          title: "Logged in successfully.",
-          description: "Redirecting to next page...",
-          status: "success",
-          duration: 9000,
-          position: "top",
-          isClosable: true,
-        });
-        nav("/login");
-      })
-      .catch((error) => {
-        console.log(error.messsage);
-        toast({
-          title: "Account has errors.",
-          description: "Check your credentials.",
-          status: "error",
-          duration: 9000,
-          position: "top",
-          isClosable: true,
-        });
+  // const handleSubmit = () => {
+  //   axios
+  //     .post(API_URL, {
+  //       email: email,
+  //       password: password,
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //       toast({
+  //         title: "Logged in successfully.",
+  //         description: "Redirecting to next page...",
+  //         status: "success",
+  //         duration: 9000,
+  //         position: "top",
+  //         isClosable: true,
+  //       });
+  //       nav("/");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast({
+  //         title: "Account has errors.",
+  //         description: "Check your credentials.",
+  //         status: "error",
+  //         duration: 9000,
+  //         position: "top",
+  //         isClosable: true,
+  //       });
+  //     });
+  // };
+
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const handleSubmit = async () => {
+    try {
+      const result = await login({ email, password });
+      dispatch(setCredentials({ ...result.data, email }));
+      toast({
+        title: "Logged in successfully.",
+        description: "Redirecting to next page...",
+        status: "success",
+        duration: 9000,
+        position: "top",
+        isClosable: true,
       });
+      nav("/");
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Account has errors.",
+        description: "Check your credentials.",
+        status: "error",
+        duration: 9000,
+        position: "top",
+        isClosable: true,
+      });
+    }
   };
 
   return (
