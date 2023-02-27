@@ -77,9 +77,9 @@ export default function BottomNav() {
       />
 
       <NavItem
-        title="Profile"
-        link="/profile"
-        isActive={location.pathname === "/profile"}
+        title="Login"
+        link="/login"
+        isActive={location.pathname === "/login"}
         icon={<UserIcon fontSize="20px" />}
       />
     </Flex>
