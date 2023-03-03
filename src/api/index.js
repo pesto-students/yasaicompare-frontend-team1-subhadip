@@ -42,6 +42,42 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { withCredentials: true }
   );
 
+export const getShops = () => axiosApiInstance.get(`${SERVER_URL}/shops`);
+
+export const getShopsById = (id) =>
+  axiosApiInstance.get(`${SERVER_URL}/shops/${id}`);
+
+export const createShops = (
+  apiArgs = {
+    email: "",
+    adress: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "",
+    active: "",
+  }
+) =>
+  axiosApiInstance.post(
+    `${SERVER_URL}/shops/register`,
+    { ...apiArgs },
+    { withCredentials: true }
+  );
+
+// export const login = async (apiArgs = { email: "", password: "" }) => {
+//   const res = await fetch(
+//     `${SERVER_URL}/auth/login`,
+//     {
+//       method: "POST",
+//       body: apiArgs,
+//     },
+//     { credentials: "include" }
+//     // { ...apiArgs },
+//     // { withCredentials: true }
+//   );
+//   return res.json();
+// };
+
 export const refreshAccessToken = () =>
   axiosApiInstance.post(
     `${SERVER_URL}/auth/refresh-token`,
