@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 
 import authReducer from "./features/auth/authSlice";
+import shopReducer from "./features/auth/shopSlice";
 
 const logger = createLogger();
 
@@ -16,5 +17,6 @@ export const store = configureStore({
       .concat(logger),
   reducer: {
     auth: authReducer,
+    shop: shopReducer,
   },
 });
