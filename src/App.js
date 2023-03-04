@@ -16,6 +16,7 @@ import { ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LayoutB from "./layouts/LayoutB";
 import LandingPage from "./pages/LandingPage/LandingPage";
+import CartPage from "./pages/CartPage/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,14 @@ const router = createBrowserRouter([
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
             <ShopPage />
+          </React.Suspense>
+        ),
+      },
+      {
+        path: "cart",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <CartPage />
           </React.Suspense>
         ),
       },

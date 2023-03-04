@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FilterIcon } from "../../components/Icons";
 import Rating from "../../components/Rating/Rating";
-import GroceryCard from "../../components/ShopCard/ShopCard";
+import ShopCard from "../../components/ShopCard/ShopCard";
 import {
   SimpleGrid,
   Stack,
@@ -39,14 +39,14 @@ const ShopView = () => {
   return (
     <>
       <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px">
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
-        <GroceryCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
+        <ShopCard />
       </SimpleGrid>
 
       <IconButton
