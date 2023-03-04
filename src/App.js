@@ -81,6 +81,14 @@ const router = createBrowserRouter([
           </React.Suspense>
         ),
       },
+      {
+        path: "create",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <VendorCreateShopPage />
+          </React.Suspense>
+        ),
+      },
     ],
   },
 ]);

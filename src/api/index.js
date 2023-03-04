@@ -56,3 +56,6 @@ export const refreshAccessToken = () =>
 
 export const getUserInfo = () =>
   axiosApiInstance.get(`${SERVER_URL}/user/info`);
+
+export const updateShops = () =>
+  axiosApiInstance.put(`${SERVER_URL}/shops/update`);
