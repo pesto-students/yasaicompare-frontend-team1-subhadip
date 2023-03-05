@@ -12,7 +12,7 @@ import Proptypes from "prop-types";
 import { LocationIcon } from "../Icons";
 import Rating from "../Rating/Rating";
 import { useDispatch } from "react-redux";
-import { fetchShops } from "../../redux/features/shop/shopSlice";
+import { fetchShops } from "../../redux/features/auth/shopSlice";
 import { useState } from "react";
 
 export default function ShopCard(props) {
