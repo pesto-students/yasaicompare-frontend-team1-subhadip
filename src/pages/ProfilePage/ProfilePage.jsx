@@ -11,8 +11,10 @@ const ProfilePage = () => {
     []
   );
   useEffect(() => {
-    getUserInfo();
-  }, []);
+    if (!authData.user_id) {
+      getUserInfo();
+    }
+  }, [authData.user_id, getUserInfo]);
 
   // console.log(authData);
   return (

@@ -16,6 +16,7 @@ import { ProfilePage, ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
+import AuthWrapper from "./components/AuthWrapper";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,9 @@ const router = createBrowserRouter([
         path: "cart",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <CartPage />
+            <AuthWrapper>
+              <CartPage />
+            </AuthWrapper>
           </React.Suspense>
         ),
       },
@@ -50,7 +53,9 @@ const router = createBrowserRouter([
         path: "profile",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <ProfilePage />
+            <AuthWrapper>
+              <ProfilePage />
+            </AuthWrapper>
           </React.Suspense>
         ),
       },

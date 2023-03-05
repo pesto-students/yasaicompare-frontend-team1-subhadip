@@ -49,7 +49,7 @@ const authSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
+        state.asyncStatus = "FAILURE";
         state.error = action.payload.data;
       });
 
@@ -62,7 +62,7 @@ const authSlice = createSlice({
         state.data = { ...state.data, ...action.payload.response };
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
+        state.asyncStatus = "FAILURE";
         state.error = action.payload.data;
       });
   },
