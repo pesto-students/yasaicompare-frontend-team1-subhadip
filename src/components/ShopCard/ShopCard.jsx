@@ -11,13 +11,24 @@ import {
 import Proptypes from "prop-types";
 import { LocationIcon } from "../Icons";
 import Rating from "../Rating/Rating";
+import { useDispatch } from "react-redux";
+import { fetchShops } from "../../redux/features/auth/shopSlice";
+import { useState } from "react";
 
 export default function ShopCard(props) {
+  const dispatch = useDispatch();
+  const [shops, setShops] = useState([]);
+  function visitShop() {
+    const shopId = shops.map((shop) => shop.id);
+    console.log(shopId);
+  }
+
+  // Get the shop id on click of the visit shop button
   return (
     <Card maxW="200px" maxH="300px" boxShadow="xl" size={"sm"}>
       <CardBody>
         <Image
-          src="https://assets.aboutamazon.com/dims4/default/15a5eac/2147483647/strip/true/crop/1919x1080+1+0/resize/1320x743!/format/webp/quality/90/?url=https%3A%2F%2Famazon-blogs-brightspot.s3.amazonaws.com%2Fa5%2F60%2F398c51db4a4c9f5cb25e2b27c0ea%2Fjwos.png"
+          src={props.image}
           alt="nill"
           width={250}
           height={100}
@@ -25,7 +36,7 @@ export default function ShopCard(props) {
         />
         <Stack mt="2" spacing="3">
           <Heading fontSize="12px" size="md">
-            ARYAN GROCERY
+            {props.shop_name}
           </Heading>
           <Stack spacing={"1"}>
             <Stack direction={"row"}>
@@ -48,7 +59,13 @@ export default function ShopCard(props) {
             </Stack>
           </Stack>
 
-          <Button size="xs" variant="outline" borderRadius="8px" width="full">
+          <Button
+            onClick={visitShop}
+            size="xs"
+            variant="outline"
+            borderRadius="8px"
+            width="full"
+          >
             VISIT SHOP
           </Button>
         </Stack>
@@ -60,6 +77,5 @@ export default function ShopCard(props) {
 ShopCard.propTypes = {
   shop_name: Proptypes.string,
   distance: Proptypes.string,
-  rating: Proptypes.string,
   image: Proptypes.string,
 };

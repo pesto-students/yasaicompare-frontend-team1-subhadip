@@ -87,57 +87,6 @@ const shopsSlice = createSlice({
   name: "shops",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchShops.pending, (state, action) => {
-        state.asyncStatus = "LOADING";
-      })
-      .addCase(fetchShops.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = action.payload;
-      })
-      .addCase(fetchShops.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.error = action.payload.data;
-      });
-    builder
-      .addCase(fetchShopsById.pending, (state, action) => {
-        state.asyncStatus = "LOADING";
-      })
-      .addCase(fetchShopsById.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = action.payload;
-      })
-      .addCase(fetchShopsById.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.error = action.payload.data;
-      });
-
-    builder
-      .addCase(CreateShops.pending, (state, action) => {
-        state.asyncStatus = "LOADING";
-      })
-      .addCase(CreateShops.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = action.payload;
-      })
-      .addCase(CreateShops.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.error = action.payload.data;
-      });
-    builder
-      .addCase(UpdateShops.pending, (state, action) => {
-        state.asyncStatus = "LOADING";
-      })
-      .addCase(UpdateShops.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = action.payload;
-      })
-      .addCase(UpdateShops.rejected, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.error = action.payload.data;
-      });
-  },
 });
 
 export default shopsSlice.reducer;

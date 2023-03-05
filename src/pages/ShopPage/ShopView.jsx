@@ -35,6 +35,20 @@ const ShopView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
+  const dispatch = useDispatch();
+  const [shops, setShops] = useState([]);
+
+  // get the data from the fetchShops action creator and store it in the state
+  async function getShops() {
+    try {
+      const data = await dispatch(fetchShops()).unwrap();
+      const response = await JSON.parse(JSON.stringify(data));
+      setShops(response.shops);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  getShops();
 
   return (
     <>
