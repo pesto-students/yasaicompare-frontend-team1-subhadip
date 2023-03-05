@@ -11,10 +11,9 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
-
+import VendorPage from "./pages/VendorPage/VendorView";
 import { ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
-import LayoutB from "./layouts/LayoutB";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
 
@@ -58,14 +57,14 @@ const router = createBrowserRouter([
     element: <SignupPage />,
   },
   {
-    path: "/someotherpage",
-    element: <LayoutB />,
+    path: "/vendor",
+    element: <AppLayout />,
     children: [
       {
         path: "",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <div>otherpage</div>
+            <VendorPage />
           </React.Suspense>
         ),
       },

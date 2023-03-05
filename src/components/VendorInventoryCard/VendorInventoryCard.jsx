@@ -19,51 +19,42 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Input,
 } from "@chakra-ui/react";
-import { MdModeEditOutline } from "react-icons/md";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const VendorInventoryCard = () => {
   return (
-    <Card fontFamily="poppins,sans-serif">
+    <Card fontFamily="poppins,sans-serif" maxW="200px" maxH="300px" size={"sm"}>
       <CardHeader>
         <Image src={paprika} alt="yasai compare" />
         <Box display="flex" justifyContent="center" marginTop="10px">
           <Text fontWeight="bold" paddingRight="30px">
             Red Paprika
           </Text>
-          <MdModeEditOutline fontSize="20px" />
         </Box>
       </CardHeader>
       <CardBody>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <NumberInput step={1} defaultValue={15} min={0} max={30}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <Menu>
-            <MenuButton
-              transition="all 0.2s"
-              borderRadius="md"
-              borderWidth="1px"
-            >
-              File <ChevronDownIcon />
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Kg</MenuItem>
-              <MenuItem>g</MenuItem>
-              <MenuItem>Oz</MenuItem>
-              <MenuItem>ol</MenuItem>
-            </MenuList>
-          </Menu>
+        <Box>
+          <Box marginBottom='1'>
+            <Input placeholder="₹" size="sm" width="50px" />
+            <Input placeholder="Price" size="sm" width="100px" />
+          </Box>
+          <Box>
+            <Input placeholder="Unit" size="sm" width="50px" />
+            <Input placeholder="Quantity" size="sm" width="100px" />
+          </Box>
         </Box>
-        <Box display="flex" justifyContent="">
+        <Box
+          display="flex"
+          justifyContent="center"
+          m="10px"
+          marginLeft="30px"
+          marginTop="10px"
+        >
           <FormControl display="flex">
             <FormLabel htmlFor="email-alerts" mb="0">
-              In Stock
+              Availability
             </FormLabel>
             <Switch id="email-alerts" />
           </FormControl>
