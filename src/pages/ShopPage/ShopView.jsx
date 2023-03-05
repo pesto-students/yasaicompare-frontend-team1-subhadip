@@ -43,12 +43,15 @@ const labelStyles = {
 const ShopView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const shopState = useSelector((state) => state.shop);
+  const navigate = useNavigate();
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
+  const getShops = useCallback(
+    async (args) => dispatch(fetchShops(args)).unwrap(),
+    []
+  );
 
   const init = async () => {
     try {
@@ -57,6 +60,23 @@ const ShopView = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (shopState.asyncStatus === "LOADING") {
+    return (
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+      >
+        <Spinner color="green.500" />
+        <Text>Gettings Shops ...</Text>
+      </Flex>
+    );
+  }
 
   useEffect(() => {
     init();
