@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FilterIcon } from "../../components/Icons";
 import Rating from "../../components/Rating/Rating";
-import ShopCard from "../../components/ShopCard/ShopCard";
+import GroceryCard from "../../components/ShopCard/ShopCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchShops } from "../../redux/features/shop/shopSlice";
+
 import {
   SimpleGrid,
   Stack,
@@ -23,7 +26,12 @@ import {
   SliderThumb,
   SliderFilledTrack,
   SliderMark,
+  Flex,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
+
+import _ from "lodash";
 
 const labelStyles = {
   mt: "2",
@@ -33,34 +41,52 @@ const labelStyles = {
 
 const ShopView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const shopState = useSelector((state) => state.shop);
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
-  const [shops, setShops] = useState([]);
 
-  // get the data from the fetchShops action creator and store it in the state
-  async function getShops() {
+  const getShops = useCallback(
+    async (args) => dispatch(fetchShops(args)).unwrap(),
+    []
+  );
+
+  const init = async () => {
     try {
-      const data = await dispatch(fetchShops()).unwrap();
-      const response = await JSON.parse(JSON.stringify(data));
-      setShops(response.shops);
-    } catch (err) {
-      console.log(err);
+      await getShops();
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (shopState.asyncStatus === "LOADING") {
+    return (
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+      >
+        <Spinner color="green.500" />
+        <Text>Gettings Shops ...</Text>
+      </Flex>
+    );
   }
-  getShops();
 
   return (
     <>
       <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px">
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
+        {!_.isEmpty(shopState.data) &&
+          shopState.data.shops.map((shop) => (
+            <GroceryCard
+              key={shop.id}
+              image={shop.image}
+              shop_name={shop.name}
+            />
+          ))}
       </SimpleGrid>
 
       <IconButton

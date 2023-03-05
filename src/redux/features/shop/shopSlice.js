@@ -10,7 +10,7 @@ const initialState = {
 
 // create an async thunk for shops request
 export const fetchShops = createAsyncThunk(
-  "shops",
+  "shops/fetchShop",
   async (payload, thunkApi) => {
     try {
       const response = await api.getShops();
@@ -23,7 +23,7 @@ export const fetchShops = createAsyncThunk(
 );
 
 export const fetchShopsById = createAsyncThunk(
-  "shops/:id",
+  "shops/fetchShopsById",
   async (payload, thunkApi) => {
     try {
       const response = await api.getShopsById();
@@ -36,7 +36,7 @@ export const fetchShopsById = createAsyncThunk(
 );
 
 export const CreateShops = createAsyncThunk(
-  "shops/register",
+  "shops/createShops",
   async (
     payload = {
       email: "",
@@ -60,7 +60,7 @@ export const CreateShops = createAsyncThunk(
 );
 
 export const UpdateShops = createAsyncThunk(
-  "shops/update",
+  "shops/updateShops",
   async (
     payload = {
       email: "",
@@ -87,6 +87,20 @@ const shopsSlice = createSlice({
   name: "shops",
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchShops.pending, (state, action) => {
+        state.asyncStatus = "LOADING";
+      })
+      .addCase(fetchShops.fulfilled, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        state.data = action.payload;
+      })
+      .addCase(fetchShops.rejected, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        state.error = action.payload.data;
+      });
+  },
 });
 
 export default shopsSlice.reducer;
