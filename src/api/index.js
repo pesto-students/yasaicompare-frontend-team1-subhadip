@@ -23,7 +23,7 @@ axiosApiInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error?.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const res = await refreshAccessToken();
       localStorage.setItem("accessToken", res.data.accessToken);
@@ -41,20 +41,6 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { ...apiArgs },
     { withCredentials: true }
   );
-
-// export const login = async (apiArgs = { email: "", password: "" }) => {
-//   const res = await fetch(
-//     `${SERVER_URL}/auth/login`,
-//     {
-//       method: "POST",
-//       body: apiArgs,
-//     },
-//     { credentials: "include" }
-//     // { ...apiArgs },
-//     // { withCredentials: true }
-//   );
-//   return res.json();
-// };
 
 export const refreshAccessToken = () =>
   axiosApiInstance.post(

@@ -13,7 +13,7 @@ const LandingPage = () => {
     getUserInfo();
   }, []);
 
-  console.log(authData);
+  // console.log(authData);
   return <div>Landing Page</div>;
 };
 

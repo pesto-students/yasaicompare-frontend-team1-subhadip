@@ -6,9 +6,9 @@ export default function AppLayout() {
   return (
     <Box as="main" height="calc(100vh)" minH={"calc(100vh)"}>
       <TopNav />
-      <div style={{ height: "calc(100vh - 60px)" }}>
+      <Box minHeight="calc(100vh - 60px)" bg="gray.50">
         <Outlet />
-      </div>
+      </Box>
       <BottomNav />
     </Box>
   );

@@ -14,8 +14,9 @@ export const login = createAsyncThunk(
       const response = await api.login(payload);
       return response.data;
     } catch (error) {
-      console.log(error);
-      return thunkApi.rejectWithValue(error.response.data);
+      return thunkApi.rejectWithValue(
+        error?.response?.data || { data: error.message }
+      );
     }
   }
 );
@@ -27,8 +28,9 @@ export const fetchUserInfo = createAsyncThunk(
       const response = await api.getUserInfo();
       return response.data;
     } catch (error) {
-      console.log(error);
-      return thunkApi.rejectWithValue(error.response.data);
+      return thunkApi.rejectWithValue(
+        error?.response?.data || { data: error.message }
+      );
     }
   }
 );
@@ -57,7 +59,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
-        state.data = { ...state.data, ...action.payload };
+        state.data = { ...state.data, ...action.payload.response };
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";

@@ -12,7 +12,7 @@ import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
 import VendorPage from "./pages/VendorPage/VendorView";
-import { ShopPage } from "./pages";
+import { ProfilePage, ShopPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
@@ -43,6 +43,14 @@ const router = createBrowserRouter([
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
             <CartPage />
+          </React.Suspense>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <ProfilePage />
           </React.Suspense>
         ),
       },

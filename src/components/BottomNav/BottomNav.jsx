@@ -2,9 +2,10 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Flex, Stack, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text, Avatar } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import { CartIcon, HomeIcon, ShopIcon, UserIcon } from "../Icons";
+import { useSelector } from "react-redux";
 
 const FlexStyles = {
   position: "fixed",
@@ -47,41 +48,56 @@ NavItem.propTypes = {
 
 export default function BottomNav() {
   const location = useLocation();
+  const authData = useSelector((state) => state.auth.data);
   return (
     <Flex {...FlexStyles}>
       <NavItem
         title="Home"
         link="/"
         isActive={location.pathname === "/"}
-        icon={<HomeIcon fontSize="20px" />}
+        icon={<HomeIcon fontSize="24px" />}
       />
       <NavItem
         title="Shops"
         link="/shop"
         isActive={location.pathname === "/shop"}
-        icon={<ShopIcon fontSize="20px" />}
+        icon={<ShopIcon fontSize="24px" />}
       />
 
       {/* <NavItem
         title="Yasai"
         link="/items"
         isActive={location.pathname === "/items"}
-        icon={<ShopIcon fontSize="20px" />}
+        icon={<ShopIcon fontSize="24px" />}
       /> */}
 
       <NavItem
         title="Cart"
         link="/cart"
         isActive={location.pathname === "/cart"}
-        icon={<CartIcon fontSize="20px" />}
+        icon={<CartIcon fontSize="24px" />}
       />
-
-      <NavItem
-        title="Login"
-        link="/login"
-        isActive={location.pathname === "/login"}
-        icon={<UserIcon fontSize="20px" />}
-      />
+      {!authData ? (
+        <NavItem
+          title="Login"
+          link="/login"
+          isActive={location.pathname === "/login"}
+          icon={<UserIcon fontSize="24px" />}
+        />
+      ) : (
+        <NavItem
+          title="Profile"
+          link="/profile"
+          isActive={location.pathname === "/profile"}
+          icon={
+            <Avatar
+              size="xs"
+              name={authData.first_name + " " + authData.last_name}
+              src="https://bit.ly/tioluwani-kolawole"
+            />
+          }
+        />
+      )}
     </Flex>
   );
 }
