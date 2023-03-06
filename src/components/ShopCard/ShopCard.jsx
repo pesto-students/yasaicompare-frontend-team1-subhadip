@@ -11,18 +11,12 @@ import {
 import Proptypes from "prop-types";
 import { LocationIcon } from "../Icons";
 import Rating from "../Rating/Rating";
-import { useDispatch } from "react-redux";
-import { fetchShops } from "../../redux/features/auth/shopSlice";
-import { useState } from "react";
 
 export default function ShopCard(props) {
-  const dispatch = useDispatch();
-  const [shops, setShops] = useState([]);
-  function visitShop() {
-    const shopId = shops.map((shop) => shop.id);
-    console.log(shopId);
+  function handleVisitShopClick(event) {
+    event.stopPropagation();
+    props.visitShop();
   }
-
   // Get the shop id on click of the visit shop button
   return (
     <Card
@@ -66,7 +60,7 @@ export default function ShopCard(props) {
           </Stack>
 
           <Button
-            onClick={visitShop}
+            onClick={handleVisitShopClick}
             size="xs"
             variant="outline"
             borderRadius="8px"

@@ -5,6 +5,7 @@ import GroceryCard from "../../components/ShopCard/ShopCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShops } from "../../redux/features/shop/shopSlice";
 import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   SimpleGrid,
@@ -47,11 +48,9 @@ const ShopView = () => {
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const getShops = useCallback(
-    async (args) => dispatch(fetchShops(args)).unwrap(),
-    []
-  );
+  const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
 
   const init = async () => {
     try {
