@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FilterIcon } from "../../components/Icons";
 import Rating from "../../components/Rating/Rating";
-import ShopCard from "../../components/ShopCard/ShopCard";
+import GroceryCard from "../../components/ShopCard/ShopCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchShops } from "../../redux/features/shop/shopSlice";
+import { useNavigate } from "react-router-dom";
+
 import {
   SimpleGrid,
   Stack,
@@ -23,7 +27,12 @@ import {
   SliderThumb,
   SliderFilledTrack,
   SliderMark,
+  Flex,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
+
+import _ from "lodash";
 
 const labelStyles = {
   mt: "2",
@@ -33,20 +42,68 @@ const labelStyles = {
 
 const ShopView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const shopState = useSelector((state) => state.shop);
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
+
+  const init = async () => {
+    try {
+      await getShops();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (shopState.asyncStatus === "LOADING") {
+    return (
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+      >
+        <Spinner color="green.500" />
+        <Text>Gettings Shops ...</Text>
+      </Flex>
+    );
+  }
+
+  const visitShop = (id) => {
+    const shop = shopState.data.shops.find((shop) => shop.shop_id === id);
+    if (!shop) console.log("Shop not found");
+    const location = {
+      lat: shop.latitude,
+      lng: shop.longitude,
+    };
+    window.open(
+      "https://maps.google.com?q=" + location.lat + "," + location.lng
+    );
+  };
+
+  function onShopClick(shop_id) {
+    navigate(shop_id);
+  }
   return (
     <>
       <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px">
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
-        <ShopCard />
+        {!_.isEmpty(shopState.data) &&
+          shopState.data.shops.map((shop) => (
+            <GroceryCard
+              onClick={() => onShopClick(shop.shop_id)}
+              key={shop.shop_id}
+              shopid={shop.shop_id}
+              image={shop.image}
+              shop_name={shop.name}
+              visitShop={() => visitShop(shop.shop_id)}
+            />
+          ))}
       </SimpleGrid>
 
       <IconButton

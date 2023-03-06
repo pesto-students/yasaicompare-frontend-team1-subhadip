@@ -5,6 +5,7 @@ export const CartPage = React.lazy(() => import("./CartPage/CartPage"));
 export const ProfilePage = React.lazy(() =>
   import("./ProfilePage/ProfilePage")
 );
+export const ItemPage = React.lazy(() => import("./ItemPage/ItemPage"));
 // export const SomeOtherPage = React.lazy(() =>
 //   import("./SomeOtherPage/SomeOtherPage")
 // );

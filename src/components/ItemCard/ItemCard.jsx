@@ -1,5 +1,3 @@
-// Using chakra ui create a card component that can be used to display the details of a grocery shop. The card should have the following properties:
-
 import React from "react";
 import {
   Card,

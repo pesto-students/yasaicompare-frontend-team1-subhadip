@@ -42,6 +42,43 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { withCredentials: true }
   );
 
+export const getShops = () => axiosApiInstance.get(`${SERVER_URL}/shops`);
+
+export const getShopsById = (id) =>
+  axiosApiInstance.get(`${SERVER_URL}/shops/${id}`);
+
+export const createShops = (
+  apiArgs = {
+    email: "",
+    adress: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "",
+    active: "",
+  }
+) =>
+  axiosApiInstance.post(
+    `${SERVER_URL}/shops/register`,
+    { ...apiArgs },
+    { accessToken: localStorage.getItem("accessToken") },
+    { withCredentials: true }
+  );
+
+// export const login = async (apiArgs = { email: "", password: "" }) => {
+//   const res = await fetch(
+//     `${SERVER_URL}/auth/login`,
+//     {
+//       method: "POST",
+//       body: apiArgs,
+//     },
+//     { credentials: "include" }
+//     // { ...apiArgs },
+//     // { withCredentials: true }
+//   );
+//   return res.json();
+// };
+
 export const refreshAccessToken = () =>
   axiosApiInstance.post(
     `${SERVER_URL}/auth/refresh-token`,
@@ -56,3 +93,10 @@ export const refreshAccessToken = () =>
 
 export const getUserInfo = () =>
   axiosApiInstance.get(`${SERVER_URL}/user/info`);
+
+export const updateShops = () =>
+  axiosApiInstance.put(`${SERVER_URL}/shops/update`);
+
+export const getItemsByShopId = (id) => {
+  axiosApiInstance.get(`${SERVER_URL}/inventory/${id}`);
+};
