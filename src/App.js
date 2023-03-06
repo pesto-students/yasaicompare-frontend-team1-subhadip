@@ -7,12 +7,11 @@ import {
 } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-
 import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
 import VendorPage from "./pages/VendorPage/VendorView";
-import { ProfilePage, ShopPage } from "./pages";
+import { ShopPage, ItemPage, ProfilePage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
@@ -33,11 +32,24 @@ const router = createBrowserRouter([
       },
       {
         path: "shop",
-        element: (
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <ShopPage />
-          </React.Suspense>
-        ),
+        children: [
+          {
+            path: "",
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <ShopPage />
+              </React.Suspense>
+            ),
+          },
+          {
+            path: ":shop_id",
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <ItemPage />
+              </React.Suspense>
+            ),
+          },
+        ],
       },
       {
         path: "cart",
@@ -81,14 +93,14 @@ const router = createBrowserRouter([
           </React.Suspense>
         ),
       },
-      {
-        path: "create",
-        element: (
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <VendorCreateShopPage />
-          </React.Suspense>
-        ),
-      },
+      // {
+      //   path: "create",
+      //   element: (
+      //     <React.Suspense fallback={<div>Loading...</div>}>
+      //       <VendorCreateShopPage />
+      //     </React.Suspense>
+      //   ),
+      // },
     ],
   },
 ]);

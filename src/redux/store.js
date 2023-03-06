@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 
 import authReducer from "./features/auth/authSlice";
-import shopReducer from "./features/auth/shopSlice";
+import shopReducer from "./features/shop/shopSlice";
 
 const logger = createLogger();
 

@@ -14,7 +14,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import Yasai from "../../assets/yasai.png";
-import { CreateShops } from "../../redux/features/auth/shopSlice";
+import { CreateShops } from "../../redux/features/shop/shopSlice";
 import { useDispatch } from "react-redux";
 export default function VendorCreateShopForm({
   isOpen,

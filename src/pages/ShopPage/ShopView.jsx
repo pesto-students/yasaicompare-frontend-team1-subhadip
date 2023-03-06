@@ -4,6 +4,7 @@ import Rating from "../../components/Rating/Rating";
 import GroceryCard from "../../components/ShopCard/ShopCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShops } from "../../redux/features/shop/shopSlice";
+import { useNavigate } from "react-router-dom";
 
 import {
   SimpleGrid,
@@ -45,11 +46,9 @@ const ShopView = () => {
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const getShops = useCallback(
-    async (args) => dispatch(fetchShops(args)).unwrap(),
-    []
-  );
+  const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
 
   const init = async () => {
     try {
@@ -76,15 +75,33 @@ const ShopView = () => {
     );
   }
 
+  const visitShop = (id) => {
+    const shop = shopState.data.shops.find((shop) => shop.shop_id === id);
+    if (!shop) console.log("Shop not found");
+    const location = {
+      lat: shop.latitude,
+      lng: shop.longitude,
+    };
+    window.open(
+      "https://maps.google.com?q=" + location.lat + "," + location.lng
+    );
+  };
+
+  function onShopClick(shop_id) {
+    navigate(shop_id);
+  }
   return (
     <>
       <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px">
         {!_.isEmpty(shopState.data) &&
           shopState.data.shops.map((shop) => (
             <GroceryCard
-              key={shop.id}
+              onClick={() => onShopClick(shop.shop_id)}
+              key={shop.shop_id}
+              shopid={shop.shop_id}
               image={shop.image}
               shop_name={shop.name}
+              visitShop={() => visitShop(shop.shop_id)}
             />
           ))}
       </SimpleGrid>

@@ -42,10 +42,7 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { withCredentials: true }
   );
 
-export const getShops = () =>
-  axiosApiInstance.get(`${SERVER_URL}/shops`, {
-    accessToken: localStorage.getItem("accessToken"),
-  });
+export const getShops = () => axiosApiInstance.get(`${SERVER_URL}/shops`);
 
 export const getShopsById = (id) =>
   axiosApiInstance.get(`${SERVER_URL}/shops/${id}`);
@@ -99,3 +96,7 @@ export const getUserInfo = () =>
 
 export const updateShops = () =>
   axiosApiInstance.put(`${SERVER_URL}/shops/update`);
+
+export const getItemsByShopId = (id) => {
+  axiosApiInstance.get(`${SERVER_URL}/inventory/${id}`);
+};
