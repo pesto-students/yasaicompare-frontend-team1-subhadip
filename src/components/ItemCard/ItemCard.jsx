@@ -10,6 +10,7 @@ import {
   CardBody,
   HStack,
   Input,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
@@ -62,15 +63,20 @@ function NumberButton() {
   const input = getInputProps();
 
   return (
-    <HStack maxW="320px">
-      <Button h="6" {...inc}>
-        +
-      </Button>
-      <Input w="20" {...input} />
-      <Button h="6" {...dec}>
-        -
-      </Button>
-    </HStack>
+    // <HStack maxW="320px">
+    //   <Button h="6" {...inc}>
+    //     +
+    //   </Button>
+    //   <Input w="20" {...input} />
+    //   <Button h="6" {...dec}>
+    //     -
+    //   </Button>
+    // </HStack>
+    <ButtonGroup size="xs" isAttached variant="outline">
+      <Button {...dec}>-</Button>
+      <Input size="xs" {...input} />
+      <Button {...inc}>+</Button>
+    </ButtonGroup>
   );
 }
 export const ItemCard = (props) => {
