@@ -15,6 +15,7 @@ import {
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
 import { useNumberInput } from "@chakra-ui/react";
+import { AddIcon, SubtractIcon } from "../Icons";
 
 // export function ItemCards(props) {
 //   return (
@@ -63,19 +64,12 @@ function NumberButton() {
   const input = getInputProps();
 
   return (
-    // <HStack maxW="320px">
-    //   <Button h="6" {...inc}>
-    //     +
-    //   </Button>
-    //   <Input w="20" {...input} />
-    //   <Button h="6" {...dec}>
-    //     -
-    //   </Button>
-    // </HStack>
-    <ButtonGroup size="xs" isAttached variant="outline">
-      <Button {...dec}>-</Button>
-      <Input size="xs" {...input} />
-      <Button {...inc}>+</Button>
+    <ButtonGroup borderRadius="6"color="white" bgColor="green.500" size="xs" width="full">
+      <Box marginLeft="10px" {...dec}>
+        {<SubtractIcon />}
+      </Box>
+      <Input textAlign="center" variant="unstyled" size="xs" {...input} />
+      <Box  marginRight="10px"{...inc}>{<AddIcon />}</Box>
     </ButtonGroup>
   );
 }
