@@ -11,6 +11,10 @@ import { IoMdHome } from "react-icons/io";
 import { MdLocationPin } from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
+import { Add } from "@styled-icons/fluentui-system-filled/Add";
+
+import { Subtract } from "@styled-icons/fluentui-system-filled/Subtract";
+
 export const ShopIcon = (props) => <Icon as={GiShop} {...props} />;
 
 export const CartIcon = (props) => <Icon as={BsFillCartFill} {...props} />;
