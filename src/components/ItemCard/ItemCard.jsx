@@ -8,9 +8,12 @@ import {
   Box,
   Stack,
   CardBody,
+  HStack,
+  Input,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
+import { useNumberInput } from "@chakra-ui/react";
 
 // export function ItemCards(props) {
 //   return (
@@ -44,17 +47,41 @@ import PropTypes from "prop-types";
 //     </Card>
 //   );
 // }
+function NumberButton() {
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
+    useNumberInput({
+      step: 1,
+      defaultValue: 1,
+      min: 1,
+      max: 6,
+      precision: 0,
+    });
 
+  const inc = getIncrementButtonProps();
+  const dec = getDecrementButtonProps();
+  const input = getInputProps();
+
+  return (
+    <HStack maxW="320px">
+      <Button h="6" {...inc}>
+        +
+      </Button>
+      <Input w="20" {...input} />
+      <Button h="6" {...dec}>
+        -
+      </Button>
+    </HStack>
+  );
+}
 export const ItemCard = (props) => {
+  const [buttonclicked, setButtonClicked] = React.useState(true);
   const imageSize = !props.minimal ? "100px" : "50px";
   return (
     <Card size={"sm"}>
       <CardBody>
         <Stack direction={props.minimal ? "row" : "column"}>
           <Image
-            src={
-              "https://www.jiomart.com/images/product/600x600/590002136/onion-5-kg-pack-product-images-o590002136-p590002136-0-202203141906.jpg"
-            }
+            src={props.image}
             alt="nill"
             width={imageSize}
             height={"auto"}
@@ -62,7 +89,7 @@ export const ItemCard = (props) => {
           />
           <Stack mt="2" spacing="3" flex="1">
             <Heading fontSize="12px" size="md">
-              Onion
+              {props.name}
             </Heading>
             <Stack
               direction="row"
@@ -70,12 +97,21 @@ export const ItemCard = (props) => {
               justifyContent="space-between"
             >
               <Stack spacing={"1"} flex="1">
-                <Text fontSize="12px">{formatPrice(20)}</Text>
+                <Text fontSize="12px">{formatPrice(props.price)}</Text>
               </Stack>
               <Stack flex="1">
-                <Button size="xs" borderRadius="8px" width="full">
-                  Add
-                </Button>
+                {buttonclicked ? (
+                  <Button
+                    size="xs"
+                    borderRadius="8px"
+                    width="full"
+                    onClick={() => setButtonClicked(false)}
+                  >
+                    Add
+                  </Button>
+                ) : (
+                  <NumberButton />
+                )}
               </Stack>
             </Stack>
           </Stack>

@@ -87,8 +87,8 @@ export const GetItemsByShopId = createAsyncThunk(
   "inventory/getItemsByShopId",
   async (payload, thunkApi) => {
     try {
-      console.log(payload);
       const response = await api.getItemsByShopId(payload);
+      console.log("this is response", response.data);
       return response.data;
     } catch (error) {
       console.log(error);

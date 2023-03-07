@@ -98,5 +98,5 @@ export const updateShops = () =>
   axiosApiInstance.put(`${SERVER_URL}/shops/update`);
 
 export const getItemsByShopId = (id) => {
-  axiosApiInstance.get(`${SERVER_URL}/inventory/${id}`);
+  return axiosApiInstance.get(`${SERVER_URL}/inventory/${id}`);
 };
