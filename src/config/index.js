@@ -1,1 +1,1 @@
-export const SERVER_URL = "http://13.126.228.122:8080";
+export const SERVER_URL = process.env.REACT_APP_SERVER_URL;

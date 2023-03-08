@@ -6,6 +6,7 @@ import { Flex, Stack, Text, Avatar } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import { CartIcon, HomeIcon, ShopIcon, UserIcon } from "../Icons";
 import { useSelector } from "react-redux";
+import _ from "lodash";
 
 const FlexStyles = {
   position: "fixed",
@@ -60,7 +61,7 @@ export default function BottomNav() {
       <NavItem
         title="Shops"
         link="/shop"
-        isActive={location.pathname === "/shop"}
+        isActive={location.pathname.includes("/shop")}
         icon={<ShopIcon fontSize="24px" />}
       />
 
@@ -77,7 +78,7 @@ export default function BottomNav() {
         isActive={location.pathname === "/cart"}
         icon={<CartIcon fontSize="24px" />}
       />
-      {!authData ? (
+      {_.isEmpty(authData) ? (
         <NavItem
           title="Login"
           link="/login"
