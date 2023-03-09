@@ -1,16 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   fetchItemsByShopId,
   fetchShopsById,
+  addToCart,
 } from "../../redux/features/shop/shopSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from "react";
 import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import ItemCard from "../../components/ItemCard/ItemCard";
+import {
+  fetchCartItems,
+  addCartItem,
+  updateCartItem,
+  deleteCartItem,
+} from "../../redux/features/cart/cartSlice";
+
 export default function ItemPage() {
+  const [buttonclicked, setButtonClicked] = useState(false);
   const { shop_id } = useParams();
   const shopState = useSelector((state) => state.shop);
+  const cartData = useSelector((state) => state.cart);
   const inventory =
     shopState.data.shops.find((shop) => shop.shop_id === shop_id)?.inventory ||
     [];
@@ -24,6 +34,70 @@ export default function ItemPage() {
     dispatch(fetchItemsByShopId(shop_id)).unwrap();
   }, [shop_id]);
 
+  const getCartData = useCallback(async () => {
+    dispatch(fetchCartItems()).unwrap();
+  }, []);
+
+  const handleIncrementClick = useCallback(
+    async (item_id, quantity) => {
+      try {
+        if (quantity === 1) {
+          await dispatch(
+            addCartItem({
+              shop_id,
+              item_id,
+              quantity,
+            })
+          ).unwrap();
+          return;
+        }
+
+        await dispatch(
+          updateCartItem({
+            shop_id,
+            item_id,
+            quantity,
+          })
+        ).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [shop_id]
+  );
+
+  const handleDecrementClick = useCallback(
+    async (item_id, quantity) => {
+      try {
+        if (quantity === -1) {
+          return;
+        }
+        if (quantity === 0) {
+          const cartItem = cartData.data.find(
+            (cartItem) => cartItem.item_id === item_id
+          );
+          await dispatch(
+            deleteCartItem({
+              cart_id: cartItem.cart_id,
+            })
+          ).unwrap();
+          return;
+        }
+
+        await dispatch(
+          updateCartItem({
+            shop_id,
+            item_id,
+            quantity,
+          })
+        ).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [shop_id]
+  );
+
   const init = async () => {
     try {
       // reload condition
@@ -32,6 +106,7 @@ export default function ItemPage() {
       }
       // always get the items
       getItems();
+      getCartData();
     } catch (error) {
       console.log(error);
     }
@@ -44,14 +119,34 @@ export default function ItemPage() {
   return (
     <SimpleGrid p="2" columns={[2, 2, 4, 6, 8]} gap="10px">
       {inventory &&
-        inventory?.map((item) => (
-          <ItemCard
-            key={item.item_id}
-            name={item.name}
-            image={item.image}
-            price={item.price}
-          />
-        ))}
+        inventory?.map((item) => {
+          const cartItem = cartData.data.find(
+            (cartItem) => cartItem.item_id === item.item_id
+          );
+          return (
+            <ItemCard
+              key={item.item_id}
+              name={item.name}
+              image={item.image}
+              price={item.price}
+              onIncrementClick={() => {
+                handleIncrementClick(
+                  item.item_id,
+                  (cartItem?.quantity || 0) + 1
+                );
+              }}
+              onDecrementClick={() => {
+                handleDecrementClick(
+                  item.item_id,
+                  (cartItem?.quantity || 0) - 1
+                );
+              }}
+              quantity={cartItem?.quantity || 0}
+              buttonclicked={buttonclicked}
+              setButtonClicked={setButtonClicked}
+            />
+          );
+        })}
     </SimpleGrid>
   );
 }

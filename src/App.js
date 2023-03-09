@@ -11,7 +11,7 @@ import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
 import VendorPage from "./pages/VendorPage/VendorView";
-import { ShopPage, ItemPage, ProfilePage } from "./pages";
+import { ShopPage, ItemPage, ProfilePage, AddressPage } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
@@ -63,13 +63,26 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: (
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <AuthWrapper>
-              <ProfilePage />
-            </AuthWrapper>
-          </React.Suspense>
-        ),
+        children: [
+          {
+            path: "",
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <AuthWrapper>
+                  <ProfilePage />
+                </AuthWrapper>
+              </React.Suspense>
+            ),
+          },
+          {
+            path: "address",
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <AddressPage />
+              </React.Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
