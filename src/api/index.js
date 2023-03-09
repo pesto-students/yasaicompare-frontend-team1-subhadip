@@ -100,3 +100,35 @@ export const updateShops = () =>
 export const getItemsByShopId = (id) => {
   return axiosApiInstance.get(`${SERVER_URL}/inventory/${id}`);
 };
+
+export const getCartItems = () => {
+  return axiosApiInstance.get(`${SERVER_URL}/cart`, {
+    accessToken: localStorage.getItem("accessToken"),
+  });
+};
+
+export const addToCart = (
+  apiArgs = {
+    shop_id: "",
+    item_id: "",
+    quantity: "",
+  }
+) => {
+  return axiosApiInstance.post(`${SERVER_URL}/cart`, { ...apiArgs });
+};
+
+export const updateCartItem = (
+  apiArgs = {
+    shop_id: "",
+    item_id: "",
+    quantity: "",
+  }
+) => {
+  return axiosApiInstance.put(`${SERVER_URL}/cart/${apiArgs.item_id}`, {
+    ...apiArgs,
+  });
+};
+
+export const deleteCartItem = (payload) => {
+  return axiosApiInstance.delete(`${SERVER_URL}/cart/${payload}`);
+};
