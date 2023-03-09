@@ -24,7 +24,7 @@ export const fetchCartItems = createAsyncThunk(
 
 // Add to Cart
 
-export const addCartItem = createAsyncThunk(
+export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async (
     payload = {
@@ -73,7 +73,8 @@ export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
   async (
     payload = {
-      cart_id: "",
+      shop_id: "",
+      item_id: "",
     },
     thunkApi
   ) => {

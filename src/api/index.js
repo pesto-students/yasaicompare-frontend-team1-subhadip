@@ -129,12 +129,6 @@ export const updateCartItem = (
   });
 };
 
-export const deleteCartItem = (
-  apiArgs = {
-    cart_id: "",
-  }
-) => {
-  return axiosApiInstance.delete(`${SERVER_URL}/cart/${apiArgs.cart_id}`, {
-    data: apiArgs,
-  });
+export const deleteCartItem = (payload) => {
+  return axiosApiInstance.delete(`${SERVER_URL}/cart/${payload}`);
 };
