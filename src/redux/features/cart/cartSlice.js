@@ -24,7 +24,7 @@ export const fetchCartItems = createAsyncThunk(
 
 // Add to Cart
 
-export const addToCart = createAsyncThunk(
+export const addCartItem = createAsyncThunk(
   "cart/addToCart",
   async (
     payload = {

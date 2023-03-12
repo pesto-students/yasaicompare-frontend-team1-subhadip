@@ -8,6 +8,7 @@ import {
   Stack,
   CardBody,
   HStack,
+  Box,
   Input,
   ButtonGroup,
 } from "@chakra-ui/react";

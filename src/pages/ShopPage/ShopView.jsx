@@ -5,7 +5,6 @@ import GroceryCard from "../../components/ShopCard/ShopCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShops } from "../../redux/features/shop/shopSlice";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 import {
   SimpleGrid,
@@ -48,8 +47,6 @@ const ShopView = () => {
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
 
   const init = async () => {
@@ -76,24 +73,6 @@ const ShopView = () => {
       </Flex>
     );
   }
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  if (shopState.asyncStatus === "LOADING") {
-    return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <Spinner color="green.500" />
-        <Text>Gettings Shops ...</Text>
-      </Flex>
-    );
-  }
-
   const visitShop = (id) => {
     const shop = shopState.data.shops.find((shop) => shop.shop_id === id);
     if (!shop) console.log("Shop not found");
