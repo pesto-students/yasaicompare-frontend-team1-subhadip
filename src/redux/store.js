@@ -4,6 +4,7 @@ import { createLogger } from "redux-logger";
 import authReducer from "./features/auth/authSlice";
 import shopReducer from "./features/shop/shopSlice";
 import cartReducer from "./features/cart/cartSlice";
+import addressReducer from "./features/address/addressSlice";
 
 const logger = createLogger();
 
@@ -20,5 +21,6 @@ export const store = configureStore({
     auth: authReducer,
     shop: shopReducer,
     cart: cartReducer,
+    address: addressReducer,
   },
 });
