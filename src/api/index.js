@@ -138,3 +138,15 @@ export const deleteCartItem = (
     data: apiArgs,
   });
 };
+
+// Handling Adresses
+export const getUserAddresses = () =>
+  axiosApiInstance.get(`${SERVER_URL}/user/address`);
+
+export const addNewAddress = (apiArgs = {}) =>
+  axiosApiInstance.post(`${SERVER_URL}/user/address`, { ...apiArgs });
+
+export const updateAddress = (apiArgs = {}) =>
+  axiosApiInstance.put(`${SERVER_URL}/user/address/${apiArgs.id}`, {
+    ...apiArgs,
+  });
