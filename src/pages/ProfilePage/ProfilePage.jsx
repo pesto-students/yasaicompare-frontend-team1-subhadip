@@ -1,10 +1,23 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "../../redux/features/auth/authSlice";
-import { Avatar, Card, CardBody, Stack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Card,
+  CardBody,
+  Stack,
+  Text,
+  List,
+  ListIcon,
+  ListItem,
+  Button,
+} from "@chakra-ui/react";
+import { ManageIcon, CartManager, LogoutIcon } from "../../components/Icons";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const authData = useSelector((state) => state.auth.data);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const getUserInfo = useCallback(
     async () => dispatch(fetchUserInfo()).unwrap(),
@@ -41,6 +54,22 @@ const ProfilePage = () => {
           </CardBody>
         </Card>
       )}
+      <List spacing={3}>
+        <ListItem>
+          <ListIcon as={ManageIcon} color="green.500" />
+          <Button onClick={() => navigate("/profile/address")} variant="ghost">
+            Manage Account
+          </Button>
+        </ListItem>
+        <ListItem>
+          <ListIcon as={CartManager} color="green.500" />
+          <Button variant="ghost"> My Orders</Button>
+        </ListItem>
+        <ListItem>
+          <ListIcon as={LogoutIcon} color="green.500" />
+          <Button variant="ghost"> Logout</Button>
+        </ListItem>
+      </List>
     </Stack>
   );
 };
