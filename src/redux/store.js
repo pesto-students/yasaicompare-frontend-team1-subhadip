@@ -24,3 +24,4 @@ export const store = configureStore({
     address: addressReducer,
   },
 });
+

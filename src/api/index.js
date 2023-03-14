@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER_URL } from "../config";
-
+import { getGeolocation } from "../utils/commons";
+// Request interceptor for API calls
 const axiosApiInstance = axios.create();
 
 axiosApiInstance.interceptors.request.use(
@@ -42,7 +43,16 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { withCredentials: true }
   );
 
-export const getShops = () => axiosApiInstance.get(`${SERVER_URL}/shops`);
+export const getShops = async () => {
+  const location = await getGeolocation();
+  const start = {
+    latitude: location.coords.latitude,
+    longitude: location.coords.longitude,
+  };
+  return axiosApiInstance.get(
+    `${SERVER_URL}/shops?latitude=${start.latitude}&longitude=${start.longitude}&pincode=110011`
+  );
+};
 
 export const getShopsById = (id) =>
   axiosApiInstance.get(`${SERVER_URL}/shops/${id}`);
@@ -119,13 +129,12 @@ export const addToCart = (
 
 export const updateCartItem = (
   apiArgs = {
-    shop_id: "",
-    item_id: "",
+    cart_id: "",
     quantity: "",
   }
 ) => {
-  return axiosApiInstance.put(`${SERVER_URL}/cart/${apiArgs.item_id}`, {
-    ...apiArgs,
+  return axiosApiInstance.put(`${SERVER_URL}/cart/${apiArgs.cart_id}`, {
+    quantity: apiArgs.quantity,
   });
 };
 
@@ -146,7 +155,7 @@ export const getUserAddresses = () =>
 export const addNewAddress = (apiArgs = {}) =>
   axiosApiInstance.post(`${SERVER_URL}/user/address`, { ...apiArgs });
 
-export const updateAddress = (apiArgs = {}) =>
-  axiosApiInstance.put(`${SERVER_URL}/user/address/${apiArgs.id}`, {
+export const updateAddress = (apiArgs) =>
+  axiosApiInstance.put(`${SERVER_URL}/user/address`, {
     ...apiArgs,
   });

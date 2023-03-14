@@ -4,6 +4,7 @@ import { AddIcon } from "../../components/Icons";
 import { useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { fetchUserInfo } from "../../redux/features/auth/authSlice";
+import { useRef } from "react";
 import {
   fetchUserAddresses,
   addNewAdress,
@@ -11,7 +12,6 @@ import {
 } from "../../redux/features/address/addressSlice";
 import { useDispatch } from "react-redux";
 import { getGeolocation, getAdressFromCoords } from "../../utils/commons";
-import { useRef } from "react";
 // update adress page using charka ui where it has buttons like update and delete address
 import {
   Box,
@@ -31,14 +31,15 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 const AddressPage = () => {
+  const getId = useRef("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [addressLine1, setAddressLine1] = useState("");
   const [addressLine2, setAddressLine2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
   const [pincode, setPincode] = useState("");
+  const [edit, setEdit] = useState(true);
   const coordinates = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const authData = useSelector((state) => state.auth.data);
@@ -67,10 +68,17 @@ const AddressPage = () => {
     const location = await getGeolocation();
     const { latitude, longitude } = location.coords;
     const address = await getAdressFromCoords(latitude, longitude);
+    setName(authData.name);
     setAddress(address.addresses[0].address.freeformAddress);
+    setAddressLine1(address.addresses[0].address.countrySecondarySubdivision);
+    setAddressLine2(address.addresses[0].address.municipalitySubdivision);
+    setCity(address.addresses[0].address.municipality);
+    setState(address.addresses[0].address.countrySubdivision);
+    setPincode(address.addresses[0].address.postalCode);
+    console.log("address", address.addresses);
     coordinates.current = location;
   };
-  
+
   useEffect(() => {
     if (!authData.user_id) {
       getUserInfo();
@@ -80,12 +88,13 @@ const AddressPage = () => {
 
   const addUserAddress = async () => {
     onClose();
+    setEdit(true);
     await handleAddAddress({
       address_line_1: addressLine1,
       address_line_2: addressLine2,
       city: city,
       state: state,
-      country: country,
+      country: "India",
       pincode: pincode,
       name: name,
       address: address,
@@ -95,9 +104,36 @@ const AddressPage = () => {
   };
 
   const handleEditAddress = (id) => {
+    onOpen();
+    setEdit(false);
     const address = addressData.data.find((address) => address.id === id);
-    const address_name = address.address_line_1
-    handleUpdateAddress({ id, address_name});
+    getId.current = id;
+    setName(address.name);
+    setAddress(address.address);
+    setAddressLine1(address.address_line_1);
+    setAddressLine2(address.address_line_2);
+    setCity(address.city);
+    setState(address.state);
+    setPincode(address.pincode);
+  };
+
+  const updatecurrentAddress = async () => {
+    onClose();
+    const address = addressData.data.find(
+      (address) => address.id === getId.current
+    );
+    console.log("update adress", address);
+    const updatedAddress = {
+      id: getId.current,
+      address_line_1: addressLine1,
+      address_line_2: addressLine2,
+      city: city,
+      state: state,
+      pincode: pincode,
+      address: address.address,
+    };
+    console.log("updated address", updatedAddress);
+    await handleUpdateAddress(updatedAddress);
   };
 
   return (
@@ -105,9 +141,24 @@ const AddressPage = () => {
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>ADD ADDRESS</ModalHeader>
+          {edit ? (
+            <ModalHeader>ADD ADDRESS</ModalHeader>
+          ) : (
+            <ModalHeader>UPDATE ADDRESS</ModalHeader>
+          )}
           <ModalCloseButton />
           <ModalBody pb={6}>
+            <Flex>
+              {edit ? (
+                <Button
+                  variant="ghost"
+                  onClick={getCurrentAddress}
+                  width="full"
+                >
+                  DETECT CURRENT LOCATION
+                </Button>
+              ) : null}
+            </Flex>
             <FormControl>
               <FormLabel>Name</FormLabel>
               <Input
@@ -120,11 +171,12 @@ const AddressPage = () => {
             <FormControl mt={4}>
               <Flex>
                 <FormLabel marginTop="2">Address</FormLabel>
-                <Button variant="ghost" onClick={getCurrentAddress}>
-                  current
-                </Button>
               </Flex>
-              <Input placeholder="Enter your Address" value={address} />
+              <Input
+                placeholder="Enter your Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
             </FormControl>
 
             <FormControl mt={4}>
@@ -164,15 +216,6 @@ const AddressPage = () => {
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Country</FormLabel>
-              <Input
-                placeholder="Enter your country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl mt={4}>
               <FormLabel>Pincode</FormLabel>
               <Input
                 placeholder="Enter your pincode"
@@ -182,9 +225,15 @@ const AddressPage = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={addUserAddress} width="full">
-              ADD ADDRESS
-            </Button>
+            {edit ? (
+              <Button onClick={addUserAddress} width="full">
+                ADD ADDRESS
+              </Button>
+            ) : (
+              <Button onClick={updatecurrentAddress} width="full">
+                UPDATE ADDRESS
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
