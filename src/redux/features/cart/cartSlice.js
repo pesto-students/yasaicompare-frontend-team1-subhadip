@@ -51,8 +51,7 @@ export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
   async (
     payload = {
-      shop_id: "",
-      item_id: "",
+      cart_id: "",
       quantity: "",
     },
     thunkApi
