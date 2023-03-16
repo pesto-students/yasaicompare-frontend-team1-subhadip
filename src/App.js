@@ -10,9 +10,17 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/Register";
-import VendorPage from "./pages/VendorPage/VendorView";
-import { ShopPage, ItemPage, ProfilePage, AddressPage } from "./pages";
+import VendorShopPage from "./pages/VendorShopPage/VendorShopPage";
+import {
+  ShopPage,
+  ItemPage,
+  ProfilePage,
+  AddressPage,
+  VendorInventoryPage,
+  VendorOrdersPage,
+} from "./pages";
 import AppLayout from "./layouts/AppLayout";
+import VendorLayout from "./layouts/VendorLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
 import AuthWrapper from "./components/AuthWrapper";
@@ -96,24 +104,33 @@ const router = createBrowserRouter([
   },
   {
     path: "/vendor",
-    element: <AppLayout />,
+    element: <VendorLayout />,
     children: [
       {
         path: "",
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
-            <VendorPage />
+            <VendorShopPage />
           </React.Suspense>
         ),
       },
-      // {
-      //   path: "create",
-      //   element: (
-      //     <React.Suspense fallback={<div>Loading...</div>}>
-      //       <VendorCreateShopPage />
-      //     </React.Suspense>
-      //   ),
-      // },
+      {
+        path: "inventory/:shop_id",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <VendorInventoryPage />
+          </React.Suspense>
+        ),
+      },
+
+      {
+        path: "orders/:shop_id",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <VendorOrdersPage />
+          </React.Suspense>
+        ),
+      },
     ],
   },
 ]);
