@@ -1,67 +1,68 @@
 import React from "react";
-import paprika from "../../assets/paprika.jpg";
 import {
   Card,
-  CardHeader,
-  CardBody,
   Image,
-  Box,
+  Heading,
   Text,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
+  Button,
+  Stack,
+  CardBody,
+  Box,
+  Switch,
   FormControl,
   FormLabel,
-  Switch,
-  Input,
+  IconButton,
+  Flex,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { formatPrice } from "../../utils/commons";
+import PropTypes from "prop-types";
 
-const VendorInventoryCard = () => {
+export const VendorInventoryCard = (props) => {
+  const imageSize = !props.minimal ? "150px" : "100px";
   return (
-    <Card fontFamily="poppins,sans-serif" maxW="200px" maxH="300px" size={"sm"}>
-      <CardHeader>
-        <Image src={paprika} alt="yasai compare" />
-        <Box display="flex" justifyContent="center" marginTop="10px">
-          <Text fontWeight="bold" paddingRight="30px">
-            Red Paprika
-          </Text>
-        </Box>
-      </CardHeader>
+    <Card size={"sm"}>
       <CardBody>
-        <Box>
-          <Box marginBottom='1'>
-            <Input placeholder="₹" size="sm" width="50px" />
-            <Input placeholder="Price" size="sm" width="100px" />
-          </Box>
-          <Box>
-            <Input placeholder="Unit" size="sm" width="50px" />
-            <Input placeholder="Quantity" size="sm" width="100px" />
-          </Box>
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          m="10px"
-          marginLeft="30px"
-          marginTop="10px"
-        >
-          <FormControl display="flex">
-            <FormLabel htmlFor="email-alerts" mb="0">
-              Availability
-            </FormLabel>
-            <Switch id="email-alerts" />
-          </FormControl>
-        </Box>
+        <Stack direction={props.minimal ? "row" : "row"}>
+          <Image
+            src={props.image}
+            alt="nill"
+            width={imageSize}
+            height={"auto"}
+            borderRadius="lg"
+          />
+          <Stack mt="2" spacing="3" flex="1">
+            <Heading fontSize="20px" size="md">
+              {props.name}
+            </Heading>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Stack spacing={"1"} flex="1">
+                <Text fontSize="15px">{formatPrice(props.price)}</Text>
+              </Stack>
+              <Stack flex="1">
+                <Box>STOCK : {props.quantity}</Box>
+                <FormControl display="flex">
+                  <FormLabel htmlFor="isRequired">Available:</FormLabel>
+                  <Switch id="isRequired" isRequired />
+                </FormControl>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Stack>
       </CardBody>
     </Card>
   );
+};
+
+VendorInventoryCard.propTypes = {
+  minimal: PropTypes.bool,
+  quantity: PropTypes.number,
+  onIncrementClick: PropTypes.func,
+  onDecrementClick: PropTypes.func,
 };
 
 export default VendorInventoryCard;

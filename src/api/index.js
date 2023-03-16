@@ -52,23 +52,8 @@ export const getShops = async (payload) => {
 export const getShopsById = (id) =>
   axiosApiInstance.get(`${SERVER_URL}/shops/${id}`);
 
-export const createShops = (
-  apiArgs = {
-    email: "",
-    adress: "",
-    city: "",
-    state: "",
-    pincode: "",
-    country: "",
-    active: "",
-  }
-) =>
-  axiosApiInstance.post(
-    `${SERVER_URL}/shops/register`,
-    { ...apiArgs },
-    { accessToken: localStorage.getItem("accessToken") },
-    { withCredentials: true }
-  );
+export const createShops = (apiArgs) =>
+  axiosApiInstance.post(`${SERVER_URL}/shops/register`, { ...apiArgs });
 
 // export const login = async (apiArgs = { email: "", password: "" }) => {
 //   const res = await fetch(
@@ -152,5 +137,21 @@ export const addNewAddress = (apiArgs = {}) =>
 
 export const updateAddress = (apiArgs) =>
   axiosApiInstance.put(`${SERVER_URL}/user/address`, {
+    ...apiArgs,
+  });
+
+// handling vendor slices
+
+export const getVendorShops = () =>
+  axiosApiInstance.get(`${SERVER_URL}/vendor/shops`);
+
+export const getAllInventory = (payload) =>
+  axiosApiInstance.get(`${SERVER_URL}/inventory/${payload}`);
+
+export const addNewInventory = (apiArgs) =>
+  axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
+
+export const updateInventory = (apiArgs) =>
+  axiosApiInstance.put(`${SERVER_URL}/inventory/${apiArgs.id}`, {
     ...apiArgs,
   });

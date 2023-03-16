@@ -9,7 +9,11 @@ import {
 } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
-import { MdLocationPin, MdOutlineManageAccounts } from "react-icons/md";
+import {
+  MdLocationPin,
+  MdOutlineManageAccounts,
+  MdInventory,
+} from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 
@@ -40,3 +44,4 @@ export const ManageIcon = (props) => (
 export const CartManager = (props) => <Icon as={BsCartFill} {...props} />;
 
 export const LogoutIcon = (props) => <Icon as={FiLogOut} {...props} />;
+export const InventoryIcon = (props) => <Icon as={MdInventory} {...props} />;
