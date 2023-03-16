@@ -10,9 +10,9 @@ const initialState = {
 
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchCartItems",
-  async (payload, thunkApi) => {
+  async (payload = {}, thunkApi) => {
     try {
-      const response = await api.getCartItems(payload);
+      const response = await api.getCartItems();
       console.log("this is response", response.data);
       return response.data;
     } catch (error) {
