@@ -18,7 +18,10 @@ import VendorIventoryCard from "../../components/VendorInventoryCard/VendorInven
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchAllInventory, addItemToInventory } from "../../redux/features/vendor/vendorSlice";
+import {
+  fetchAllInventory,
+  addItemToInventory,
+} from "../../redux/features/vendor/vendorSlice";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/react";
@@ -41,9 +44,7 @@ export default function VendorInventoryPage() {
   }, []);
 
   function getCurrentLocation() {}
-  const handleSubmitShopDetails = () => {
-
-  };
+  const handleSubmitShopDetails = () => {};
 
   return (
     <>
@@ -52,7 +53,7 @@ export default function VendorInventoryPage() {
           CREATE NEW ITEM
         </Button>
       </Box>
-      <Box></Box>
+
       {/* This is the for  */}
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
@@ -103,6 +104,11 @@ export default function VendorInventoryPage() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Box>
+        <Button width="full" variant="ghost">
+          CREATE NEW ITEM
+        </Button>
+      </Box>
       <SimpleGrid column="1" spacing={3} p="2">
         {inventoryState.data.inventory &&
           inventoryState.data.inventory.map((item) => (
