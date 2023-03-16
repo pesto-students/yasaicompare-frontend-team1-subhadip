@@ -51,11 +51,12 @@ export default function ItemPage() {
           ).unwrap();
           return;
         }
-
+        const cartItem = cartData.data.find(
+          (cartItem) => cartItem.item_id === item_id
+        );
         await dispatch(
           updateCartItem({
-            shop_id,
-            item_id,
+            cart_id: cartItem.cart_id,
             quantity,
           })
         ).unwrap();
@@ -72,10 +73,10 @@ export default function ItemPage() {
         if (quantity === -1) {
           return;
         }
+        const cartItem = cartData.data.find(
+          (cartItem) => cartItem.item_id === item_id
+        );
         if (quantity === 0) {
-          const cartItem = cartData.data.find(
-            (cartItem) => cartItem.item_id === item_id
-          );
           await dispatch(
             deleteCartItem({
               cart_id: cartItem.cart_id,
@@ -86,8 +87,7 @@ export default function ItemPage() {
 
         await dispatch(
           updateCartItem({
-            shop_id,
-            item_id,
+            cart_id: cartItem.cart_id,
             quantity,
           })
         ).unwrap();

@@ -70,6 +70,7 @@ const addressSlice = createSlice({
       .addCase(addNewAdress.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
         state.data = [...state.data, action.payload];
+
       })
       .addCase(addNewAdress.rejected, (state, action) => {
         state.asyncStatus = "FAILURE";
@@ -83,6 +84,7 @@ const addressSlice = createSlice({
         state.asyncStatus = "SUCCESS";
         state.data = state.data.map((address) => {
           if (address.id === action.payload.id) {
+            console.log("address", address);
             return action.payload;
           }
           return address;
