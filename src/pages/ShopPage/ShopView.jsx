@@ -43,37 +43,34 @@ const labelStyles = {
 const ShopView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const shopState = useSelector((state) => state.shop);
+  const selectedAddress = useSelector((state) =>
+    state.address.data.find((address) => address.current)
+  );
   const [distanceFilterValue, setDistanceFilterValue] = useState(50);
   const [priceFilterValue, setPriceFilterValue] = useState(50);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const getShops = useCallback(async () => dispatch(fetchShops()).unwrap(), []);
-
-  const init = async () => {
-    try {
-      await getShops();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const getShops = useCallback(
+    async (payload) => dispatch(fetchShops(payload)).unwrap(),
+    []
+  );
 
   useEffect(() => {
-    init();
-  }, []);
-
-  if (shopState.asyncStatus === "LOADING") {
-    return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <Spinner color="green.500" />
-        <Text>Gettings Shops ...</Text>
-      </Flex>
-    );
-  }
+    (async () => {
+      try {
+        if (selectedAddress) {
+          await getShops({
+            latitude: selectedAddress.latitude,
+            longitude: selectedAddress.longitude,
+            pincode: selectedAddress.pincode,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [selectedAddress]);
 
   const visitShop = (id) => {
     const shop = shopState.data.shops.find((shop) => shop.shop_id === id);
@@ -90,10 +87,27 @@ const ShopView = () => {
   function onShopClick(shop_id) {
     navigate(shop_id);
   }
+
+  if (shopState.asyncStatus === "LOADING") {
+    return (
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+      >
+        <Spinner color="green.500" />
+        <Text>Gettings Shops ...</Text>
+      </Flex>
+    );
+  }
+
   return (
     <>
-      <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px">
-        {!_.isEmpty(shopState.data) &&
+      <SimpleGrid
+        columns={!_.isEmpty(shopState.data?.shops) ? [2, 2, 4, 6, 8] : [1]}
+        gap="10px"
+      >
+        {!_.isEmpty(shopState.data?.shops) ? (
           shopState.data.shops.map((shop) => (
             <GroceryCard
               onClick={() => onShopClick(shop.shop_id)}
@@ -103,7 +117,17 @@ const ShopView = () => {
               shop_name={shop.name}
               visitShop={() => visitShop(shop.shop_id)}
             />
-          ))}
+          ))
+        ) : (
+          <Flex
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+            w="full"
+          >
+            <Text>No Shops available near your</Text>
+          </Flex>
+        )}
       </SimpleGrid>
 
       <IconButton

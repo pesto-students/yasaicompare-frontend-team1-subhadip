@@ -50,6 +50,15 @@ export const updateAddress = createAsyncThunk(
 const addressSlice = createSlice({
   name: "address",
   initialState,
+  reducers: {
+    markCurrentAddress: (state, action) => {
+      state.data.forEach((address) => {
+        if (address.id === action.payload) {
+          address.current = true;
+        }
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserAddresses.pending, (state, action) => {
@@ -70,7 +79,6 @@ const addressSlice = createSlice({
       .addCase(addNewAdress.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
         state.data = [...state.data, action.payload];
-
       })
       .addCase(addNewAdress.rejected, (state, action) => {
         state.asyncStatus = "FAILURE";
@@ -96,5 +104,7 @@ const addressSlice = createSlice({
       });
   },
 });
+
+export const { markCurrentAddress } = addressSlice.actions;
 
 export default addressSlice.reducer;

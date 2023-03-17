@@ -43,14 +43,9 @@ export const login = (apiArgs = { email: "", password: "" }) =>
     { withCredentials: true }
   );
 
-export const getShops = async () => {
-  const location = await getGeolocation();
-  const start = {
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
-  };
+export const getShops = async (payload) => {
   return axiosApiInstance.get(
-    `${SERVER_URL}/shops?latitude=${start.latitude}&longitude=${start.longitude}&pincode=110011`
+    `${SERVER_URL}/shops?latitude=${payload.latitude}&longitude=${payload.longitude}&pincode=${payload.pincode}`
   );
 };
 

@@ -137,7 +137,7 @@ const AddressPage = () => {
   };
 
   return (
-    <Box>
+    <Box paddingBottom={"70px"}>
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <ModalContent>

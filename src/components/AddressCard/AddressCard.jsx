@@ -8,7 +8,9 @@ export default function AddressCard(props) {
       justifyContent="space-between"
       m="5"
       p="5"
-      boxShadow="xl"
+      borderRadius={"md"}
+      bg="white"
+      boxShadow="md"
     >
       <Box>
         <Text fontWeight="bold">{props.home}</Text>

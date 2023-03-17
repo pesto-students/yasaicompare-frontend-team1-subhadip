@@ -15,7 +15,7 @@ export const fetchShops = createAsyncThunk(
   "shops/fetchShop",
   async (payload, thunkApi) => {
     try {
-      const response = await api.getShops();
+      const response = await api.getShops(payload);
       return response.data;
     } catch (error) {
       console.log(error);
