@@ -4,14 +4,15 @@ import {
   Image,
   Heading,
   Text,
-
   Stack,
   CardBody,
   Box,
   Switch,
   FormControl,
   FormLabel,
-
+  IconButton,
+  Flex,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";

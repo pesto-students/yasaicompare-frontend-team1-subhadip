@@ -8,6 +8,7 @@ import {
 import { CreateShops } from "../../redux/features/shop/shopSlice";
 import { useNavigate } from "react-router-dom";
 import { Img, useDisclosure } from "@chakra-ui/react";
+import { CreateShops } from "../../redux/features/shop/shopSlice";
 import { getGeolocation, getAdressFromCoords } from "../../utils/commons";
 import { fetchUserInfo } from "../../redux/features/auth/authSlice";
 import { SimpleGrid, Flex, Spinner, Text, Box, Button } from "@chakra-ui/react";
