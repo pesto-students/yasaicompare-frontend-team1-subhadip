@@ -22,7 +22,6 @@ export const fetchCartItems = createAsyncThunk(
 );
 
 // Add to Cart
-
 export const addCartItem = createAsyncThunk(
   "cart/addToCart",
   async (
@@ -78,6 +77,20 @@ export const deleteCartItem = createAsyncThunk(
     try {
       const response = await api.deleteCartItem(payload);
       console.log("this is response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const createOrder = createAsyncThunk(
+  "cart/create_order",
+  async (payload, thunkApi) => {
+    try {
+      const response = await api.createOrder(payload);
+      console.log(" create order", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -151,6 +164,20 @@ const cartSlice = createSlice({
         }
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        state.error = action.payload.data;
+      });
+
+    builder
+      .addCase(createOrder.pending, (state, action) => {
+        state.asyncStatus = "LOADING";
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        console.log(action.payload, "177");
+        // state.data = action.payload.cart;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";
         state.error = action.payload.data;
       });
