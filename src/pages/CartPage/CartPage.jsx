@@ -11,74 +11,65 @@ import { CartItemCard } from "./CartItem";
 import { CartOrderSummary } from "./CartOrderSummary";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
 
 import {
   fetchCartItems,
-  addCartItem,
   updateCartItem,
   deleteCartItem,
 } from "../../redux/features/cart/cartSlice";
 
 export default function CartPage() {
-  const { shop_id } = useParams();
   const dispatch = useDispatch();
   const cartDataState = useSelector((state) => state.cart);
-  const cartItems = useCallback(
+  const getCartItems = useCallback(
     async () => dispatch(fetchCartItems()).unwrap(),
     []
   );
   useEffect(() => {
-    cartItems();
-  }, []);
+    getCartItems();
+  }, [getCartItems]);
 
   const total = cartDataState.data.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
-  const handleIncrementClick = useCallback(
-    async (cart_id, quantity) => {
-      try {
-        await dispatch(
-          updateCartItem({
-            cart_id,
-            quantity,
-          })
-        ).unwrap();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    []
-  );
+  const handleIncrementClick = useCallback(async (cart_id, quantity) => {
+    try {
+      await dispatch(
+        updateCartItem({
+          cart_id,
+          quantity,
+        })
+      ).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
-  const handleDecrementClick = useCallback(
-    async (cart_id, quantity) => {
-      try {
-        if (quantity === -1) {
-          return;
-        }
-        if (quantity === 0) {
-          await dispatch(
-            deleteCartItem({
-              cart_id,
-            })
-          ).unwrap();
-          return;
-        }
+  const handleDecrementClick = useCallback(async (cart_id, quantity) => {
+    try {
+      if (quantity === -1) {
+        return;
+      }
+      if (quantity === 0) {
         await dispatch(
-          updateCartItem({
+          deleteCartItem({
             cart_id,
-            quantity,
           })
         ).unwrap();
-      } catch (error) {
-        console.log(error);
+        return;
       }
-    },
-    []
-  );
+      await dispatch(
+        updateCartItem({
+          cart_id,
+          quantity,
+        })
+      ).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <Box

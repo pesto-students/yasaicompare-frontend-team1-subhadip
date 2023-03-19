@@ -142,11 +142,11 @@ const vendorSlice = createSlice({
       .addCase(fetchAllOrders.fulfilled, (state, action) => {
         state.status = "succeeded";
         if (action.meta.arg.status === "draft") {
-          state.data.orders.draft = action.payload;
+          state.data.orders.draft = action.payload.orders;
         } else if (action.meta.arg.status === "pending") {
-          state.data.orders.pending = action.payload;
+          state.data.orders.pending = action.payload.orders;
         } else if (action.meta.arg.status === "delievered") {
-          state.data.orders.delievered = action.payload;
+          state.data.orders.delievered = action.payload.orders;
         }
         // state.data.orders.
         // state.data = action.payload;

@@ -21,7 +21,7 @@ import OrderStatusCard from "../../components/OrderStatusCard/OrderStatusCard";
 
 export default function VendorOrderPage() {
   const dispatch = useDispatch();
-  const getOrderState = useSelector((state) => state.vendor);
+  const orders = useSelector((state) => state.vendor.data.orders);
   const { shop_id } = useParams();
 
   const getPendingVendorOrders = useCallback(
@@ -74,44 +74,47 @@ export default function VendorOrderPage() {
         <TabPanels>
           <TabPanel>
             <SimpleGrid columns={[1, 1, 2, 3]} spacing={4} mt={4}>
-              {getOrderState.data?.orders?.draft?.orders?.length &&
-                getOrderState.data.orders.draft.orders.map((order) => (
-                  <OrderStatusCard
-                    key={order.order_id}
-                    orderId={order.order_id}
-                    orderDate={order.createdAt}
-                    status={order.order_status}
-                    totalAmount={order.amount}
-                  />
-                ))}
+              {orders?.draft?.length
+                ? orders.draft.map((order) => (
+                    <OrderStatusCard
+                      key={order.order_id}
+                      orderId={order.order_id}
+                      orderDate={order.createdAt}
+                      status={order.order_status}
+                      totalAmount={order.amount}
+                    />
+                  ))
+                : null}
             </SimpleGrid>
           </TabPanel>
           <TabPanel>
             <SimpleGrid columns={[1, 1, 2, 3]} spacing={4} mt={4}>
-              {getOrderState.data?.orders?.pending?.orders?.length &&
-                getOrderState.data.orders.pending.orders.map((order) => (
-                  <OrderStatusCard
-                    key={order.order_id}
-                    orderId={order.order_id}
-                    orderDate={order.createdAt}
-                    status={order.order_status}
-                    totalAmount={order.amount}
-                  />
-                ))}
+              {orders?.pending?.length
+                ? orders.pending.map((order) => (
+                    <OrderStatusCard
+                      key={order.order_id}
+                      orderId={order.order_id}
+                      orderDate={order.createdAt}
+                      status={order.order_status}
+                      totalAmount={order.amount}
+                    />
+                  ))
+                : null}
             </SimpleGrid>
           </TabPanel>
           <TabPanel>
             <SimpleGrid columns={[1, 1, 2, 3]} spacing={4} mt={4}>
-              {getOrderState.data?.orders?.delievered?.orders?.length &&
-                getOrderState.data.orders.delievered.orders.map((order) => (
-                  <OrderStatusCard
-                    key={order.order_id}
-                    orderId={order.order_id}
-                    orderDate={order.createdAt}
-                    status={order.order_status}
-                    totalAmount={order.amount}
-                  />
-                ))}
+              {orders?.delievered?.length
+                ? orders.delievered.map((order) => (
+                    <OrderStatusCard
+                      key={order.order_id}
+                      orderId={order.order_id}
+                      orderDate={order.createdAt}
+                      status={order.order_status}
+                      totalAmount={order.amount}
+                    />
+                  ))
+                : null}
             </SimpleGrid>
           </TabPanel>
         </TabPanels>
