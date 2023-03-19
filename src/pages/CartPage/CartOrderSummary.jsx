@@ -12,6 +12,7 @@ import { formatPrice } from "./PriceTag";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCartItems } from "../../redux/features/cart/cartSlice";
+import { createOrder } from "../../redux/features/cart/cartSlice";
 
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
@@ -39,14 +40,20 @@ export const CartOrderSummary = ({ totalcartitems }) => {
     async () => dispatch(fetchCartItems()).unwrap(),
     []
   );
+
+  const createdOrder = useCallback(
+    async (args) => dispatch(createOrder(args)).unwrap(),
+    []
+  );
+
   useEffect(() => {
     cartData();
   }, []);
 
-  const prepareOrderData = () => {
+  const prepareOrderData = async () => {
     let finalData = {
       orders: [],
-      delievery_address: selectedAddress?.id || '',
+      delievery_address: selectedAddress?.id || "",
     };
 
     cartDataState.data.forEach((cartItem) => {
@@ -77,6 +84,8 @@ export const CartOrderSummary = ({ totalcartitems }) => {
         });
       }
     });
+    const response = await createdOrder(finalData);
+    console.log(response);
   };
 
   return (
