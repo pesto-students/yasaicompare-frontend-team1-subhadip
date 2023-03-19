@@ -4,16 +4,14 @@ import {
   Image,
   Heading,
   Text,
-  Button,
+
   Stack,
   CardBody,
   Box,
   Switch,
   FormControl,
   FormLabel,
-  IconButton,
-  Flex,
-  ButtonGroup,
+
 } from "@chakra-ui/react";
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
@@ -46,8 +44,14 @@ export const VendorInventoryCard = (props) => {
               <Stack flex="1">
                 <Box>STOCK : {props.quantity}</Box>
                 <FormControl display="flex">
-                  <FormLabel htmlFor="isRequired">Available:</FormLabel>
-                  <Switch id="isRequired" isRequired />
+                  <FormLabel aria-required="false" htmlFor="isRequired">
+                    Available:
+                  </FormLabel>
+                  <Switch
+                    id="isRequired"
+                    isRequired
+                    isChecked={props.available}
+                  />
                 </FormControl>
               </Stack>
             </Stack>

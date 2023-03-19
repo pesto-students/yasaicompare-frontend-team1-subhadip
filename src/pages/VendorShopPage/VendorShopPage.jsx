@@ -1,10 +1,13 @@
 import { useEffect, useCallback, useState } from "react";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVendorShops } from "../../redux/features/vendor/vendorSlice";
+import {
+  fetchVendorShops,
+  uploadImage,
+} from "../../redux/features/vendor/vendorSlice";
 import { CreateShops } from "../../redux/features/shop/shopSlice";
 import { useNavigate } from "react-router-dom";
-import { useDisclosure } from "@chakra-ui/react";
+import { Img, useDisclosure } from "@chakra-ui/react";
 import { getGeolocation, getAdressFromCoords } from "../../utils/commons";
 import { fetchUserInfo } from "../../redux/features/auth/authSlice";
 import { SimpleGrid, Flex, Spinner, Text, Box, Button } from "@chakra-ui/react";
@@ -26,6 +29,8 @@ import _ from "lodash";
 const VendorInventoryPage = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [image_link, setImage_link] = useState("");
+  const [image_id, setImage_id] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -42,12 +47,18 @@ const VendorInventoryPage = () => {
     async () => dispatch(fetchVendorShops()).unwrap(),
     []
   );
-  const addNewShop = useCallback(async (args) => {
-    dispatch(CreateShops(args)).unwrap();
-  }, []);
+  const addNewShop = useCallback(
+    async (args) => dispatch(CreateShops(args)).unwrap(),
+    []
+  );
 
   const getUserInfo = useCallback(
     async () => dispatch(fetchUserInfo()).unwrap(),
+    []
+  );
+
+  const uploadVendorImage = useCallback(
+    async (args) => dispatch(uploadImage(args)).unwrap(),
     []
   );
 
@@ -90,17 +101,15 @@ const VendorInventoryPage = () => {
     setPincode(address.addresses[0].address.postalCode);
     setLatitude(latitude);
     setLongitude(longitude);
-    console.log("address", address.addresses);
   };
 
-  function handleImageChange(e) {
-    console.log("image", e.target.files[0]);
+  const handleImageChange = async (e) => {
     const data = new FormData();
-    data.append("file", e.target.files[0]);
-    // call upload api to upload image data
-
-    // store file url and file id in the state
-  }
+    data.append("item", e.target.files[0]);
+    const image = await uploadVendorImage(data);
+    setImage_link(image.response.url);
+    setImage_id(image.response.fileId);
+  };
 
   const handleSubmitShopDetails = async (e) => {
     onClose();
@@ -108,9 +117,8 @@ const VendorInventoryPage = () => {
     const { latitude, longitude } = location.coords;
     addNewShop({
       name: name,
-      image: "https://i.ytimg.com/vi/8gAlJcuqfzs/maxresdefault.jpg",
       address: address,
-      image: image,
+      image: image_link,
       city: city,
       state: state,
       pincode: pincode,
@@ -119,6 +127,14 @@ const VendorInventoryPage = () => {
       longitude: longitude,
     });
   };
+
+  function displayImage() {
+    return (
+      <Box>
+        <Button width="full" variant="ghost" />
+      </Box>
+    );
+  }
   return (
     <>
       <Box>
@@ -148,12 +164,11 @@ const VendorInventoryPage = () => {
 
             <FormControl mt={4}>
               <FormLabel>Image</FormLabel>
-              <Input
-                type="file"
-                name="image"
-                value={image}
-                onChange={handleImageChange}
-              />
+              {image_link ? (
+                <Img src={image_link} />
+              ) : (
+                <Input type="file" name="image" onChange={handleImageChange} />
+              )}
             </FormControl>
 
             <FormControl mt={4}>

@@ -44,7 +44,7 @@ const LoginPage = () => {
         position: "top",
         isClosable: true,
       });
-      if (result.role === "customer") navigate("/customer");
+      if (result.role === "customer") navigate("/");
       else if (result.role === "vendor") navigate("/vendor");
     } catch (err) {
       console.error(err);

@@ -92,9 +92,7 @@ export const getItemsByShopId = (id) => {
 };
 
 export const getCartItems = () => {
-  return axiosApiInstance.get(`${SERVER_URL}/cart`, {
-    accessToken: localStorage.getItem("accessToken"),
-  });
+  return axiosApiInstance.get(`${SERVER_URL}/cart`);
 };
 
 export const addToCart = (
@@ -107,12 +105,7 @@ export const addToCart = (
   return axiosApiInstance.post(`${SERVER_URL}/cart`, { ...apiArgs });
 };
 
-export const updateCartItem = (
-  apiArgs = {
-    cart_id: "",
-    quantity: "",
-  }
-) => {
+export const updateCartItem = (apiArgs) => {
   return axiosApiInstance.put(`${SERVER_URL}/cart/${apiArgs.cart_id}`, {
     quantity: apiArgs.quantity,
   });
@@ -155,3 +148,14 @@ export const updateInventory = (apiArgs) =>
   axiosApiInstance.put(`${SERVER_URL}/inventory/${apiArgs.id}`, {
     ...apiArgs,
   });
+
+export const uploadImage = (apiArgs) =>
+  axiosApiInstance.post(`${SERVER_URL}/upload/item-image`, apiArgs);
+
+export const addItem = (apiArgs) =>
+  axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
+
+export const getAllOrders = (args) =>
+  axiosApiInstance.get(
+    `${SERVER_URL}/vendor/order/${args.shopId}?order_status=${args.status}`
+  );
