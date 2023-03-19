@@ -46,7 +46,7 @@ export const CartOrderSummary = ({ totalcartitems }) => {
   const prepareOrderData = () => {
     let finalData = {
       orders: [],
-      delievery_address: "",
+      delievery_address: selectedAddress?.id || '',
     };
 
     cartDataState.data.forEach((cartItem) => {
