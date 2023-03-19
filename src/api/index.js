@@ -159,3 +159,6 @@ export const getAllOrders = (args) =>
   axiosApiInstance.get(
     `${SERVER_URL}/vendor/order/${args.shopId}?order_status=${args.status}`
   );
+
+export const createOrder = (args) =>
+  axiosApiInstance.post(`${SERVER_URL}/order/create`, { ...args });
