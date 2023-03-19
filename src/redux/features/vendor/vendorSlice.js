@@ -4,6 +4,7 @@ import * as api from "../../../api";
 const initialState = {
   data: {
     shops: [],
+    inventory: [],
     orders: {
       draft: [],
       pending: [],
@@ -105,7 +106,7 @@ const vendorSlice = createSlice({
       })
       .addCase(fetchVendorShops.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload;
+        state.data.shops = action.payload;
       })
       .addCase(fetchVendorShops.rejected, (state, action) => {
         state.status = "failed";
@@ -117,7 +118,7 @@ const vendorSlice = createSlice({
       })
       .addCase(fetchAllInventory.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload;
+        state.data.inventory = action.payload;
       })
       .addCase(fetchAllInventory.rejected, (state, action) => {
         state.status = "failed";
@@ -129,7 +130,7 @@ const vendorSlice = createSlice({
       })
       .addCase(addInventory.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = [...state.data, action.payload];
+        state.data.inventory = [...state.data.inventory, action.payload];
       })
       .addCase(addInventory.rejected, (state, action) => {
         state.status = "failed";

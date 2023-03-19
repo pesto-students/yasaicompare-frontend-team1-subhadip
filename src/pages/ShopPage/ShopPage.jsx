@@ -24,29 +24,24 @@ export default function Home() {
         <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
           Shop View
         </Tab>
-        {/* <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
+        <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
           Map View
         </Tab>
         <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
           Compare View
-        </Tab> */}
+        </Tab>
       </TabList>
 
       <TabPanels>
         <TabPanel>
           <ShopView />
         </TabPanel>
-        {/* <TabPanel>
-          <p>two!</p>
+        <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
+          Coming Soon
         </TabPanel>
-        <TabPanel
-          as={Flex}
-          gap="10px"
-          overflowX={"scroll"}
-          overflowY={"hidden"}
-        >
-          <CompareView />
-        </TabPanel> */}
+        <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
+          Coming Soon
+        </TabPanel>
       </TabPanels>
     </Tabs>
   );
