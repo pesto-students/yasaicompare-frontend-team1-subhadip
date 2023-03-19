@@ -13,7 +13,6 @@ export const fetchCartItems = createAsyncThunk(
   async (payload, thunkApi) => {
     try {
       const response = await api.getCartItems(payload);
-      console.log("this is response", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
