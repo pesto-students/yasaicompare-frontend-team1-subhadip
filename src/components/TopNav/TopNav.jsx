@@ -127,18 +127,7 @@ export default function TopNav() {
         px="4"
         py="2"
       >
-        {/* <Image src={yasai} w="50px" h="50px" /> */}
-
-        <InputGroup size={"sm"}>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            type="text"
-            placeholder="Search Shops, Items.."
-            borderRadius={"md"}
-          />
-        </InputGroup>
+  
       </Stack>
     </>
   );
