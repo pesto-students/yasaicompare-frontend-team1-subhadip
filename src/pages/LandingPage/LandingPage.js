@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "../../redux/features/auth/authSlice";
+import { Box, Text } from "@chakra-ui/react";
 
 const LandingPage = () => {
   const authData = useSelector((state) => state.auth.data);
@@ -14,7 +15,11 @@ const LandingPage = () => {
   }, []);
 
   // console.log(authData);
-  return <div>Landing Page</div>;
+  return (
+    <Box fontSize="100">
+      <Text>Coming Soon</Text>
+    </Box>
+  );
 };
 
 export default LandingPage;
