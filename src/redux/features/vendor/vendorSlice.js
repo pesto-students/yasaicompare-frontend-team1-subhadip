@@ -96,7 +96,7 @@ export const fetchAllOrders = createAsyncThunk(
 );
 
 const vendorSlice = createSlice({
-  name: "shops",
+  name: "vendor",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

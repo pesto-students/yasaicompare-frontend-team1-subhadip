@@ -135,6 +135,7 @@ const VendorInventoryPage = () => {
       </Box>
     );
   }
+
   return (
     <>
       <Box>
@@ -235,8 +236,8 @@ const VendorInventoryPage = () => {
       </Modal>
       {/* This is the vendor inventory page */}
       <SimpleGrid columns={[2, 2, 4, 6, 8]} gap="10px" p="2">
-        {vendorState.data.shops &&
-          vendorState.data.shops.map((shop) => (
+        {vendorState.data.shops.shops &&
+          vendorState.data.shops.shops.map((shop) => (
             <VendorCard
               key={shop.shop_id}
               shopid={shop.shop_id}

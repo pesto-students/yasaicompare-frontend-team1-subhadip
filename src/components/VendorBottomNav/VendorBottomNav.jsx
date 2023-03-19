@@ -68,7 +68,7 @@ export default function VendorBottomNav() {
       ) : (
         <NavItem
           title="Profile"
-          link="/profile"
+          link="/vendor/profile"
           isActive={location.pathname === "/profile"}
           icon={
             <Avatar

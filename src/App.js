@@ -18,6 +18,7 @@ import {
   AddressPage,
   VendorInventoryPage,
   VendorOrdersPage,
+  VendorProfilePage,
 } from "./pages";
 import AppLayout from "./layouts/AppLayout";
 import VendorLayout from "./layouts/VendorLayout";
@@ -111,6 +112,16 @@ const router = createBrowserRouter([
         element: (
           <React.Suspense fallback={<div>Loading...</div>}>
             <VendorShopPage />
+          </React.Suspense>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <AuthWrapper>
+              <VendorProfilePage />
+            </AuthWrapper>
           </React.Suspense>
         ),
       },

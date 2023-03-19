@@ -124,13 +124,13 @@ export default function CartPage() {
                   onIncrementClick={() => {
                     handleIncrementClick(
                       item.cart_id,
-                      (cartDataState.data?.quantity || 0) + 1
+                      (item?.quantity || 0) + 1
                     );
                   }}
                   onDecrementClick={() => {
                     handleDecrementClick(
                       item.cart_id,
-                      (cartDataState.data?.quantity || 0) - 1
+                      (item?.quantity || 0) - 1
                     );
                   }}
                 />

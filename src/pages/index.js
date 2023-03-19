@@ -18,6 +18,10 @@ export const VendorInventoryPage = React.lazy(() =>
 export const VendorOrdersPage = React.lazy(() =>
   import("./VendorOrderPage/VendorOrderPage")
 );
+
+export const VendorProfilePage = React.lazy(() =>
+  import("./VendorProfile/VendorProfile")
+);
 // export const SomeOtherPage = React.lazy(() =>
 //   import("./SomeOtherPage/SomeOtherPage")
 // );

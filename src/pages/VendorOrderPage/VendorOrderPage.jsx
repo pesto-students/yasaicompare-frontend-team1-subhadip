@@ -112,6 +112,7 @@ export default function VendorOrderPage() {
                       orderDate={order.createdAt}
                       status={order.order_status}
                       totalAmount={order.amount}
+                      delievery_charge={order.delievery_charge}
                     />
                   ))
                 : null}

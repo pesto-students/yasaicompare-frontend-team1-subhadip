@@ -45,7 +45,6 @@ export default function VendorInventoryPage() {
 
   function getCurrentLocation() {}
   const handleSubmitShopDetails = () => {};
-
   return (
     <>
       <Box>
@@ -110,8 +109,8 @@ export default function VendorInventoryPage() {
         </Button>
       </Box>
       <SimpleGrid column="1" spacing={3} p="2">
-        {inventoryState.data.inventory &&
-          inventoryState.data.inventory.map((item) => (
+        {inventoryState.data.inventory.inventory &&
+          inventoryState.data.inventory.inventory.map((item) => (
             <VendorIventoryCard
               key={item.item_id}
               name={item.name}
