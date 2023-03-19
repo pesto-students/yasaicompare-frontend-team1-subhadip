@@ -9,6 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
+import { useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCartItems } from "../../redux/features/cart/cartSlice";
+import { createOrder } from "../../redux/features/cart/cartSlice";
+
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
   return (
@@ -21,29 +26,83 @@ const OrderSummaryItem = (props) => {
   );
 };
 
-export const CartOrderSummary = () => {
+export const CartOrderSummary = ({ totalcartitems }) => {
+  const dispatch = useDispatch();
+  const cartDataState = useSelector((state) => state.cart);
+  const selectedAddress = useSelector((state) =>
+    state.address.data.find((address) => address.current)
+  );
+
+  /**
+   * Fetch Cart Data
+   */
+  const cartData = useCallback(
+    async () => dispatch(fetchCartItems()).unwrap(),
+    []
+  );
+
+  const createdOrder = useCallback(
+    async (args) => dispatch(createOrder(args)).unwrap(),
+    []
+  );
+
+  useEffect(() => {
+    cartData();
+  }, []);
+
+  const prepareOrderData = async () => {
+    let finalData = {
+      orders: [],
+      delievery_address: selectedAddress?.id || "",
+    };
+
+    cartDataState.data.forEach((cartItem) => {
+      const foundIndex = finalData.orders.findIndex(
+        (shop) => shop.shop_id === cartItem.shop_id
+      );
+
+      /**
+       * if Doesn't exist
+       */
+      if (foundIndex === -1) {
+        finalData.orders.push({
+          shop_id: cartItem.shop_id,
+          items: [
+            {
+              item_id: cartItem.item_id,
+              quantity: cartItem.quantity,
+            },
+          ],
+        });
+      } else {
+        /**
+         * Adding Item in Shop
+         */
+        finalData.orders[foundIndex].items.push({
+          item_id: cartItem.item_id,
+          quantity: cartItem.quantity,
+        });
+      }
+    });
+    const response = await createdOrder(finalData);
+    console.log(response);
+  };
+
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
 
       <Stack spacing="6">
-        <OrderSummaryItem label="Subtotal" value={formatPrice(597)} />
-        <OrderSummaryItem label="Shipping + Tax">
-          <Link href="#" textDecor="underline">
-            Calculate shipping
-          </Link>
-        </OrderSummaryItem>
-        <OrderSummaryItem label="Coupon Code">
-          <Link href="#" textDecor="underline">
-            Add coupon code
-          </Link>
-        </OrderSummaryItem>
+        <OrderSummaryItem
+          label="Subtotal"
+          value={formatPrice(totalcartitems)}
+        />
         <Flex justify="space-between">
           <Text fontSize="lg" fontWeight="semibold">
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            {formatPrice(597)}
+            {formatPrice(totalcartitems)}
           </Text>
         </Flex>
       </Stack>
@@ -51,6 +110,7 @@ export const CartOrderSummary = () => {
         size="lg"
         fontSize="md"
         rightIcon={<FaArrowRight />}
+        onClick={prepareOrderData}
       >
         Checkout
       </Button>

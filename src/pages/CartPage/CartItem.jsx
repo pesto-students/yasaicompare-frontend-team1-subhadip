@@ -2,37 +2,22 @@ import {
   CloseButton,
   Flex,
   Link,
-  Select,
-  useColorModeValue,
+  ButtonGroup,
+  IconButton,
+  Text,
 } from "@chakra-ui/react";
 import { PriceTag } from "./PriceTag";
 import { CartProductMeta } from "./CartProductMeta";
-const QuantitySelect = (props) => {
-  return (
-    <Select
-      maxW="64px"
-      aria-label="Select quantity"
-      focusBorderColor={useColorModeValue("blue.500", "blue.200")}
-      {...props}
-    >
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </Select>
-  );
-};
+import { AddIcon, SubtractIcon } from "../../components/Icons";
 
-export const CartItem = (props) => {
+export const CartItemCard = (props) => {
   const {
-    isGiftWrapping,
     name,
     description,
     quantity,
     imageUrl,
     currency,
     price,
-    onChangeQuantity,
     onClickDelete,
   } = props;
   return (
@@ -48,7 +33,6 @@ export const CartItem = (props) => {
         name={name}
         description={description}
         image={imageUrl}
-        isGiftWrapping={isGiftWrapping}
       />
 
       {/* Desktop */}
@@ -60,12 +44,22 @@ export const CartItem = (props) => {
           md: "flex",
         }}
       >
-        <QuantitySelect
-          value={quantity}
-          onChange={(e) => {
-            onChangeQuantity?.(+e.currentTarget.value);
-          }}
-        />
+        <ButtonGroup
+          borderRadius="6"
+          color="white"
+          bgColor="green.500"
+          size="xs"
+          width="80px"
+        >
+          <IconButton
+            icon={<SubtractIcon />}
+            onClick={props.onDecrementClick}
+          />
+          <Flex justifyContent="center" alignItems="center">
+            <Text fontSize="xs">{quantity}</Text>
+          </Flex>
+          <IconButton icon={<AddIcon />} onClick={props.onIncrementClick} />
+        </ButtonGroup>
         <PriceTag price={price} currency={currency} />
         <CloseButton
           aria-label={`Delete ${name} from cart`}
@@ -87,12 +81,22 @@ export const CartItem = (props) => {
         <Link fontSize="sm" textDecor="underline">
           Delete
         </Link>
-        <QuantitySelect
-          value={quantity}
-          onChange={(e) => {
-            onChangeQuantity?.(+e.currentTarget.value);
-          }}
-        />
+        <ButtonGroup
+          borderRadius="6"
+          color="white"
+          bgColor="green.500"
+          size="xs"
+          width="80px"
+        >
+          <IconButton
+            icon={<SubtractIcon />}
+            onClick={props.onDecrementClick}
+          />
+          <Flex justifyContent="center" alignItems="center">
+            <Text fontSize="xs">{quantity}</Text>
+          </Flex>
+          <IconButton icon={<AddIcon />} onClick={props.onIncrementClick} />
+        </ButtonGroup>
         <PriceTag price={price} currency={currency} />
       </Flex>
     </Flex>

@@ -10,6 +10,14 @@ export const ItemPage = React.lazy(() => import("./ItemPage/ItemPage"));
 export const AddressPage = React.lazy(() =>
   import("./AddressPage/AddressPage")
 );
+
+export const VendorInventoryPage = React.lazy(() =>
+  import("./VendorInventoryPage/VendorInventoryPage")
+);
+
+export const VendorOrdersPage = React.lazy(() =>
+  import("./VendorOrderPage/VendorOrderPage")
+);
 // export const SomeOtherPage = React.lazy(() =>
 //   import("./SomeOtherPage/SomeOtherPage")
 // );

@@ -5,6 +5,7 @@ import authReducer from "./features/auth/authSlice";
 import shopReducer from "./features/shop/shopSlice";
 import cartReducer from "./features/cart/cartSlice";
 import addressReducer from "./features/address/addressSlice";
+import vendorReducer from "./features/vendor/vendorSlice";
 
 const logger = createLogger();
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     shop: shopReducer,
     cart: cartReducer,
     address: addressReducer,
+    vendor: vendorReducer,
   },
 });
 

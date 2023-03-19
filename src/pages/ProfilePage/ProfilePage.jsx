@@ -30,6 +30,12 @@ const ProfilePage = () => {
   }, [authData.user_id, getUserInfo]);
 
   // console.log(authData);
+
+  function handleLogout() {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");
+  }
   return (
     <Stack p="2">
       {authData && (
@@ -67,7 +73,10 @@ const ProfilePage = () => {
         </ListItem>
         <ListItem>
           <ListIcon as={LogoutIcon} color="green.500" />
-          <Button variant="ghost"> Logout</Button>
+          <Button onClick={handleLogout} variant="ghost">
+            {" "}
+            Logout
+          </Button>
         </ListItem>
       </List>
     </Stack>
