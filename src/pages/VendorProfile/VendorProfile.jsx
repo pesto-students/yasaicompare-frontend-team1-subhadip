@@ -15,7 +15,7 @@ import {
 import { ManageIcon, CartManager, LogoutIcon } from "../../components/Icons";
 import { useNavigate } from "react-router-dom";
 
-const ProfilePage = () => {
+const VendorProfilePage = () => {
   const authData = useSelector((state) => state.auth.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const ProfilePage = () => {
         <ListItem>
           <ListIcon as={ManageIcon} color="green.500" />
           <Button onClick={() => navigate("/profile/address")} variant="ghost">
-            Manage Account
+            Manage Addresss
           </Button>
         </ListItem>
         <ListItem>
@@ -83,4 +83,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default VendorProfilePage;

@@ -65,6 +65,12 @@ const ShopView = () => {
             longitude: selectedAddress.longitude,
             pincode: selectedAddress.pincode,
           });
+        } else {
+          await getShops({
+            latitude: "",
+            longitude: "",
+            pincode: "",
+          });
         }
       } catch (error) {
         console.log(error);

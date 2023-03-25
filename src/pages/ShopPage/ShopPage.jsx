@@ -36,16 +36,11 @@ export default function Home() {
         <TabPanel>
           <ShopView />
         </TabPanel>
-        <TabPanel>
-          <p>two!</p>
+        <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
+          Coming Soon
         </TabPanel>
-        <TabPanel
-          as={Flex}
-          gap="10px"
-          overflowX={"scroll"}
-          overflowY={"hidden"}
-        >
-          <CompareView />
+        <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
+          Coming Soon
         </TabPanel>
       </TabPanels>
     </Tabs>

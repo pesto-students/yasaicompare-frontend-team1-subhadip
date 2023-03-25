@@ -1,4 +1,4 @@
-import {TOMTOM_API_KEY} from "../config";
+import { TOMTOM_API_KEY } from "../config";
 export function formatPrice(
   value = 0,
   opts = { locale: "en-IN", currency: "INR" }
@@ -32,4 +32,25 @@ export async function getAdressFromCoords(latitude, longitude) {
   } catch (error) {
     console.error(error);
   }
+}
+
+export function formatDate(date) {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function formatTime(date) {
+  const newDate = new Date(date);
+  return newDate.toLocaleTimeString("en-IN", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+}
+
+export function OrderIdSnip(id) {
+  return id.slice(0, 8);
 }

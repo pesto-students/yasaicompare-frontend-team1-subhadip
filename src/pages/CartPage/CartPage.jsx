@@ -7,11 +7,70 @@ import {
   Stack,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-import { CartItem } from "./CartItem";
+import { CartItemCard } from "./CartItem";
 import { CartOrderSummary } from "./CartOrderSummary";
-import { cartData } from "./_data";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useCallback } from "react";
+
+import {
+  fetchCartItems,
+  updateCartItem,
+  deleteCartItem,
+} from "../../redux/features/cart/cartSlice";
 
 export default function CartPage() {
+  const dispatch = useDispatch();
+  const cartDataState = useSelector((state) => state.cart);
+  const getCartItems = useCallback(
+    async () => dispatch(fetchCartItems()).unwrap(),
+    []
+  );
+  useEffect(() => {
+    getCartItems();
+  }, [getCartItems]);
+
+  const total = cartDataState.data.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  const handleIncrementClick = useCallback(async (cart_id, quantity) => {
+    try {
+      await dispatch(
+        updateCartItem({
+          cart_id,
+          quantity,
+        })
+      ).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const handleDecrementClick = useCallback(async (cart_id, quantity) => {
+    try {
+      if (quantity === -1) {
+        return;
+      }
+      if (quantity === 0) {
+        await dispatch(
+          deleteCartItem({
+            cart_id,
+          })
+        ).unwrap();
+        return;
+      }
+      await dispatch(
+        updateCartItem({
+          cart_id,
+          quantity,
+        })
+      ).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <Box
       maxW={{
@@ -51,18 +110,36 @@ export default function CartPage() {
           flex="2"
         >
           <Heading fontSize="2xl" fontWeight="extrabold">
-            Shopping Cart (3 items)
+            Shopping Cart ({cartDataState.data.length} items)
           </Heading>
 
           <Stack spacing="6">
-            {cartData.map((item) => (
-              <CartItem key={item.id} {...item} />
-            ))}
+            {cartDataState.data &&
+              cartDataState.data.map((item) => (
+                <CartItemCard
+                  name={item.name}
+                  key={item.item_id}
+                  quantity={item.quantity}
+                  {...item}
+                  onIncrementClick={() => {
+                    handleIncrementClick(
+                      item.cart_id,
+                      (item?.quantity || 0) + 1
+                    );
+                  }}
+                  onDecrementClick={() => {
+                    handleDecrementClick(
+                      item.cart_id,
+                      (item?.quantity || 0) - 1
+                    );
+                  }}
+                />
+              ))}
           </Stack>
         </Stack>
 
         <Flex direction="column" align="center" flex="1">
-          <CartOrderSummary />
+          <CartOrderSummary totalcartitems={total} />
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
             <Link color={mode("blue.500", "blue.200")}>Continue shopping</Link>
