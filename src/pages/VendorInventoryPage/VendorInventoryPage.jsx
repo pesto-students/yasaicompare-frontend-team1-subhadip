@@ -103,11 +103,6 @@ export default function VendorInventoryPage() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Box>
-        <Button width="full" variant="ghost">
-          CREATE NEW ITEM
-        </Button>
-      </Box>
       <SimpleGrid column="1" spacing={3} p="2">
         {inventoryState.data.inventory.inventory &&
           inventoryState.data.inventory.inventory.map((item) => (
