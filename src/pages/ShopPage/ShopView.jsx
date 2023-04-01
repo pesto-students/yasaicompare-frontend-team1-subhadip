@@ -67,9 +67,9 @@ const ShopView = () => {
           });
         } else {
           await getShops({
-            latitude: "",
-            longitude: "",
-            pincode: "",
+            latitude: 26.737881,
+            longitude: 80.952744,            
+            pincode: "226014",
           });
         }
       } catch (error) {
