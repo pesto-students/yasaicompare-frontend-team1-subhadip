@@ -64,7 +64,7 @@ const ProfilePage = () => {
         <ListItem>
           <ListIcon as={ManageIcon} color="green.500" />
           <Button onClick={() => navigate("/profile/address")} variant="ghost">
-            Manage Account
+            Manage Addresses
           </Button>
         </ListItem>
         <ListItem>

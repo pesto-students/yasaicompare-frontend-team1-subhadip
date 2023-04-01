@@ -124,7 +124,7 @@ const cartSlice = createSlice({
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
-        state.data = [...state.data, action.payload];
+        state.data = [...state.data, action.payload.response];
       })
       .addCase(addCartItem.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";
@@ -138,12 +138,12 @@ const cartSlice = createSlice({
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
         const idx = state.data.findIndex(
-          (item) => item.cart_id === action.payload.cart_id
+          (item) => item.cart_id === action.payload.response.cart_id
         );
         if (idx !== -1) {
-          state.data[idx] = action.payload;
+          state.data[idx] = action.payload.response;
         } else {
-          state.data = [action.payload];
+          state.data = [action.payload.response];
         }
       })
       .addCase(updateCartItem.rejected, (state, action) => {

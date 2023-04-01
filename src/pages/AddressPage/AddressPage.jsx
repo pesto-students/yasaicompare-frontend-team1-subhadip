@@ -69,9 +69,9 @@ const AddressPage = () => {
     const { latitude, longitude } = location.coords;
     const address = await getAdressFromCoords(latitude, longitude);
     setName(authData.name);
-    setAddress(address.addresses[0].address.freeformAddress);
-    setAddressLine1(address.addresses[0].address.countrySecondarySubdivision);
-    setAddressLine2(address.addresses[0].address.municipalitySubdivision);
+    setAddress(address.addresses[0].address.municipalitySubdivision);
+    setAddressLine1(address.addresses[0].address.municipality);
+    // setAddressLine2(address.addresses[0].address.municipalitySubdivision);
     setCity(address.addresses[0].address.municipality);
     setState(address.addresses[0].address.countrySubdivision);
     setPincode(address.addresses[0].address.postalCode);
@@ -99,7 +99,7 @@ const AddressPage = () => {
       name: name,
       address: address,
       latitude: coordinates.current.coords.latitude,
-      longitude: coordinates.current.coords.latitude,
+      longitude: coordinates.current.coords.longitude,
     });
   };
 

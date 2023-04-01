@@ -117,8 +117,9 @@ export default function CartPage() {
             {cartDataState.data &&
               cartDataState.data.map((item) => (
                 <CartItemCard
-                  name={item.name}
                   key={item.item_id}
+                  name={item.name}
+                  imageUrl={item.image}
                   quantity={item.quantity}
                   {...item}
                   onIncrementClick={() => {

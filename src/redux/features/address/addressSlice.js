@@ -24,7 +24,6 @@ export const addNewAdress = createAsyncThunk(
   async (payload, thunkApi) => {
     try {
       const response = await api.addNewAddress(payload);
-      console.log("response for adding new address", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -38,7 +37,6 @@ export const updateAddress = createAsyncThunk(
   async (payload, thunkApi) => {
     try {
       const response = await api.updateAddress(payload);
-      console.log("response for updating address", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -65,8 +63,11 @@ const addressSlice = createSlice({
         state.asyncStatus = "LOADING";
       })
       .addCase(fetchUserAddresses.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = action.payload.addresses;
+        return {
+          ...state,
+          asyncStatus: "SUCCESS",
+          data: action.payload.addresses,
+        };
       })
       .addCase(fetchUserAddresses.rejected, (state, action) => {
         state.asyncStatus = "FAILURE";
@@ -77,8 +78,11 @@ const addressSlice = createSlice({
         state.asyncStatus = "LOADING";
       })
       .addCase(addNewAdress.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = [...state.data, action.payload];
+        return {
+          ...state,
+          asyncStatus: "SUCCESS",
+          data: [...state.data, action.payload.response],
+        };
       })
       .addCase(addNewAdress.rejected, (state, action) => {
         state.asyncStatus = "FAILURE";
@@ -89,14 +93,18 @@ const addressSlice = createSlice({
         state.asyncStatus = "LOADING";
       })
       .addCase(updateAddress.fulfilled, (state, action) => {
-        state.asyncStatus = "SUCCESS";
-        state.data = state.data.map((address) => {
-          if (address.id === action.payload.id) {
-            console.log("address", address);
-            return action.payload;
+        var previousdata = state.data.map((address) => {
+          if (address.id === action.payload.response.id) {
+            address = action.payload.response;
+            return address;
           }
           return address;
         });
+        return {
+          ...state,
+          asyncStatus: "SUCCESS",
+          data: [...previousdata],
+        };
       })
       .addCase(updateAddress.rejected, (state, action) => {
         state.asyncStatus = "FAILURE";
