@@ -13,6 +13,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalOverlay,
+  Img,
 } from "@chakra-ui/react";
 import VendorIventoryCard from "../../components/VendorInventoryCard/VendorInventoryCard";
 import { useParams } from "react-router-dom";
@@ -21,6 +22,7 @@ import { useEffect, useState } from "react";
 import {
   fetchAllInventory,
   addItemToInventory,
+  uploadImage,
 } from "../../redux/features/vendor/vendorSlice";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
@@ -34,17 +36,46 @@ export default function VendorInventoryPage() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [image, setImage] = useState("");
+  const [image_link, setImage_link] = useState("");
+  const [image_id, setImage_id] = useState("");
 
   const getInventory = useCallback(async () => {
     dispatch(fetchAllInventory(shop_id)).unwrap();
   }, [shop_id]);
 
+  const addItem = useCallback(async (args) => {
+    dispatch(addItemToInventory(args)).unwrap();
+  }, []);
+
+  const uploadVendorImage = useCallback(
+    async (args) => dispatch(uploadImage(args)).unwrap(),
+    []
+  );
+
   useEffect(() => {
     getInventory();
   }, []);
 
-  function getCurrentLocation() {}
-  const handleSubmitShopDetails = () => {};
+  const handleImageChange = async (e) => {
+    const data = new FormData();
+    data.append("item", e.target.files[0]);
+    const image = await uploadVendorImage(data);
+    setImage_link(image.response.url);
+    setImage_id(image.response.fileId);
+  };
+  const handleSubmitItemDetails = async () => {
+    onClose();
+    const data = {
+      shop_id: shop_id,
+      name: item,
+      category_id: "1127",
+      price: price,
+      quantity: quantity,
+      in_stock: true,
+      image: image_link,
+    };
+    await addItem(data);
+  };
   return (
     <>
       <Box>
@@ -70,11 +101,11 @@ export default function VendorInventoryPage() {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Image</FormLabel>
-              <Input
-                value={image}
-                type="file"
-                onChange={(e) => setImage(e.target.value)}
-              />
+              {image_link ? (
+                <Img src={image_link} />
+              ) : (
+                <Input type="file" name="image" onChange={handleImageChange} />
+              )}
             </FormControl>
 
             <FormControl mt={4}>
@@ -97,7 +128,7 @@ export default function VendorInventoryPage() {
           </ModalBody>
 
           <ModalFooter>
-            <Button width="full" onClick={handleSubmitShopDetails}>
+            <Button width="full" onClick={handleSubmitItemDetails}>
               SUBMIT ITEM DETAILS
             </Button>
           </ModalFooter>

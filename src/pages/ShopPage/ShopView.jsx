@@ -5,7 +5,7 @@ import GroceryCard from "../../components/ShopCard/ShopCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchShops } from "../../redux/features/shop/shopSlice";
 import { useNavigate } from "react-router-dom";
-
+import { getGeolocation, getAdressFromCoords } from "../../utils/commons";
 import {
   SimpleGrid,
   Stack,
@@ -66,14 +66,24 @@ const ShopView = () => {
             pincode: selectedAddress.pincode,
           });
         } else {
+          const location = await getGeolocation();
+          const address = await getAdressFromCoords(
+            location.coords.latitude,
+            location.coords.longitude
+          );
           await getShops({
-            latitude: 26.737881,
-            longitude: 80.952744,            
-            pincode: "226014",
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            pincode: address.addresses[0].address.postalCode,
           });
         }
       } catch (error) {
         console.log(error);
+        await getShops({
+          latitude: 26.737881,
+          longitude: 80.952744,
+          pincode: "226014",
+        });
       }
     })();
   }, [selectedAddress]);

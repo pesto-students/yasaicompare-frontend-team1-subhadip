@@ -124,7 +124,7 @@ const cartSlice = createSlice({
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
-        state.data = [...state.data, action.payload.response];
+        state.data = [...state.data, action.payload.data];
       })
       .addCase(addCartItem.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";

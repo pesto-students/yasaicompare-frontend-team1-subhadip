@@ -152,8 +152,13 @@ export const updateInventory = (apiArgs) =>
 export const uploadImage = (apiArgs) =>
   axiosApiInstance.post(`${SERVER_URL}/upload/item-image`, apiArgs);
 
-export const addItem = (apiArgs) =>
-  axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
+export const addInventoryItem = (apiArgs) => {
+  var id = apiArgs.shop_id;
+  delete apiArgs.shop_id;
+  return axiosApiInstance.post(`${SERVER_URL}/inventory/${id}/create`, {
+    ...apiArgs,
+  });
+};
 
 export const getAllOrders = (args) =>
   axiosApiInstance.get(
