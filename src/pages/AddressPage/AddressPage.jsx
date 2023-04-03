@@ -39,7 +39,10 @@ const AddressPage = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
+  const [label, setLabel] = useState("");
   const [edit, setEdit] = useState(true);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const coordinates = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const authData = useSelector((state) => state.auth.data);
@@ -100,6 +103,7 @@ const AddressPage = () => {
       address: address,
       latitude: coordinates.current.coords.latitude,
       longitude: coordinates.current.coords.longitude,
+      label: label,
     });
   };
 
@@ -115,6 +119,9 @@ const AddressPage = () => {
     setCity(address.city);
     setState(address.state);
     setPincode(address.pincode);
+    setLabel(address.label);
+    setLatitude(address.latitude);
+    setLongitude(address.longitude);
   };
 
   const updatecurrentAddress = async () => {
@@ -221,6 +228,33 @@ const AddressPage = () => {
                 placeholder="Enter your pincode"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Latitude</FormLabel>
+              <Input
+                placeholder="Enter your pincode"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Longitude</FormLabel>
+              <Input
+                placeholder="Enter your pincode"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Label</FormLabel>
+              <Input
+                placeholder="Enter your label"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
               />
             </FormControl>
           </ModalBody>

@@ -75,6 +75,8 @@ export default function TopNav() {
     return currentAddress;
   }, [location]);
 
+  console.log("selectedAddress", selectedAddress, location);
+
   useEffect(() => {
     // console.log("called", selectedAddress);
     if (selectedAddress) {
@@ -102,8 +104,7 @@ export default function TopNav() {
         ) : (
           <Text fontSize={"xs"} noOfLines={1}>
             {getadressfromcoords.current
-              ? getadressfromcoords.current.addresses[0].address
-                  .freeformAddress
+              ? getadressfromcoords.current.addresses[0].address.freeformAddress
               : "Loading"}
           </Text>
         )}

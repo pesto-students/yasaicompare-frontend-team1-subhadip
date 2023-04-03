@@ -7,12 +7,20 @@ import {
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCartItems } from "../../redux/features/cart/cartSlice";
 import { createOrder } from "../../redux/features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
+import Payment from "../../components/Payment/Payment";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { STRIPE_PUBLISHABLE_KEY, STRIPE_CLIENT_KEY } from "../../config";
+import PaymentPage from "../PaymentPage/PaymentPage";
 
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
@@ -28,9 +36,10 @@ const OrderSummaryItem = (props) => {
 
 export const CartOrderSummary = ({ totalcartitems }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartDataState = useSelector((state) => state.cart);
   const selectedAddress = useSelector((state) =>
-    state.address.data.find((address) => address.current)
+    state.address.data.find((address) => address.current === true)
   );
 
   /**
@@ -50,18 +59,23 @@ export const CartOrderSummary = ({ totalcartitems }) => {
     cartData();
   }, []);
 
+  // latitude longitude label
   const prepareOrderData = async () => {
+    console.log(selectedAddress);
+    if (!selectedAddress?.id) {
+      // return navigate("/profile/address");
+    }
     let finalData = {
       orders: [],
-      delievery_address: selectedAddress?.id || "",
+      delievery_address:
+        selectedAddress?.id || "72ea09dd-30d3-4b92-8f09-a3ec401852d7",
     };
-
     cartDataState.data.forEach((cartItem) => {
       const foundIndex = finalData.orders.findIndex(
         (shop) => shop.shop_id === cartItem.shop_id
       );
 
-      /**
+      /*
        * if Doesn't exist
        */
       if (foundIndex === -1) {
@@ -85,7 +99,10 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       }
     });
     const response = await createdOrder(finalData);
-    console.log(response);
+    if (response) {
+      <PaymentPage reponse={response} />;
+      // navigate("/payment");
+    }
   };
 
   return (

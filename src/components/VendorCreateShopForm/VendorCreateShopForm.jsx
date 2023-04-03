@@ -36,7 +36,7 @@ export default function VendorCreateShopForm({
     dispatch(
       CreateShops({
         email: "",
-        adress: "",
+        address: "",
         city: "",
         state: "",
         pincode: "",

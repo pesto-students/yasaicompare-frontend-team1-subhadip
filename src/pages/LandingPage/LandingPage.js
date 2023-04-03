@@ -5,12 +5,8 @@ import { Box, Text, Image } from "@chakra-ui/react";
 import yasai from "../../assets/yasai.png";
 
 const LandingPage = () => {
-  const authData = useSelector((state) => state.auth.data);
   const dispatch = useDispatch();
-  const getUserInfo = useCallback(
-    async () => dispatch(fetchUserInfo()).unwrap(),
-    []
-  );
+
   useEffect(() => {
     // getUserInfo();
   }, []);
