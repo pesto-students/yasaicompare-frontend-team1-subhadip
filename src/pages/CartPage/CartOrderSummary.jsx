@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   Heading,
-  Link,
   Stack,
   Text,
   useColorModeValue as mode,
@@ -10,18 +9,14 @@ import {
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCartItems } from "../../redux/features/cart/cartSlice";
-import { createOrder } from "../../redux/features/cart/cartSlice";
-import { useNavigate } from "react-router-dom";
-import Payment from "../../components/Payment/Payment";
-
+import { createOrder } from "../../redux/features/orders/ordersSlice";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { STRIPE_PUBLISHABLE_KEY, STRIPE_CLIENT_KEY } from "../../config";
-import PaymentPage from "../PaymentPage/PaymentPage";
-
+import { STRIPE_PUBLISHABLE_KEY } from "../../config";
+import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
   return (
@@ -36,12 +31,21 @@ const OrderSummaryItem = (props) => {
 
 export const CartOrderSummary = ({ totalcartitems }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const clientID = useRef(null);
+  // const createOrderResponse = useRef(null);
+  const [createOrderResponse, setCreateOrderResponse] = useState(null);
+  const [showcheckout, setShowCheckout] = useState(true);
   const cartDataState = useSelector((state) => state.cart);
   const selectedAddress = useSelector((state) =>
     state.address.data.find((address) => address.current === true)
   );
 
+  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+  const options = {
+    // passing the client secret obtained from the server
+    // clientSecret: `${ STRIPE_CLIENT_KEY }`,
+    clientSecret: createOrderResponse,
+  };
   /**
    * Fetch Cart Data
    */
@@ -59,6 +63,15 @@ export const CartOrderSummary = ({ totalcartitems }) => {
     cartData();
   }, []);
 
+  const handleCheckout = async () => {
+    if (createOrderResponse.current?.paymentData?.client_secret) {
+      clientID.current = createOrderResponse.current.paymentData.client_secret;
+      console.log(clientID.current);
+      setShowCheckout(true);
+    } else {
+      console.log("Error");
+    }
+  };
   // latitude longitude label
   const prepareOrderData = async () => {
     console.log(selectedAddress);
@@ -99,10 +112,8 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       }
     });
     const response = await createdOrder(finalData);
-    if (response) {
-      <PaymentPage reponse={response} />;
-      // navigate("/payment");
-    }
+    setCreateOrderResponse(response.paymentData.client_secret);
+    setShowCheckout(false);
   };
 
   return (
@@ -123,14 +134,22 @@ export const CartOrderSummary = ({ totalcartitems }) => {
           </Text>
         </Flex>
       </Stack>
-      <Button
-        size="lg"
-        fontSize="md"
-        rightIcon={<FaArrowRight />}
-        onClick={prepareOrderData}
-      >
-        Checkout
-      </Button>
+      {showcheckout ? (
+        <Button
+          size="lg"
+          fontSize="md"
+          rightIcon={<FaArrowRight />}
+          onClick={prepareOrderData}
+        >
+          Checkout
+        </Button>
+      ) : (
+        stripePromise && (
+          <Elements stripe={stripePromise} options={options}>
+            <CheckoutForm clientSecretChange={() => handleCheckout} />
+          </Elements>
+        )
+      )}
     </Stack>
   );
 };

@@ -24,9 +24,9 @@ import AppLayout from "./layouts/AppLayout";
 import VendorLayout from "./layouts/VendorLayout";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
-import PaymentPage from "./pages/PaymentPage/PaymentPage";
 
 import AuthWrapper from "./components/AuthWrapper";
+import StripeCheckout from "react-stripe-checkout";
 
 const router = createBrowserRouter([
   {
@@ -145,10 +145,6 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },
-  {
-    path: "/payment",
-    element: <PaymentPage />,
   },
 ]);
 

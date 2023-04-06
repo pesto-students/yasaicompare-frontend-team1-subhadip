@@ -167,3 +167,6 @@ export const getAllOrders = (args) =>
 
 export const createOrder = (args) =>
   axiosApiInstance.post(`${SERVER_URL}/order/create`, { ...args });
+
+export const confirmOrder = (args) =>
+  axiosApiInstance.post(`${SERVER_URL}/order/confirm_order`, { ...args });
