@@ -31,7 +31,7 @@ const OrderSummaryItem = (props) => {
 
 export const CartOrderSummary = ({ totalcartitems }) => {
   const dispatch = useDispatch();
-  const clientID = useRef(null);
+  const order_id = useRef(null);
   // const createOrderResponse = useRef(null);
   const [createOrderResponse, setCreateOrderResponse] = useState(null);
   const [showcheckout, setShowCheckout] = useState(true);
@@ -63,14 +63,8 @@ export const CartOrderSummary = ({ totalcartitems }) => {
     cartData();
   }, []);
 
-  const handleCheckout = async () => {
-    if (createOrderResponse.current?.paymentData?.client_secret) {
-      clientID.current = createOrderResponse.current.paymentData.client_secret;
-      console.log(clientID.current);
-      setShowCheckout(true);
-    } else {
-      console.log("Error");
-    }
+  const handleCheckout = () => {
+    setShowCheckout(true);
   };
   // latitude longitude label
   const prepareOrderData = async () => {
@@ -112,8 +106,11 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       }
     });
     const response = await createdOrder(finalData);
-    setCreateOrderResponse(response.paymentData.client_secret);
-    setShowCheckout(false);
+    if (response?.paymentData?.client_secret) {
+      setCreateOrderResponse(response.paymentData.client_secret);
+      order_id.current = response.order_id;
+      setShowCheckout(false);
+    }
   };
 
   return (
@@ -146,7 +143,7 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       ) : (
         stripePromise && (
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm clientSecretChange={() => handleCheckout} />
+            <CheckoutForm clientSecretChange={() => handleCheckout} order_id = {order_id.current}/>
           </Elements>
         )
       )}

@@ -3,10 +3,16 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
+import { FRONTEND_URL } from "../../config";
 
 const CheckoutForm = (props) => {
+  console.log(props.order_id);
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -23,9 +29,11 @@ const CheckoutForm = (props) => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: `${FRONTEND_URL}/complete-payment/order/confirm-order/?order_group_id=${props.order_id}&user_token=${token}`,
       },
     });
+
+    console.log("result data", result);
 
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
@@ -40,7 +48,9 @@ const CheckoutForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button onClick = {props.clientSecretChange} disabled={!stripe}>Submit</button>
+      <button onClick={props.clientSecretChange} disabled={!stripe}>
+        Submit
+      </button>
     </form>
   );
 };

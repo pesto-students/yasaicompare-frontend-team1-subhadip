@@ -4,7 +4,6 @@ import * as api from "../../../api";
 
 const initialState = {
   data: [],
-  confirm_order: [],
   error: null,
   asyncStatus: "INIT",
 };
@@ -49,7 +48,7 @@ const ordersSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
         console.log("this is action.payload.data", action.payload);
-        state.data = [...state.data ,action.payload];
+        state.data = [...state.data, action.payload];
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";
@@ -62,7 +61,7 @@ const ordersSlice = createSlice({
       .addCase(confirmOrder.fulfilled, (state, action) => {
         state.asyncStatus = "SUCCESS";
         console.log("this is action.payload.data", action.payload);
-        state.confirm_order = [...state.confirm_order, action.payload];
+        state.data = [...state.data, action.payload];
       })
       .addCase(confirmOrder.rejected, (state, action) => {
         state.asyncStatus = "SUCCESS";

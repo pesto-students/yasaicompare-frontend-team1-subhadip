@@ -26,7 +26,9 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import CartPage from "./pages/CartPage/CartPage";
 
 import AuthWrapper from "./components/AuthWrapper";
-import StripeCheckout from "react-stripe-checkout";
+import CompletePaymentPage from "./pages/CompletePaymentPage/CompletePaymentPage";
+import ViewOrdersPage from "./pages/ViewOrdersPage/ViewOrdersPage";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 const router = createBrowserRouter([
   {
@@ -145,6 +147,30 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "complete-payment/order/confirm-order",
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <CompletePaymentPage />
+      </React.Suspense>
+    ),
+  },
+  {
+    path: "vieworders",
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <ViewOrdersPage />
+      </React.Suspense>
+    ),
+  },
+  {
+    path: "*",
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <PageNotFound />
+      </React.Suspense>
+    ),
   },
 ]);
 

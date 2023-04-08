@@ -169,4 +169,6 @@ export const createOrder = (args) =>
   axiosApiInstance.post(`${SERVER_URL}/order/create`, { ...args });
 
 export const confirmOrder = (args) =>
-  axiosApiInstance.post(`${SERVER_URL}/order/confirm_order`, { ...args });
+  axiosApiInstance.get(
+    `${SERVER_URL}/order/confirm-order?user_token=${args.user_token}&order_group_id=${args.order_group_id}&payment_intent=${args.payment_intent}&payment_intent_client_secret=${args.payment_intent_client_secret}&redirect_status=${args.redirect_status}`
+  );
