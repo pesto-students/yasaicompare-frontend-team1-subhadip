@@ -152,8 +152,13 @@ export const updateInventory = (apiArgs) =>
 export const uploadImage = (apiArgs) =>
   axiosApiInstance.post(`${SERVER_URL}/upload/item-image`, apiArgs);
 
-export const addItem = (apiArgs) =>
-  axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
+export const addInventoryItem = (apiArgs) => {
+  var id = apiArgs.shop_id;
+  delete apiArgs.shop_id;
+  return axiosApiInstance.post(`${SERVER_URL}/inventory/${id}/create`, {
+    ...apiArgs,
+  });
+};
 
 export const getAllOrders = (args) =>
   axiosApiInstance.get(
@@ -162,3 +167,8 @@ export const getAllOrders = (args) =>
 
 export const createOrder = (args) =>
   axiosApiInstance.post(`${SERVER_URL}/order/create`, { ...args });
+
+export const confirmOrder = (args) =>
+  axiosApiInstance.get(
+    `${SERVER_URL}/order/confirm-order?user_token=${args.user_token}&order_group_id=${args.order_group_id}&payment_intent=${args.payment_intent}&payment_intent_client_secret=${args.payment_intent_client_secret}&redirect_status=${args.redirect_status}`
+  );

@@ -25,3 +25,6 @@ export const VendorProfilePage = React.lazy(() =>
 // export const SomeOtherPage = React.lazy(() =>
 //   import("./SomeOtherPage/SomeOtherPage")
 // );
+export const CompletePaymentPage = React.lazy(() =>
+  import("./CompletePaymentPage/CompletePaymentPage")
+);

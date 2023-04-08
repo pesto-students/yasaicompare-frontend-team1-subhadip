@@ -15,10 +15,12 @@ import {
   updateCartItem,
   deleteCartItem,
 } from "../../redux/features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function ItemPage() {
   const [buttonclicked, setButtonClicked] = useState(false);
   const { shop_id } = useParams();
+  const navigate = useNavigate();
   const shopState = useSelector((state) => state.shop);
   const cartData = useSelector((state) => state.cart);
   const inventory =
@@ -38,9 +40,14 @@ export default function ItemPage() {
     dispatch(fetchCartItems()).unwrap();
   }, []);
 
+  const authState = useSelector((state) => state.auth);
+
   const handleIncrementClick = useCallback(
     async (item_id, quantity) => {
       try {
+        if (!Object.keys(authState.data).length) {
+          return navigate("/login");
+        }
         if (quantity === 1) {
           await dispatch(
             addCartItem({
@@ -106,7 +113,9 @@ export default function ItemPage() {
       }
       // always get the items
       getItems();
-      getCartData();
+      if (Object.keys(authState.data).length) {
+        getCartData();
+      }
     } catch (error) {
       console.log(error);
     }

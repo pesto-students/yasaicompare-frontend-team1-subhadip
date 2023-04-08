@@ -6,6 +6,7 @@ import shopReducer from "./features/shop/shopSlice";
 import cartReducer from "./features/cart/cartSlice";
 import addressReducer from "./features/address/addressSlice";
 import vendorReducer from "./features/vendor/vendorSlice";
+import ordersReducer from "./features/orders/ordersSlice";
 
 const logger = createLogger();
 
@@ -24,6 +25,6 @@ export const store = configureStore({
     cart: cartReducer,
     address: addressReducer,
     vendor: vendorReducer,
+    orders: ordersReducer,
   },
 });
-

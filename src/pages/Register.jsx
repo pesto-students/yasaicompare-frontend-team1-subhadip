@@ -15,8 +15,9 @@ import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import {SERVER_URL} from "../../src/config"
 
-const API_URL = "http://localhost:8080/auth/register";
+const API_URL = `${SERVER_URL}/auth/register`;
 
 const Register = () => {
   const [name, setName] = React.useState("");

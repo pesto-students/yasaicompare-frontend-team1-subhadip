@@ -2,18 +2,21 @@ import {
   Button,
   Flex,
   Heading,
-  Link,
   Stack,
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCartItems } from "../../redux/features/cart/cartSlice";
-import { createOrder } from "../../redux/features/cart/cartSlice";
-
+import { createOrder } from "../../redux/features/orders/ordersSlice";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { STRIPE_PUBLISHABLE_KEY } from "../../config";
+import CheckoutForm from "../../components/CheckoutForm/CheckoutForm";
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
   return (
@@ -28,11 +31,21 @@ const OrderSummaryItem = (props) => {
 
 export const CartOrderSummary = ({ totalcartitems }) => {
   const dispatch = useDispatch();
+  const order_id = useRef(null);
+  // const createOrderResponse = useRef(null);
+  const [createOrderResponse, setCreateOrderResponse] = useState(null);
+  const [showcheckout, setShowCheckout] = useState(true);
   const cartDataState = useSelector((state) => state.cart);
   const selectedAddress = useSelector((state) =>
-    state.address.data.find((address) => address.current)
+    state.address.data.find((address) => address.current === true)
   );
 
+  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+  const options = {
+    // passing the client secret obtained from the server
+    // clientSecret: `${ STRIPE_CLIENT_KEY }`,
+    clientSecret: createOrderResponse,
+  };
   /**
    * Fetch Cart Data
    */
@@ -50,18 +63,26 @@ export const CartOrderSummary = ({ totalcartitems }) => {
     cartData();
   }, []);
 
+  const handleCheckout = () => {
+    setShowCheckout(true);
+  };
+  // latitude longitude label
   const prepareOrderData = async () => {
+    console.log(selectedAddress);
+    if (!selectedAddress?.id) {
+      // return navigate("/profile/address");
+    }
     let finalData = {
       orders: [],
-      delievery_address: selectedAddress?.id || "",
+      delievery_address:
+        selectedAddress?.id || "72ea09dd-30d3-4b92-8f09-a3ec401852d7",
     };
-
     cartDataState.data.forEach((cartItem) => {
       const foundIndex = finalData.orders.findIndex(
         (shop) => shop.shop_id === cartItem.shop_id
       );
 
-      /**
+      /*
        * if Doesn't exist
        */
       if (foundIndex === -1) {
@@ -85,7 +106,11 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       }
     });
     const response = await createdOrder(finalData);
-    console.log(response);
+    if (response?.paymentData?.client_secret) {
+      setCreateOrderResponse(response.paymentData.client_secret);
+      order_id.current = response.order_id;
+      setShowCheckout(false);
+    }
   };
 
   return (
@@ -106,14 +131,22 @@ export const CartOrderSummary = ({ totalcartitems }) => {
           </Text>
         </Flex>
       </Stack>
-      <Button
-        size="lg"
-        fontSize="md"
-        rightIcon={<FaArrowRight />}
-        onClick={prepareOrderData}
-      >
-        Checkout
-      </Button>
+      {showcheckout ? (
+        <Button
+          size="lg"
+          fontSize="md"
+          rightIcon={<FaArrowRight />}
+          onClick={prepareOrderData}
+        >
+          Checkout
+        </Button>
+      ) : (
+        stripePromise && (
+          <Elements stripe={stripePromise} options={options}>
+            <CheckoutForm clientSecretChange={() => handleCheckout} order_id = {order_id.current}/>
+          </Elements>
+        )
+      )}
     </Stack>
   );
 };

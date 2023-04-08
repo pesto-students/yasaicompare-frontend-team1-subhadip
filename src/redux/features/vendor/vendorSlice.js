@@ -45,7 +45,8 @@ export const addItemToInventory = createAsyncThunk(
   "vendor/addItemToInventory",
   async (payload, thunkApi) => {
     try {
-      const response = await api.addItem(payload);
+      console.log(payload);
+      const response = await api.addInventoryItem(payload);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -125,14 +126,15 @@ const vendorSlice = createSlice({
         state.error = action.payload;
       });
     builder
-      .addCase(addInventory.pending, (state, action) => {
+      .addCase(addItemToInventory.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(addInventory.fulfilled, (state, action) => {
+      .addCase(addItemToInventory.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data.inventory = [...state.data.inventory, action.payload];
+        console.log("action.payload", action.payload.data);
+        state.data.inventory.inventory = [...state.data.inventory.inventory, action.payload.data];
       })
-      .addCase(addInventory.rejected, (state, action) => {
+      .addCase(addItemToInventory.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
@@ -149,9 +151,6 @@ const vendorSlice = createSlice({
         } else if (action.meta.arg.status === "delievered") {
           state.data.orders.delievered = action.payload.orders;
         }
-        // state.data.orders.
-        // state.data = action.payload;
-        // console.log("action", action);
       })
       .addCase(fetchAllOrders.rejected, (state, action) => {
         state.status = "failed";

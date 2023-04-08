@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import {
   Input,
   InputGroup,
@@ -10,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { HomeIcon, SearchIcon } from "../Icons";
 import { useSelector, useDispatch } from "react-redux";
-import { getGeolocation } from "../../utils/commons";
+import { getGeolocation, getAdressFromCoords } from "../../utils/commons";
 import {
   fetchUserAddresses,
   markCurrentAddress,
@@ -20,6 +26,7 @@ import haversineDistance from "haversine-distance";
 
 export default function TopNav() {
   const [location, setLocation] = useState();
+  const getadressfromcoords = useRef(null);
   const authData = useSelector((state) => state.auth.data);
   const addressData = useSelector((state) => state.address);
   const dispatch = useDispatch();
@@ -30,10 +37,15 @@ export default function TopNav() {
 
   const init = async () => {
     try {
-      if (!addressData.data.length) {
+      if (addressData.data.length) {
         await getUserAddresses();
       }
       const res = await getGeolocation();
+      const address = await getAdressFromCoords(
+        res.coords.latitude,
+        res.coords.longitude
+      );
+      getadressfromcoords.current = address;
       console.log(res);
       setLocation(res.coords);
     } catch (error) {
@@ -63,8 +75,10 @@ export default function TopNav() {
     return currentAddress;
   }, [location]);
 
+  console.log("selectedAddress", selectedAddress, location);
+
   useEffect(() => {
-    console.log("called", selectedAddress);
+    // console.log("called", selectedAddress);
     if (selectedAddress) {
       dispatch(markCurrentAddress(selectedAddress.id));
     }
@@ -89,7 +103,9 @@ export default function TopNav() {
           </Stack>
         ) : (
           <Text fontSize={"xs"} noOfLines={1}>
-            Getting your address
+            {getadressfromcoords.current
+              ? getadressfromcoords.current.addresses[0].address.freeformAddress
+              : "Loading"}
           </Text>
         )}
 
@@ -126,9 +142,7 @@ export default function TopNav() {
         alignItems={"center"}
         px="4"
         py="2"
-      >
-  
-      </Stack>
+      ></Stack>
     </>
   );
 }
