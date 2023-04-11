@@ -6,15 +6,37 @@ const initialState = {
     shops: [],
     inventory: [],
     orders: {
-      draft: [],
-      pending: [],
-      delievered: [],
+      order_status: [],
+      delivery_status: [],
     },
   },
   error: null,
   asyncStatus: "INIT",
 };
 
+export const CreateShops = createAsyncThunk(
+  "vendor/createShops",
+  async (
+    payload = {
+      email: "",
+      adress: "",
+      city: "",
+      state: "",
+      pincode: "",
+      country: "",
+      active: "",
+    },
+    thunkApi
+  ) => {
+    try {
+      const response = await api.createShops(payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
 export const fetchVendorShops = createAsyncThunk(
   "vendor/fetchVendorShops",
   async (payload, thunkApi) => {
@@ -96,6 +118,21 @@ export const fetchAllOrders = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "vendor/updateOrderStatus",
+  async (payload, thunkApi) => {
+    console.log("payload", payload);
+    try {
+      const response = await api.updateOrderStatus(payload);
+      console.log("update order status", response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const vendorSlice = createSlice({
   name: "vendor",
   initialState,
@@ -132,7 +169,10 @@ const vendorSlice = createSlice({
       .addCase(addItemToInventory.fulfilled, (state, action) => {
         state.status = "succeeded";
         console.log("action.payload", action.payload.data);
-        state.data.inventory.inventory = [...state.data.inventory.inventory, action.payload.data];
+        state.data.inventory.inventory = [
+          ...state.data.inventory.inventory,
+          action.payload.data,
+        ];
       })
       .addCase(addItemToInventory.rejected, (state, action) => {
         state.status = "failed";
@@ -143,16 +183,56 @@ const vendorSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchAllOrders.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        if (action.meta.arg.status === "draft") {
-          state.data.orders.draft = action.payload.orders;
-        } else if (action.meta.arg.status === "pending") {
-          state.data.orders.pending = action.payload.orders;
-        } else if (action.meta.arg.status === "delievered") {
-          state.data.orders.delievered = action.payload.orders;
-        }
+        console.log("action.payload", action.payload.orders);
+        action.payload.orders.map((order) => {
+          if (
+            order.order_status === "confirmed" ||
+            order.order_status === "pending"
+          ) {
+            state.data.orders.order_status = [
+              ...state.data.orders.order_status,
+              order,
+            ];
+          } else if (
+            order.order_status === "delivered" ||
+            order.order_status === "in_transit"
+          ) {
+            state.data.orders.delivery_status = [
+              ...state.data.orders.delivery_status,
+              order,
+            ];
+          }
+        });
       })
       .addCase(fetchAllOrders.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+    builder
+      .addCase(updateOrderStatus.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log("action.payload", action.payload);
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    builder
+      .addCase(CreateShops.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(CreateShops.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data.shops.shops = [
+          ...state.data.shops.shops,
+          action.payload.data,
+        ];
+      })
+      .addCase(CreateShops.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

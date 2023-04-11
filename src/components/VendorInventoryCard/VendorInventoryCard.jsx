@@ -1,37 +1,35 @@
 import React from "react";
 import {
-  Card,
-  Image,
-  Heading,
-  Text,
-  Button,
-  Stack,
-  CardBody,
   Box,
-  Switch,
+  Card,
+  CardBody,
   FormControl,
   FormLabel,
-  IconButton,
-  Flex,
-  ButtonGroup,
+  Heading,
+  Image,
+  Stack,
+  Switch,
+  Text,
 } from "@chakra-ui/react";
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
 
-export const VendorInventoryCard = (props) => {
+const VendorInventoryCard = (props) => {
   const imageSize = !props.minimal ? "150px" : "100px";
   return (
-    <Card size={"sm"}>
-      <CardBody>
-        <Stack direction={props.minimal ? "row" : "row"}>
-          <Image
-            src={props.image}
-            alt="nill"
-            width={imageSize}
-            height={"auto"}
-            borderRadius="lg"
-          />
-          <Stack mt="2" spacing="3" flex="1">
+    <Card size={"sm"} boxShadow="base" borderRadius="md">
+      <CardBody fontFamily="body">
+        <Stack direction={["column", "column", "row-reverse"]} spacing="6">
+          <Box flex="1">
+            <Image
+              src={props.image}
+              alt={props.name}
+              width={imageSize}
+              height={"auto"}
+              borderRadius="md"
+            />
+          </Box>
+          <Stack flex="3" spacing="3">
             <Heading fontSize="20px" size="md">
               {props.name}
             </Heading>
@@ -40,19 +38,20 @@ export const VendorInventoryCard = (props) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Stack spacing={"1"} flex="1">
+              <Stack spacing="1" flex="1">
                 <Text fontSize="15px">{formatPrice(props.price)}</Text>
               </Stack>
               <Stack flex="1">
-                <Box>STOCK : {props.quantity}</Box>
+                <Box>STOCK: {props.quantity}</Box>
                 <FormControl display="flex">
-                  <FormLabel aria-required="false" htmlFor="isRequired">
+                  <FormLabel htmlFor="available" fontWeight="bold">
                     Available:
                   </FormLabel>
                   <Switch
-                    id="isRequired"
-                    isRequired
+                    id="available"
                     isChecked={props.available}
+                    size="sm"
+                    colorScheme="green"
                   />
                 </FormControl>
               </Stack>

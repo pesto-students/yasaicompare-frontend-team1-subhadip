@@ -34,21 +34,23 @@ export async function getAdressFromCoords(latitude, longitude) {
   }
 }
 
-export function formatDate(date) {
-  const newDate = new Date(date);
-  return newDate.toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export function formatDate(timestamp) {
+  const date = new Date(timestamp);
+
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const formattedDate = `${day}/${month}/${year}`;
+  return formattedDate;
 }
 
-export function formatTime(date) {
-  const newDate = new Date(date);
-  return newDate.toLocaleTimeString("en-IN", {
-    hour: "numeric",
-    minute: "numeric",
-  });
+export function formatTime(timestamp) {
+  const date = new Date(timestamp);
+  const hours = ("0" + date.getHours()).slice(-2);
+  const minutes = ("0" + date.getMinutes()).slice(-2);
+  const seconds = ("0" + date.getSeconds()).slice(-2);
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+  return formattedTime;
 }
 
 export function OrderIdSnip(id) {

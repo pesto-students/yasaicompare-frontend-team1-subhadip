@@ -15,12 +15,11 @@ export default function VendorNav() {
             </Text>
           </Flex>
           <Text fontSize={"xs"} noOfLines={1}>
-            Some address is so cool to have some address here so that we can
-            test
+            Bring new customers to increase your sales
           </Text>
         </Stack>
         <Stack>
-          <Box
+          {/* <Box
             boxShadow={"lg"}
             borderRadius={"2xl"}
             py="1"
@@ -36,7 +35,7 @@ export default function VendorNav() {
             >
               PRO
             </Text>
-          </Box>
+          </Box> */}
         </Stack>
       </Stack>
     </>

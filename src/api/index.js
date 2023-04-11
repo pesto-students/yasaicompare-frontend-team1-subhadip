@@ -160,10 +160,18 @@ export const addInventoryItem = (apiArgs) => {
   });
 };
 
-export const getAllOrders = (args) =>
-  axiosApiInstance.get(
-    `${SERVER_URL}/vendor/order/${args.shopId}?order_status=${args.status}`
+export const updateOrderStatus = (apiArgs) =>
+  axiosApiInstance.put(
+    `${SERVER_URL}/vendor/order/${apiArgs.shopId}/${apiArgs.orderId}`,
+    {
+      order_status: apiArgs.status,
+    }
   );
+
+export const getAllOrders = (args) =>
+  axiosApiInstance.get(`${SERVER_URL}/vendor/order/${args.shopId}`);
+
+export const getOrders = () => axiosApiInstance.get(`${SERVER_URL}/order`);
 
 export const createOrder = (args) =>
   axiosApiInstance.post(`${SERVER_URL}/order/create`, { ...args });

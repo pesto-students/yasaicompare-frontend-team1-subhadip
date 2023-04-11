@@ -73,6 +73,7 @@ export default function VendorInventoryPage() {
       quantity: quantity,
       in_stock: true,
       image: image_link,
+      unit: "kg",
     };
     await addItem(data);
   };

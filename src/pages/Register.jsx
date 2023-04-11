@@ -15,7 +15,7 @@ import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import {SERVER_URL} from "../../src/config"
+import { SERVER_URL } from "../../src/config";
 
 const API_URL = `${SERVER_URL}/auth/register`;
 
@@ -28,6 +28,13 @@ const Register = () => {
   const nav = useNavigate();
   const toast = useToast();
 
+  function roleHandler() {
+    if (showvendor) {
+      return "customer";
+    } else {
+      return "vendor";
+    }
+  }
   const handleSubmit = () => {
     axios
       .post(API_URL, {
@@ -35,6 +42,7 @@ const Register = () => {
         email: email,
         password: password,
         contact: phone,
+        role: roleHandler(),
       })
       .then((response) => {
         console.log(response);

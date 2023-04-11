@@ -69,12 +69,16 @@ const ProfilePage = () => {
         </ListItem>
         <ListItem>
           <ListIcon as={CartManager} color="green.500" />
-          <Button variant="ghost"> My Orders</Button>
+          <Button
+            onClick={() => navigate("/profile/vieworders")}
+            variant="ghost"
+          >
+            My Orders
+          </Button>
         </ListItem>
         <ListItem>
           <ListIcon as={LogoutIcon} color="green.500" />
           <Button onClick={handleLogout} variant="ghost">
-            {" "}
             Logout
           </Button>
         </ListItem>

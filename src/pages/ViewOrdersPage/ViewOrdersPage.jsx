@@ -1,70 +1,149 @@
 import React from "react";
 import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Stack,
-  Badge,
-  IconButton,
+  SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  TabPanels,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, CloseIcon } from "@chakra-ui/icons";
 
-const orders = [
-  { id: 1, status: "pending", date: "2022-04-01", total: 45.99 },
-  { id: 2, status: "shipped", date: "2022-03-15", total: 27.99 },
-  { id: 3, status: "delivered", date: "2022-02-28", total: 14.99 },
-];
+import { getAllOrders } from "../../redux/features/orders/ordersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
+import OrderStatusCard from "../../components/OrderStatusCard/OrderStatusCard";
+import { updateOrderStatus } from "../../redux/features/vendor/vendorSlice";
 
-const OrderItem = ({ order }) => {
-  return (
-    <Box bg="white" p={4} rounded="md" shadow="sm">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Heading as="h4" size="md">
-          Order #{order.id}
-        </Heading>
-        <Badge colorScheme={order.status === "pending" ? "orange" : "green"}>
-          {order.status}
-        </Badge>
-      </Flex>
-      <Text mt={2} fontSize="md">
-        Placed on {order.date}
-      </Text>
-      <Text mt={2} fontSize="md" fontWeight="bold">
-        Total: ${order.total}
-      </Text>
-      <IconButton
-        aria-label="View order details"
-        icon={<CheckCircleIcon />}
-        size="sm"
-        colorScheme="green"
-        mt={2}
-        mr={2}
-      />
-      <IconButton
-        aria-label="Cancel order"
-        icon={<CloseIcon />}
-        size="sm"
-        colorScheme="red"
-        mt={2}
-      />
-    </Box>
+export default function VendorOrderPage() {
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders);
+
+  const getCustOrders = useCallback(async () => {
+    dispatch(getAllOrders());
+  }, []);
+
+  const updateStatus = useCallback(
+    async (args) => dispatch(updateOrderStatus(args)).unwrap(),
+    []
   );
-};
+  useEffect(() => {
+    getCustOrders();
+  }, []);
 
-const ViewOrdersPage = () => {
+  function ColorMode(status) {
+    if (status === "draft") {
+      return "orange";
+    } else if (status === "pending") {
+      return "red";
+    } else if (status === "confirmed") {
+      return "yellow";
+    } else if (status === "in_transit") {
+      return "blue";
+    } else if (status === "delivered") {
+      return "green";
+    }
+    return "gray";
+  }
+
+  async function handleUpdateChange(order_id, event) {
+    const { value } = event.target;
+    const parametes = {
+      // shopId: shop_id,
+      orderId: order_id,
+      status: value,
+    };
+    console.log(parametes);
+    if (value === "option1") {
+      parametes.status = "pending";
+      const response = await updateStatus(parametes);
+      console.log(response);
+    }
+    if (value === "option2") {
+      parametes.status = "confirmed";
+      const response = await updateStatus(parametes);
+      console.log(response);
+    }
+    if (value === "option3") {
+      parametes.status = "in_transit";
+      const response = await updateStatus(parametes);
+      console.log(response);
+    }
+    if (value === "option4") {
+      parametes.status = "delivery";
+      const response = await updateStatus(parametes);
+      console.log(response);
+    }
+  }
+
+  console.log("all my orders are stored", orders);
   return (
-    <Box p={4}>
-      <Heading as="h2" size="lg" mb={4}>
-        My Orders
-      </Heading>
-      <Stack spacing={4}>
-        {orders.map((order) => (
-          <OrderItem key={order.id} order={order} />
-        ))}
-      </Stack>
-    </Box>
-  );
-};
+    <>
+      <Tabs pb="70px">
+        <TabList
+          justifyContent={"space-between"}
+          position={"sticky"}
+          top="60px"
+          zIndex={999}
+          bg="white"
+        >
+          <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
+            ACTIVE ORDERS
+          </Tab>
+          <Tab fontSize={"xs"} fontWeight={"bold"} flex="1">
+            DELIVERED
+          </Tab>
+        </TabList>
 
-export default ViewOrdersPage;
+        <TabPanels>
+          <TabPanel>
+            <SimpleGrid columns={[1, 1, 2, 3]} spacing={4} mt={4}>
+              {orders.active_orders?.length
+                ? orders.active_orders.map((order) => (
+                    <OrderStatusCard
+                      key={order.order_id}
+                      orderId={order.order_id}
+                      orderDate={order.createdAt}
+                      status={order.order_status}
+                      totalAmount={order.amount}
+                      handleChange={(event) => {
+                        handleUpdateChange(order.order_id, event);
+                      }}
+                      color_id={ColorMode(order.order_status)}
+                      vendor_disable={
+                        order.order_status !== "in_transit" ? true : false
+                      }
+                      customer_disable={true}
+                      showItems={order}
+                    />
+                  ))
+                : null}
+            </SimpleGrid>
+          </TabPanel>
+          <TabPanel>
+            <SimpleGrid columns={[1, 1, 2, 3]} spacing={4} mt={4}>
+              {orders.delivered_orders?.length
+                ? orders.delivered_orders.map((order) => (
+                    <OrderStatusCard
+                      key={order.order_id}
+                      orderId={order.order_id}
+                      orderDate={order.createdAt}
+                      status={order.order_status}
+                      totalAmount={order.amount}
+                      handleChange={(event) => {
+                        handleUpdateChange(order.order_id, event);
+                      }}
+                      color_id={ColorMode(order.order_status)}
+                      vendor_disable={true}
+                      customer_disable={true}
+                      showItems={order}
+                    />
+                  ))
+                : null}
+            </SimpleGrid>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
+  );
+}
