@@ -12,7 +12,7 @@ import {
   ListItem,
   Button,
 } from "@chakra-ui/react";
-import { ManageIcon, CartManager, LogoutIcon } from "../../components/Icons";
+import { LogoutIcon } from "../../components/Icons";
 import { useNavigate } from "react-router-dom";
 
 const VendorProfilePage = () => {
@@ -62,19 +62,8 @@ const VendorProfilePage = () => {
       )}
       <List spacing={3}>
         <ListItem>
-          <ListIcon as={ManageIcon} color="green.500" />
-          <Button onClick={() => navigate("/profile/address")} variant="ghost">
-            Manage Addresses
-          </Button>
-        </ListItem>
-        <ListItem>
-          <ListIcon as={CartManager} color="green.500" />
-          <Button variant="ghost"> My Orders</Button>
-        </ListItem>
-        <ListItem>
           <ListIcon as={LogoutIcon} color="green.500" />
           <Button onClick={handleLogout} variant="ghost">
-            {" "}
             Logout
           </Button>
         </ListItem>

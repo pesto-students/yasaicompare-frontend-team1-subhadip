@@ -6,6 +6,7 @@ import {
   BsFillStarFill,
   BsFilterRight,
   BsCartFill,
+  BsFillArrowUpRightSquareFill,
 } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
@@ -45,3 +46,6 @@ export const CartManager = (props) => <Icon as={BsCartFill} {...props} />;
 
 export const LogoutIcon = (props) => <Icon as={FiLogOut} {...props} />;
 export const InventoryIcon = (props) => <Icon as={MdInventory} {...props} />;
+export const ArrowIcon = (props) => (
+  <Icon as={BsFillArrowUpRightSquareFill} {...props} />
+);

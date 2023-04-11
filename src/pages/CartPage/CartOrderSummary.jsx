@@ -36,9 +36,7 @@ export const CartOrderSummary = ({ totalcartitems }) => {
   const [createOrderResponse, setCreateOrderResponse] = useState(null);
   const [showcheckout, setShowCheckout] = useState(true);
   const cartDataState = useSelector((state) => state.cart);
-  const selectedAddress = useSelector((state) =>
-    state.address.data.find((address) => address.current === true)
-  );
+  const selectedAddress = useSelector((state) => state.address);
 
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
   const options = {
@@ -68,14 +66,14 @@ export const CartOrderSummary = ({ totalcartitems }) => {
   };
   // latitude longitude label
   const prepareOrderData = async () => {
-    console.log(selectedAddress);
-    if (!selectedAddress?.id) {
+    console.log(selectedAddress.data[0].id);
+    if (!selectedAddress.data[0].id) {
       // return navigate("/profile/address");
     }
     let finalData = {
       orders: [],
       delievery_address:
-        selectedAddress?.id || "72ea09dd-30d3-4b92-8f09-a3ec401852d7",
+        selectedAddress.data[0].id || "72ea09dd-30d3-4b92-8f09-a3ec401852d7",
     };
     cartDataState.data.forEach((cartItem) => {
       const foundIndex = finalData.orders.findIndex(
@@ -105,6 +103,7 @@ export const CartOrderSummary = ({ totalcartitems }) => {
         });
       }
     });
+    console.log(finalData);
     const response = await createdOrder(finalData);
     if (response?.paymentData?.client_secret) {
       setCreateOrderResponse(response.paymentData.client_secret);
@@ -112,6 +111,8 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       setShowCheckout(false);
     }
   };
+
+  console.log(selectedAddress);
 
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
@@ -143,7 +144,10 @@ export const CartOrderSummary = ({ totalcartitems }) => {
       ) : (
         stripePromise && (
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm clientSecretChange={() => handleCheckout} order_id = {order_id.current}/>
+            <CheckoutForm
+              clientSecretChange={() => handleCheckout}
+              order_id={order_id.current}
+            />
           </Elements>
         )
       )}

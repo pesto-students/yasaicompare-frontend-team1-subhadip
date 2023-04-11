@@ -95,6 +95,14 @@ const router = createBrowserRouter([
               </React.Suspense>
             ),
           },
+          {
+            path: "vieworders",
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <ViewOrdersPage />
+              </React.Suspense>
+            ),
+          },
         ],
       },
     ],
@@ -153,14 +161,6 @@ const router = createBrowserRouter([
     element: (
       <React.Suspense fallback={<div>Loading...</div>}>
         <CompletePaymentPage />
-      </React.Suspense>
-    ),
-  },
-  {
-    path: "vieworders",
-    element: (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <ViewOrdersPage />
       </React.Suspense>
     ),
   },

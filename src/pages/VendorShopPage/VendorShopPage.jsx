@@ -5,7 +5,7 @@ import {
   fetchVendorShops,
   uploadImage,
 } from "../../redux/features/vendor/vendorSlice";
-import { CreateShops } from "../../redux/features/shop/shopSlice";
+import { CreateShops } from "../../redux/features/vendor/vendorSlice";
 import { useNavigate } from "react-router-dom";
 import { Img, useDisclosure } from "@chakra-ui/react";
 import { getGeolocation, getAdressFromCoords } from "../../utils/commons";

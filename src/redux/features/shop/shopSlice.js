@@ -160,6 +160,20 @@ const shopsSlice = createSlice({
         state.asyncStatus = "SUCCESS";
         state.error = action.payload.data;
       });
+
+    builder
+      .addCase(CreateShops.pending, (state, action) => {
+        state.asyncStatus = "LOADING";
+      })
+      .addCase(CreateShops.fulfilled, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        console.log(action.payload);
+        state.data.shops.push(action.payload.data);
+      })
+      .addCase(CreateShops.rejected, (state, action) => {
+        state.asyncStatus = "SUCCESS";
+        state.error = action.payload.data;
+      });
   },
 });
 
