@@ -5,6 +5,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { FRONTEND_URL } from "../../config";
+import "./checkout.css";
 
 const CheckoutForm = (props) => {
   console.log(props.order_id);
@@ -12,7 +13,6 @@ const CheckoutForm = (props) => {
   console.log(token);
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -49,7 +49,7 @@ const CheckoutForm = (props) => {
     <form onSubmit={handleSubmit}>
       <PaymentElement />
       <button onClick={props.clientSecretChange} disabled={!stripe}>
-        Submit
+        PAY
       </button>
     </form>
   );
