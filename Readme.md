@@ -13,10 +13,16 @@ YasaiCompare is a app that allows you to track the dynamic prices changes of veg
 5. [License](#license)
 6. [Feedback](#feedback)
 
-
 # Live Project
 
 You can access the live version of the TechSwipe by from this link [YasaiCompare](https://yasai-compare.netlify.app/)
+
+# Test Credentials
+
+- Vendor Email: testvendor@gmail.com
+- Vendor Password: testvendor
+- Customer Email: testcustomer@gmail.com
+- Customer Password: testcustomer
 
 # Installation
 
