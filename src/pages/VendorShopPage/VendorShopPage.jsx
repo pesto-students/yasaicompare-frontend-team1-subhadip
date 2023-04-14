@@ -94,7 +94,6 @@ const VendorInventoryPage = () => {
     const location = await getGeolocation();
     const { latitude, longitude } = location.coords;
     const address = await getAdressFromCoords(latitude, longitude);
-    setName(authData.first_name + " " + authData.last_name);
     setAddress(address.addresses[0].address.freeformAddress);
     setCity(address.addresses[0].address.municipality);
     setState(address.addresses[0].address.countrySubdivision);

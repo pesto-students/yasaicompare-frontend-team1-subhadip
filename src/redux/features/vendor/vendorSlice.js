@@ -133,6 +133,21 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+export const inventoryItemUpdate = createAsyncThunk(
+  "vendor/inventoryItemUpdate",
+  async (payload, thunkApi) => {
+    console.log("payload", payload);
+    try {
+      const response = await api.updateInventory(payload);
+      console.log("update order status", response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const vendorSlice = createSlice({
   name: "vendor",
   initialState,

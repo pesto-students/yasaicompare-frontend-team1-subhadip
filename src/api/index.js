@@ -144,10 +144,15 @@ export const getAllInventory = (payload) =>
 export const addNewInventory = (apiArgs) =>
   axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
 
-export const updateInventory = (apiArgs) =>
-  axiosApiInstance.put(`${SERVER_URL}/inventory/${apiArgs.id}`, {
+export const updateInventory = (apiArgs) => {
+  var shopid = apiArgs.shop_id;
+  var id = apiArgs.item_id;
+  delete apiArgs.shop_id;
+  delete apiArgs.item_id;
+  return axiosApiInstance.put(`${SERVER_URL}/inventory/${shopid}/${id}`, {
     ...apiArgs,
   });
+};
 
 export const uploadImage = (apiArgs) =>
   axiosApiInstance.post(`${SERVER_URL}/upload/item-image`, apiArgs);

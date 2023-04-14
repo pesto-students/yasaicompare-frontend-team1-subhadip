@@ -23,6 +23,7 @@ import {
   fetchAllInventory,
   addItemToInventory,
   uploadImage,
+  inventoryItemUpdate,
 } from "../../redux/features/vendor/vendorSlice";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
@@ -35,9 +36,9 @@ export default function VendorInventoryPage() {
   const [item, setItem] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [image, setImage] = useState("");
   const [image_link, setImage_link] = useState("");
   const [image_id, setImage_id] = useState("");
+  const [unit, setUnit] = useState("");
 
   const getInventory = useCallback(async () => {
     dispatch(fetchAllInventory(shop_id)).unwrap();
@@ -52,6 +53,10 @@ export default function VendorInventoryPage() {
     []
   );
 
+  const updateInventoryItem = useCallback(
+    async (args) => dispatch(inventoryItemUpdate(args)).unwrap(),
+    []
+  );
   useEffect(() => {
     getInventory();
   }, []);
@@ -73,10 +78,20 @@ export default function VendorInventoryPage() {
       quantity: quantity,
       in_stock: true,
       image: image_link,
-      unit: "kg",
+      unit: unit,
     };
     await addItem(data);
   };
+
+  async function handleSwitchChange(event, id) {
+    console.log(event.target.checked, id);
+    const data = {
+      shop_id: shop_id,
+      item_id: id,
+      in_stock: event.target.checked,
+    };
+    const response = await updateInventoryItem(data);
+  }
   return (
     <>
       <Box>
@@ -119,6 +134,15 @@ export default function VendorInventoryPage() {
             </FormControl>
 
             <FormControl mt={4}>
+              <FormLabel>Unit</FormLabel>
+              <Input
+                value={unit}
+                placeholder="Enter your Unit"
+                onChange={(e) => setUnit(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
               <FormLabel>Quantity</FormLabel>
               <Input
                 value={quantity}
@@ -145,6 +169,10 @@ export default function VendorInventoryPage() {
               quantity={item.quantity}
               image={item.image}
               available={item.in_stock}
+              unit={item.unit}
+              onSwitchChange={(event) =>
+                handleSwitchChange(event, item.item_id)
+              }
             />
           ))}
       </SimpleGrid>
