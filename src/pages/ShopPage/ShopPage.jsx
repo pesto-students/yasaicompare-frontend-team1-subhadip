@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import ShopView from "./ShopView";
 import CompareView from "./CompareView";
+import MessageComponent from "../../components/MessageComponent/MessageComponet";
+import {Heading} from "@chakra-ui/react";
 
 export default function Home() {
   return (
@@ -37,10 +39,20 @@ export default function Home() {
           <ShopView />
         </TabPanel>
         <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
-          Coming Soon
+          {/* Coming Soon */}
+          <MessageComponent
+              message_type= {<Heading as="h2" size="xl" mt={6} mb={2} color={"green.400"}>Feature in Contruction! </Heading>}
+              heading={<Heading as="h3" size="x" mt={6} mb={2} color={"green.300"}>Do Share your Insights. We'll be happy to incorporate them.</Heading>}
+              message_body="Regards, Team Yasai!"
+            />
         </TabPanel>
         <TabPanel as={Flex} gap="10px" fontSize="3xl" fontWeight={"bold"}>
-          Coming Soon
+          {/* Coming Soon */}
+          <MessageComponent
+              message_type= {<Heading as="h2" size="xl" mt={6} mb={2} color={"green.400"}>Feature in Contruction! </Heading>}
+              heading={<Heading as="h3" size="x" mt={6} mb={2} color={"green.300"}>Do Share your Insights. We'll be happy to incorporate them.</Heading>}
+              message_body="Regards, Team Yasai!"
+            />
         </TabPanel>
       </TabPanels>
     </Tabs>

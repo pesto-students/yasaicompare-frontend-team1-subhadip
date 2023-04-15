@@ -31,9 +31,11 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+import { Heading } from "@chakra-ui/react";
 
 import _ from "lodash";
-
+import MessageComponent from "../../components/MessageComponent/MessageComponet";
 const labelStyles = {
   mt: "2",
   ml: "-2.5",
@@ -141,7 +143,12 @@ const ShopView = () => {
             flexDirection={"column"}
             w="full"
           >
-            <Text>No Shops available near your</Text>
+            {/* <Text>No Shops available near your</Text> */}
+            <MessageComponent
+              message_type= {<Heading as="h2" size="xl" mt={6} mb={2} color={"green.400"}>We are Sorry! </Heading>}
+              heading={<Heading as="h3" size="x" mt={6} mb={2} color={"green.300"}>There are No Shops available near your location</Heading>}
+              message_body="Please try again later"
+            />
           </Flex>
         )}
       </SimpleGrid>

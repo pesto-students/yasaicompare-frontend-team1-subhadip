@@ -6,6 +6,7 @@ import {
   TabPanel,
   Tabs,
   TabPanels,
+  Heading,
 } from "@chakra-ui/react";
 
 import { getAllOrders } from "../../redux/features/orders/ordersSlice";
@@ -14,6 +15,7 @@ import { useEffect, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import OrderStatusCard from "../../components/OrderStatusCard/OrderStatusCard";
 import { updateOrderStatus } from "../../redux/features/vendor/vendorSlice";
+import MessageComponent from "../../components/MessageComponent/MessageComponet";
 
 export default function VendorOrderPage() {
   const dispatch = useDispatch();
@@ -117,7 +119,12 @@ export default function VendorOrderPage() {
                       showItems={order}
                     />
                   ))
-                : null}
+                : 
+                <MessageComponent
+                message_type= {<Heading as="h2" size="xl" mt={6} mb={2} color={"green.400"}>No Active Orders</Heading>}
+                heading={<Heading as="h3" size="x" mt={6} mb={2} color={"green.300"}>No Orders Available</Heading>}
+                message_body=""
+              />}
             </SimpleGrid>
           </TabPanel>
           <TabPanel>
@@ -139,7 +146,11 @@ export default function VendorOrderPage() {
                       showItems={order}
                     />
                   ))
-                : null}
+                : <MessageComponent
+                message_type= {<Heading as="h2" size="xl" mt={6} mb={2} color={"green.400"}>No Orders Delievered Yet! </Heading>}
+                heading={<Heading as="h3" size="x" mt={6} mb={2} color={"green.300"}>Looks Like you haven't placed any order yet!</Heading>}
+                message_body=""
+              />}
             </SimpleGrid>
           </TabPanel>
         </TabPanels>

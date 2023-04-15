@@ -1,27 +1,36 @@
 import React from "react";
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const PageNotFound = () => {
   return (
-    <Box textAlign="center" p={8}>
-      <Heading as="h1" size="2xl" mb={4}>
-        Oops! Page not found.
+    <Box textAlign="center" py={10} px={6}>
+      <Heading
+        display="inline-block"
+        as="h2"
+        size="2xl"
+        bgGradient="linear(to-r, teal.400, teal.600)"
+        backgroundClip="text"
+      >
+        404
       </Heading>
-      <Text fontSize="lg" mb={8}>
-        Sorry, the page you're looking for does not exist.
+      <Text fontSize="18px" mt={3} mb={2}>
+        Page Not Found
       </Text>
-      <Box>
-        <Text fontSize="md" mb={4}>
-          You can go back to the homepage or continue shopping:
-        </Text>
-        <Button as={Link} to="/" variant="solid" colorScheme="green" mr={4}>
-          Go to homepage
-        </Button>
-        <Button as={Link} to="/shop" variant="solid" colorScheme="blue">
-          Continue shopping
-        </Button>
-      </Box>
+      <Text color={"gray.500"} mb={6}>
+        The page you're looking for does not seem to exist
+      </Text>
+
+      <Button
+        as={Link}
+        to="/"
+        colorScheme="teal"
+        bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
+        color="white"
+        variant="solid"
+      >
+        Go to Home
+      </Button>
     </Box>
   );
 };
