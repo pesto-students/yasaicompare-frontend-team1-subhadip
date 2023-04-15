@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import {
   ModalFooter,
   ModalOverlay,
   Img,
+  Select,
 } from "@chakra-ui/react";
 import VendorIventoryCard from "../../components/VendorInventoryCard/VendorInventoryCard";
 import { useParams } from "react-router-dom";
@@ -29,6 +30,13 @@ import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 export default function VendorInventoryPage() {
+  const options = [
+    { value: "Kg", label: "Kilogram" },
+    { value: "g", label: "grams" },
+    { value: "l", label: "litre" },
+    { value: "Ml", label: "Millilitre" },
+    { value: "oz", label: "Ounce" },
+  ];
   const { shop_id } = useParams();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,8 +46,7 @@ export default function VendorInventoryPage() {
   const [quantity, setQuantity] = useState("");
   const [image_link, setImage_link] = useState("");
   const [image_id, setImage_id] = useState("");
-  const [unit, setUnit] = useState("");
-
+  const unit = useRef("Kg");
   const getInventory = useCallback(async () => {
     dispatch(fetchAllInventory(shop_id)).unwrap();
   }, [shop_id]);
@@ -78,11 +85,17 @@ export default function VendorInventoryPage() {
       quantity: quantity,
       in_stock: true,
       image: image_link,
-      unit: unit,
+      unit: unit.current,
     };
     await addItem(data);
   };
 
+  function handleChange(event) {
+    unit.current = event.target.value;
+    console.log(unit.current);
+  }
+
+  console.log(unit.current);
   async function handleSwitchChange(event, id) {
     console.log(event.target.checked, id);
     const data = {
@@ -135,11 +148,13 @@ export default function VendorInventoryPage() {
 
             <FormControl mt={4}>
               <FormLabel>Unit</FormLabel>
-              <Input
-                value={unit}
-                placeholder="Enter your Unit"
-                onChange={(e) => setUnit(e.target.value)}
-              />
+              <Select onChange={handleChange}>
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
 
             <FormControl mt={4}>
