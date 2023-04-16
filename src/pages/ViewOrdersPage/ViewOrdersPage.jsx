@@ -117,6 +117,7 @@ export default function VendorOrderPage() {
                       }
                       customer_disable={true}
                       showItems={order}
+                      orderTime={order.createdAt}
                     />
                   ))
                 : 

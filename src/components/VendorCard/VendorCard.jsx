@@ -9,8 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Proptypes from "prop-types";
-import { LocationIcon } from "../Icons";
-import Rating from "../Rating/Rating";
+
 
 export default function VendorCard(props) {
   // Get the shop id on click of the visit shop button

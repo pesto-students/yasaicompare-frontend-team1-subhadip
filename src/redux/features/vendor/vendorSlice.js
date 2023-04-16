@@ -73,7 +73,6 @@ export const addItemToInventory = createAsyncThunk(
   "vendor/addItemToInventory",
   async (payload, thunkApi) => {
     try {
-      console.log(payload);
       const response = await api.addInventoryItem(payload);
       return response.data;
     } catch (error) {
@@ -100,7 +99,6 @@ export const uploadImage = createAsyncThunk(
   "vendor/uploadImage",
   async (payload, thunkApi) => {
     try {
-      console.log("payload", payload);
       const response = await api.uploadImage(payload);
       return response.data;
     } catch (error) {
@@ -114,7 +112,6 @@ export const fetchAllOrders = createAsyncThunk(
   "vendor/fetchAllOrders",
   async (payload, thunkApi) => {
     try {
-      console.log("pay", payload);
       const response = await api.getAllOrders(payload);
       return response.data;
     } catch (error) {
@@ -127,10 +124,9 @@ export const fetchAllOrders = createAsyncThunk(
 export const updateOrderStatus = createAsyncThunk(
   "vendor/updateOrderStatus",
   async (payload, thunkApi) => {
-    console.log("payload", payload);
     try {
       const response = await api.updateOrderStatus(payload);
-      console.log("update order status", response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -142,10 +138,9 @@ export const updateOrderStatus = createAsyncThunk(
 export const inventoryItemUpdate = createAsyncThunk(
   "vendor/inventoryItemUpdate",
   async (payload, thunkApi) => {
-    console.log("payload", payload);
     try {
       const response = await api.updateInventory(payload);
-      console.log("update order status", response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -204,7 +199,6 @@ const vendorSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchAllOrders.fulfilled, (state, action) => {
-        console.log("action.payload", action.payload.orders);
         action.payload.orders.map((order) => {
           if (
             order.order_status === "confirmed" ||
@@ -235,7 +229,6 @@ const vendorSlice = createSlice({
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("action.payload", action.payload);
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
         state.status = "failed";
@@ -264,8 +257,6 @@ const vendorSlice = createSlice({
       .addCase(inventoryItemUpdate.fulfilled, (state, action) => {
         state.status = "succeeded";
         const currentState = current(state.data.inventory.inventory);
-        console.log(currentState);
-        console.log(action.payload);
         const updatedState = currentState.map((item, index) => {
           if (item.item_id === action.payload.data.item_id) {
             const resut = {

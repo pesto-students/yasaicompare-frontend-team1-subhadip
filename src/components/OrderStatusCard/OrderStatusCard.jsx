@@ -1,5 +1,10 @@
-import { Box, Flex, Text, Badge, Select } from "@chakra-ui/react";
-import { formatPrice, formatDate, OrderIdSnip } from "../../utils/commons";
+import { Box, Flex, Text, Select } from "@chakra-ui/react";
+import {
+  formatPrice,
+  formatDate,
+  OrderIdSnip,
+  formatTime,
+} from "../../utils/commons";
 import { ArrowIcon } from "../Icons";
 import {
   Modal,
@@ -8,12 +13,20 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
 const OrderDetailsCardActive = ({
   orderId,
   orderDate,
+  orderTime,
   status,
   totalAmount,
   handleChange,
@@ -42,20 +55,29 @@ const OrderDetailsCardActive = ({
           <ModalHeader>Item Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {showItems?.items?.length &&
-              showItems?.items?.map((item) => {
-                return (
-                  <Flex justifyContent="space-between" mb={2}>
-                    <Text fontSize="15px" fontWeight="bold">
-                      {item.item_id}
-                    </Text>
-                    <Text fontSize="15px" fontWeight="bold">
-                      {item.name}
-                    </Text>
-                    <Text>{item.quantity}</Text>
-                  </Flex>
-                );
-              })}
+            <TableContainer p="1">
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>NAME</Th>
+                    <Th>QUANTITY</Th>
+                    <Th isNumeric>PRICE</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {showItems?.items?.length &&
+                    showItems?.items?.map((item) => {
+                      return (
+                        <Tr>
+                          <Td>{item.name}</Td>
+                          <Td>{item.quantity}</Td>
+                          <Td>{item.price}</Td>
+                        </Tr>
+                      );
+                    })}
+                </Tbody>
+              </Table>
+            </TableContainer>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -89,6 +111,13 @@ const OrderDetailsCardActive = ({
           </Text>
           <Text>{formatDate(orderDate)}</Text>
         </Flex>
+        <Flex justifyContent="space-between" mb={2}>
+          <Text fontSize="15px" fontWeight="bold">
+            TIME:
+          </Text>
+          <Text>{formatTime(orderTime)}</Text>
+        </Flex>
+
         <Flex justifyContent="space-between" mb={2}>
           <Text fontSize="15px" fontWeight="bold">
             STATUS:

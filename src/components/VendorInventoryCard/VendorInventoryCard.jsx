@@ -20,15 +20,12 @@ import {
   Spacer,
   FormControl,
   FormLabel,
-  Button,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "../../components/Icons";
 
-import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
 
 const VendorInventoryCard = (props) => {
-  const imageSize = !props.minimal ? "150px" : "100px";
   return (
     // <Card size={"sm"} boxShadow="base" borderRadius="md">
     //   <CardBody fontFamily="body">
@@ -85,7 +82,7 @@ const VendorInventoryCard = (props) => {
         <Flex bg="gray.100" p={4}>
           <Image
             src={props.image}
-            boxSize={{ base: "90px", md: "100px" }}
+            boxSize={{ base: "120px", md: "10px" }}
             mr={{ base: 0, md: 4 }}
           />
           <Text
@@ -94,7 +91,7 @@ const VendorInventoryCard = (props) => {
             fontSize={{ base: "md", md: "lg" }}
             textAlign={{ base: "left", md: "center" }}
             flex={{ base: 1, md: "none" }}
-            p={8}
+            p={3}
           >
             {props.name}
           </Text>

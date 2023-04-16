@@ -22,13 +22,12 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 
-import _ from "lodash";
 
 const VendorInventoryPage = () => {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
   const [image_link, setImage_link] = useState("");
   const [image_id, setImage_id] = useState("");
   const [address, setAddress] = useState("");
@@ -37,6 +36,7 @@ const VendorInventoryPage = () => {
   const [pincode, setPincode] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const toast = useToast();
   const vendorState = useSelector((state) => state.vendor);
   const authData = useSelector((state) => state.auth.data);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -124,6 +124,12 @@ const VendorInventoryPage = () => {
       country: "India",
       latitude: latitude,
       longitude: longitude,
+    });
+    toast({
+      title: `Shop Created Successfully`,
+      position: "top",
+      isClosable: true,
+      status: "success",
     });
   };
 

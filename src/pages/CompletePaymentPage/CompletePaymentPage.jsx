@@ -43,7 +43,7 @@ const CompletePaymentPage = () => {
         Payment Completed Successfully
       </Text>
       {setTimeout(() => {
-        navigate("/vieworders");
+        navigate("/profile/vieworders");
       }, 3000)}
       <Button mt={8} colorScheme="green" onClick={() => navigate("/")}>
         Continue Shopping

@@ -28,6 +28,7 @@ import {
   FormControl,
   Input,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 const AddressPage = () => {
@@ -43,6 +44,7 @@ const AddressPage = () => {
   const [edit, setEdit] = useState(true);
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const toast = useToast();
   const coordinates = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const authData = useSelector((state) => state.auth.data);
@@ -105,6 +107,12 @@ const AddressPage = () => {
       longitude: coordinates.current.coords.longitude,
       label: label,
     });
+    toast({
+      title: `Added Address successfully.`,
+      position: "top",
+      isClosable: true,
+      status: "success",
+    });
   };
 
   const handleEditAddress = (id) => {
@@ -141,6 +149,12 @@ const AddressPage = () => {
     };
     console.log("updated address", updatedAddress);
     await handleUpdateAddress(updatedAddress);
+    toast({
+      title: `Updated Address successfully.`,
+      position: "top",
+      isClosable: true,
+      status: "success",
+    });
   };
 
   return (
