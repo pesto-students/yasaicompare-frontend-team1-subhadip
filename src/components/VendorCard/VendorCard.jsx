@@ -34,27 +34,6 @@ export default function VendorCard(props) {
           <Heading fontSize="12px" size="md">
             {props.shop_name}
           </Heading>
-          <Stack spacing={"1"}>
-            <Stack direction={"row"}>
-              <LocationIcon color="green.500" />
-              <Text fontSize="xs">2.5 km</Text>
-              <Text fontSize="xs" color="gray.500">
-                From Home
-              </Text>
-            </Stack>
-            <Stack direction={"row"}>
-              <Stack direction={"row"}>
-                <Rating rating={1} total={1} />
-                <Text fontSize="xs">4.5</Text>
-              </Stack>
-              <Stack direction={"row"}>
-                <Text fontSize="xs" color="gray.500">
-                  100 Reviews
-                </Text>
-              </Stack>
-            </Stack>
-          </Stack>
-
           <Button
             onClick={props.showInventory}
             size="xs"

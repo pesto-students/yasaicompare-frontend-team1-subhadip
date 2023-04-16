@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import * as api from "../../../api";
 
 const initialState = {
@@ -54,8 +54,14 @@ export const fetchAllInventory = createAsyncThunk(
   "vendor/fetchAllInventory",
   async (payload, thunkApi) => {
     try {
-      const response = await api.getAllInventory(payload);
-      return response.data;
+      const responseTrue = await api.getAllInventory(payload, true);
+      const responseFalse = await api.getAllInventory(payload, false);
+      const data = {
+        inventory: responseTrue.data.inventory.concat(
+          responseFalse.data.inventory
+        ),
+      };
+      return data;
     } catch (error) {
       console.log(error);
       return thunkApi.rejectWithValue(error.response.data);
@@ -183,7 +189,7 @@ const vendorSlice = createSlice({
       })
       .addCase(addItemToInventory.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("action.payload", action.payload.data);
+        console.log("additem.action.payload", action.payload.data);
         state.data.inventory.inventory = [
           ...state.data.inventory.inventory,
           action.payload.data,
@@ -248,6 +254,32 @@ const vendorSlice = createSlice({
         ];
       })
       .addCase(CreateShops.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+    builder
+      .addCase(inventoryItemUpdate.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(inventoryItemUpdate.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const currentState = current(state.data.inventory.inventory);
+        console.log(currentState);
+        console.log(action.payload);
+        const updatedState = currentState.map((item, index) => {
+          if (item.item_id === action.payload.data.item_id) {
+            const resut = {
+              ...item,
+              ...action.payload.data,
+            };
+            item = resut;
+            return item;
+          }
+          return item;
+        });
+        state.data.inventory.inventory = [...updatedState];
+      })
+      .addCase(inventoryItemUpdate.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

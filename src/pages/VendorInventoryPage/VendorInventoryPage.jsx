@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Img,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import VendorIventoryCard from "../../components/VendorInventoryCard/VendorInventoryCard";
 import { useParams } from "react-router-dom";
@@ -32,8 +33,8 @@ import { useDisclosure } from "@chakra-ui/react";
 export default function VendorInventoryPage() {
   const options = [
     { value: "Kg", label: "Kilogram" },
-    { value: "g", label: "grams" },
-    { value: "l", label: "litre" },
+    { value: "grm", label: "grams" },
+    { value: "litre", label: "litre" },
     { value: "Ml", label: "Millilitre" },
     { value: "oz", label: "Ounce" },
   ];
@@ -46,7 +47,10 @@ export default function VendorInventoryPage() {
   const [quantity, setQuantity] = useState("");
   const [image_link, setImage_link] = useState("");
   const [image_id, setImage_id] = useState("");
+  const [edit, setEdit] = useState(true);
+  const inventory_id = useRef("");
   const unit = useRef("Kg");
+  const toast = useToast();
   const getInventory = useCallback(async () => {
     dispatch(fetchAllInventory(shop_id)).unwrap();
   }, [shop_id]);
@@ -92,18 +96,67 @@ export default function VendorInventoryPage() {
 
   function handleChange(event) {
     unit.current = event.target.value;
-    console.log(unit.current);
   }
 
-  console.log(unit.current);
-  async function handleSwitchChange(event, id) {
-    console.log(event.target.checked, id);
+  async function handleEditItemDetails() {
+    onClose();
+
     const data = {
       shop_id: shop_id,
-      item_id: id,
+      item_id: inventory_id.current.item_id,
+      name: item,
+      category_id: "1127",
+      price: price,
+      quantity: quantity,
+      unit: unit.current,
+      image: inventory_id.current.image,
+    };
+
+    const updatedresponse = await updateInventoryItem(data);
+    if (updatedresponse.message === "Inventory updated Successfully") {
+      setEdit(true);
+      toast({
+        title: `Item updated successfully.`,
+        position: "top",
+        isClosable: true,
+        status: "success",
+      });
+    }
+  }
+  function handleEditItems(id) {
+    onOpen();
+    setEdit(false);
+    const item = inventoryState.data.inventory.inventory.find(
+      (item) => item.item_id === id
+    );
+    inventory_id.current = {
+      item_id: item.item_id,
+      image: item.image,
+    };
+    setItem(item.name);
+    setPrice(item.price);
+    setQuantity(item.quantity);
+    setImage_link(item.image);
+    setImage_id(item.image_id);
+  }
+
+  async function handleSwitchChange(event, item) {
+    const data = {
+      shop_id: shop_id,
+      item_id: item.item_id,
+      ...item,
       in_stock: event.target.checked,
     };
     const response = await updateInventoryItem(data);
+    if (response.message === "Inventory updated Successfully") {
+      setEdit(true);
+      toast({
+        title: `Item updated successfully.`,
+        position: "top",
+        isClosable: true,
+        status: "success",
+      });
+    }
   }
   return (
     <>
@@ -117,7 +170,12 @@ export default function VendorInventoryPage() {
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontWeight="extrabold">CREATE ITEM</ModalHeader>
+          {edit ? (
+            <ModalHeader fontWeight="extrabold">CREATE ITEM</ModalHeader>
+          ) : (
+            <ModalHeader fontWeight="extrabold">EDIT ITEM</ModalHeader>
+          )}
+
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
@@ -168,9 +226,15 @@ export default function VendorInventoryPage() {
           </ModalBody>
 
           <ModalFooter>
-            <Button width="full" onClick={handleSubmitItemDetails}>
-              SUBMIT ITEM DETAILS
-            </Button>
+            {edit ? (
+              <Button width="full" onClick={handleSubmitItemDetails}>
+                SUBMIT ITEM DETAILS
+              </Button>
+            ) : (
+              <Button width="full" onClick={handleEditItemDetails}>
+                EDIT ITEM DETAILS
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -185,9 +249,8 @@ export default function VendorInventoryPage() {
               image={item.image}
               available={item.in_stock}
               unit={item.unit}
-              onSwitchChange={(event) =>
-                handleSwitchChange(event, item.item_id)
-              }
+              onSwitchChange={(event) => handleSwitchChange(event, item)}
+              editButton={() => handleEditItems(item.item_id)}
             />
           ))}
       </SimpleGrid>

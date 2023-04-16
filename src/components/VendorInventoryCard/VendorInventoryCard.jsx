@@ -20,7 +20,9 @@ import {
   Spacer,
   FormControl,
   FormLabel,
+  Button,
 } from "@chakra-ui/react";
+import { ArrowIcon } from "../../components/Icons";
 
 import { formatPrice } from "../../utils/commons";
 import PropTypes from "prop-types";
@@ -97,7 +99,11 @@ const VendorInventoryCard = (props) => {
             {props.name}
           </Text>
         </Flex>
+
         <Box alignItems="center" p={4}>
+          <Box marginLeft="20" onClick={props.editButton}>
+            <ArrowIcon />
+          </Box>
           <Text
             flex={{ base: 1, md: "none" }}
             mr={{ base: 0, md: 2 }}
@@ -121,15 +127,17 @@ const VendorInventoryCard = (props) => {
           >
             Unit: <strong>{props.unit}</strong>
           </Text>
+
           <Spacer flex={{ base: "none", md: 1 }} />
           <FormControl display="flex">
             <FormLabel htmlFor="available" fontSize="15">
-              INSTOCK:
+              IN STOCK:
             </FormLabel>
             <Switch
               id="available"
               onChange={props.onSwitchChange}
               size="sm"
+              isChecked={props.available}
               colorScheme="green"
             />
           </FormControl>

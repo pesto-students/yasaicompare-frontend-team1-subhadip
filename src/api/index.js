@@ -138,18 +138,19 @@ export const updateAddress = (apiArgs) =>
 export const getVendorShops = () =>
   axiosApiInstance.get(`${SERVER_URL}/vendor/shops`);
 
-export const getAllInventory = (payload) =>
-  axiosApiInstance.get(`${SERVER_URL}/inventory/${payload}`);
+export const getAllInventory = (payload, status = true) =>
+  axiosApiInstance.get(`${SERVER_URL}/inventory/${payload}?in_stock=${status}`);
 
 export const addNewInventory = (apiArgs) =>
   axiosApiInstance.post(`${SERVER_URL}/inventory`, { ...apiArgs });
 
 export const updateInventory = (apiArgs) => {
+  console.log("apiArgs", apiArgs);
   var shopid = apiArgs.shop_id;
-  var id = apiArgs.item_id;
+  var itemid = apiArgs.item_id;
   delete apiArgs.shop_id;
   delete apiArgs.item_id;
-  return axiosApiInstance.put(`${SERVER_URL}/inventory/${shopid}/${id}`, {
+  return axiosApiInstance.put(`${SERVER_URL}/inventory/${shopid}/${itemid}`, {
     ...apiArgs,
   });
 };
