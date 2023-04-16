@@ -37,8 +37,11 @@ export const ItemCard = (props) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Stack spacing={"1"} flex="1">
+              <Stack spacing={"1"} flex="1" flexDirection="row">
                 <Text fontSize="12px">{formatPrice(props.price)}</Text>
+                <Text fontSize="12px" color="green.500">
+                  /Kg
+                </Text>
               </Stack>
               <Stack flex="1">
                 {!props.quantity ? (

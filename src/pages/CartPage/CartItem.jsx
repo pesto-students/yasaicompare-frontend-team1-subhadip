@@ -1,10 +1,10 @@
 import {
   CloseButton,
   Flex,
-  Link,
   ButtonGroup,
   IconButton,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { PriceTag } from "./PriceTag";
 import { CartProductMeta } from "./CartProductMeta";
@@ -29,11 +29,7 @@ export const CartItemCard = (props) => {
       justify="space-between"
       align="center"
     >
-      <CartProductMeta
-        name={name}
-        description={description}
-        image={imageUrl}
-      />
+      <CartProductMeta name={name} description={description} image={imageUrl} />
 
       {/* Desktop */}
       <Flex
@@ -78,9 +74,6 @@ export const CartItemCard = (props) => {
           md: "none",
         }}
       >
-        <Link fontSize="sm" textDecor="underline">
-          Delete
-        </Link>
         <ButtonGroup
           borderRadius="6"
           color="white"
@@ -98,6 +91,7 @@ export const CartItemCard = (props) => {
           <IconButton icon={<AddIcon />} onClick={props.onIncrementClick} />
         </ButtonGroup>
         <PriceTag price={price} currency={currency} />
+        <Box>/kg</Box>
       </Flex>
     </Flex>
   );
