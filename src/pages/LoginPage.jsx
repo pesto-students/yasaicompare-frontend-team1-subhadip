@@ -59,6 +59,42 @@ const LoginPage = () => {
     }
   };
 
+  const vendorSubmit = () => {
+    const credentials = {
+      email: "testvendor@gmail.com",
+      password: "testvendor",
+    };
+    const result = handleLogin(credentials);
+    localStorage.setItem("accessToken", result.accessToken);
+    toast({
+      title: "Logged in successfully.",
+      description: "Redirecting to next page...",
+      status: "success",
+      duration: 9000,
+      position: "top",
+      isClosable: true,
+    });
+    navigate("/vendor");
+  };
+
+  const customerSubmit = () => {
+    const credentials = {
+      email: " testcustomer@gmail.com",
+      password: "testcustomer",
+    };
+    const result = handleLogin(credentials);
+    localStorage.setItem("accessToken", result.accessToken);
+    toast({
+      title: "Logged in successfully.",
+      description: "Redirecting to next page...",
+      status: "success",
+      duration: 9000,
+      position: "top",
+      isClosable: true,
+    });
+    navigate("/");
+  };
+
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -96,6 +132,16 @@ const LoginPage = () => {
             <Stack spacing={10} pt={2}>
               <Button onClick={handleSubmit} loadingText="Submitting" size="lg">
                 Sign In
+              </Button>
+              <Button onClick={vendorSubmit} loadingText="Submitting" size="lg">
+                Sign In as Vendor
+              </Button>
+              <Button
+                onClick={customerSubmit}
+                loadingText="Submitting"
+                size="lg"
+              >
+                Sign In as Customer
               </Button>
             </Stack>
             <Stack pt={6}>
